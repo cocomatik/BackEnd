@@ -26,6 +26,8 @@ def login(request):
     
     # verification.delete()
     
+
+    
     try:
         user = UserAccount.objects.get(email=email)  # Try to fetch the user by email
     except UserAccount.DoesNotExist:
