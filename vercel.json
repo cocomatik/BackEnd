@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
       {
-        "src": "COKO/wsgi.py",
+        "src": "COCO/wsgi.py",
         "use": "@vercel/python",
         "config": {
           "maxLambdaSize": "15mb",
@@ -17,7 +17,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "COKO/wsgi.py"
+        "dest": "COCO/wsgi.py"
       }
     ]
   }

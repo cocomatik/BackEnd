@@ -1,5 +1,5 @@
 """
-WSGI config for COKO project.
+WSGI config for COCO project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,7 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'COKO.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'COCO.settings')
 
 application = get_wsgi_application()
 
