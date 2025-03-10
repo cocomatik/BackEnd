@@ -32,7 +32,7 @@ def login(request):
         user = UserAccount.objects.get(email=email)  # Try to fetch the user by email
     except UserAccount.DoesNotExist:
         # Create a new user without a password (just email)
-        user = UserAccount.objects.create(email=email)
+        user = UserAccount.objects.create(email=email,name=verification.name)
 
     token, created = Token.objects.get_or_create(user=user)
     
@@ -51,16 +51,20 @@ def logout(request):
 
 @api_view(['POST'])
 def send_otp_login(request):
+    name=request.data.get('name')
     email=request.data.get('email')
     otp = str(random.randint(100000, 999999))
 
     verification, created = Verification.objects.get_or_create(email=email)
     verification.otp = otp
+    verification.name = name
     verification.save()
 
     subject = "Your OTP for Login"
     from_email = 'login.cocomatikofficial@gmail.com'
-    message = f"Use this OTP {otp} to log in to cocomatiks. This OTP is valid for 5 minutes only!"
+    message = f'''Dear {name},
+    Use this OTP {otp} to login / register to cocomatiks. This OTP is valid for 5 minutes only!
+    Please do not reply to this email with your password. We will never ask for your password, and we strongly discourage you from sharing it with anyone.'''
 
     send_mail(subject, message, from_email, [email])
 
