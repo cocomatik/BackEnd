@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'Accounts.middleware.ActivityLoggerMiddleware',
+    # 'Accounts.middleware.ActivityLoggerMiddleware',
 ]
 
 ROOT_URLCONF = 'COCO.urls'

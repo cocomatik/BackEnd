@@ -23,9 +23,6 @@ def login(request):
             return Response({'error': 'Invalid OTP'}, status=400)
     except Verification.DoesNotExist:
         return Response({'error': 'No OTP sent for this user'}, status=400)
-    
-    # verification.delete()
-    
 
     
     try:
@@ -35,7 +32,7 @@ def login(request):
         user = UserAccount.objects.create(email=email,name=verification.name)
 
     token, created = Token.objects.get_or_create(user=user)
-    
+    verification.delete()
     return Response({'token': token.key, 'email': email})
 
 
