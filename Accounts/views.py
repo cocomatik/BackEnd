@@ -46,26 +46,43 @@ def logout(request):
         return Response({'error': 'Invalid request or user not logged in'}, status=400)
 
 
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
+
+
 @api_view(['POST'])
 def send_otp_login(request):
-    name=request.data.get('name')
-    email=request.data.get('email')
+    email = request.data.get('email')
+
+    # Retrieve user object or None
+    user = UserAccount.objects.filter(email=email).first()
+
+    if user:  # Email exists → Proceed with Login
+        name = user.name if user.name else email
+        status = 'LOGIN'
+    else:  # Email does not exist → Proceed with Registration
+        name = email
+        status = 'REGISTRATION'
+
     otp = str(random.randint(100000, 999999))
 
-    verification, created = Verification.objects.get_or_create(email=email)
-    verification.otp = otp
-    verification.name = name
-    verification.save()
+    # Email Content
+    html_content = render_to_string(
+        'Accounts/login_email.html',
+        {'name': name, 'otp': otp, 'status': status}
+    )
+    plain_text_content = strip_tags(html_content)
 
-    subject = "Your OTP for Login"
-    from_email = 'login.cocomatikofficial@gmail.com'
-    message = f'''Dear {name},
-    Use this OTP {otp} to login / register to cocomatiks. This OTP is valid for 5 minutes only!
-    Please do not reply to this email with your password. We will never ask for your password, and we strongly discourage you from sharing it with anyone.'''
+    email_message = EmailMultiAlternatives(
+        subject=f"🔒 OTP for {status} - COCOMATIK Account",
+        body=plain_text_content,
+        from_email='login.cocomatikofficial@gmail.com',
+        to=[email]
+    )
+    email_message.attach_alternative(html_content, "text/html")
+    email_message.send()
 
-    send_mail(subject, message, from_email, [email])
-
-    return Response({'message': "Login OTP sent successfully."})
-
-
-
+    return Response({'message': f"OTP sent successfully for {status}."})
