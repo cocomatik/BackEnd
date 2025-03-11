@@ -23,7 +23,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     
 
 class Verification(models.Model):
-    email = models.EmailField(null=True, blank=True)
+    email = models.EmailField(unique=True,blank=False,null=False)
     otp = models.CharField(max_length=6)
     updated_at = models.DateTimeField(auto_now=True)
 

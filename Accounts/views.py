@@ -68,9 +68,17 @@ def send_otp_login(request):
         status = 'REGISTRATION'
 
     # otp = str(random.randint(100000, 999999))
-    otp = 000000
+    otp = "000000"
 
-    Verification.objects.update_or_create(email=email,otp=otp)
+    # Delete old entries to avoid duplicates
+    Verification.objects.filter(email=email).delete()
+
+    # Create a new verification entry
+    Verification.objects.create(
+        email=email,
+        otp=otp
+    )
+
 
     # Email Content
     html_content = render_to_string(
@@ -82,7 +90,7 @@ def send_otp_login(request):
     email_message = EmailMultiAlternatives(
         subject=f"🔒 OTP for {status} - COCOMATIK Account",
         body=plain_text_content,
-        from_email='cocomatikofficial@gmail.com',
+        from_email='login.cocomatikofficial@gmail.com',
         to=[email]
     )
     email_message.attach_alternative(html_content, "text/html")
