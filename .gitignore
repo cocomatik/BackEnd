@@ -1,4 +1,4 @@
 .env
 /zenv
 .vercel
-.env*.local
+a.html
