@@ -67,7 +67,8 @@ def send_otp_login(request):
         name = email
         status = 'REGISTRATION'
 
-    otp = str(random.randint(100000, 999999))
+    # otp = str(random.randint(100000, 999999))
+    otp = 000000
 
     Verification.objects.update_or_create(email=email,otp=otp)
 

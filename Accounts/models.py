@@ -28,7 +28,7 @@ class Verification(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def is_valid(self):
-        return now() < self.updated_at + timedelta(minutes=500)
+        return now() < self.updated_at + timedelta(minutes=5000000)
 
     # def set_otp(self, otp):
     #     self.otp = make_password(otp)

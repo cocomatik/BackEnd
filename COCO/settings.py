@@ -99,28 +99,14 @@ DATABASES = {
     'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
-import os
-
-# Gmail SMTP Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv('GMAIL_USER')   # Gmail email
-EMAIL_HOST_PASSWORD = os.getenv('GMAIL_PASSWORD')  # Gmail app password
 EMAIL_USE_TLS = True
 
-# Brevo SMTP Configuration
-BREVO_EMAIL_HOST = 'smtp-relay.brevo.com'
-BREVO_EMAIL_PORT = 587
-BREVO_EMAIL_HOST_USER = os.getenv('BREVO_USER')
-BREVO_EMAIL_HOST_PASSWORD = os.getenv('BREVO_PASSWORD')
-BREVO_EMAIL_USE_TLS = True
-
-
-
-
-import resend
-resend.api_key = os.getenv("RESEND_API_KEY")
+# Retrieve email settings from environment variables
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
 import cloudinary
