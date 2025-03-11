@@ -46,22 +46,12 @@ def logout(request):
         return Response({'error': 'Invalid request or user not logged in'}, status=400)
 
 
-from django.core.mail import EmailMultiAlternatives, send_mail
-from resend import Emails
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-import random
 
-from django.core.mail import EmailMultiAlternatives, get_connection
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-import random
-import resend
-from django.conf import settings
+
+
 
 @api_view(['POST'])
 def send_otp_login(request):
@@ -79,6 +69,8 @@ def send_otp_login(request):
 
     otp = str(random.randint(100000, 999999))
 
+    Verification.objects.update_or_create(email=email,otp=otp)
+
     # Email Content
     html_content = render_to_string(
         'Accounts/login_email.html',
@@ -86,59 +78,13 @@ def send_otp_login(request):
     )
     plain_text_content = strip_tags(html_content)
 
-    # Try sending via Gmail SMTP
-    try:
-        with get_connection(
-            backend='django.core.mail.backends.smtp.EmailBackend',
-            host=settings.EMAIL_HOST,
-            port=settings.EMAIL_PORT,
-            username=settings.EMAIL_HOST_USER,
-            password=settings.EMAIL_HOST_PASSWORD,
-            use_tls=settings.EMAIL_USE_TLS
-        ) as connection:
-            email_message = EmailMultiAlternatives(
-                subject=f"🔒 OTP for {status} - COCOMATIK Account",
-                body=plain_text_content,
-                from_email=settings.EMAIL_HOST_USER,
-                to=[email],
-                connection=connection
-            )
-            email_message.attach_alternative(html_content, "text/html")
-            email_message.send()
+    email_message = EmailMultiAlternatives(
+        subject=f"🔒 OTP for {status} - COCOMATIK Account",
+        body=plain_text_content,
+        from_email='cocomatikofficial@gmail.com',
+        to=[email]
+    )
+    email_message.attach_alternative(html_content, "text/html")
+    email_message.send()
 
-        return Response({'message': f"OTP sent successfully for {status} using Gmail SMTP."})
-
-    # If Gmail fails, try Brevo SMTP
-    except Exception as gmail_error:
-        try:
-            with get_connection(
-                backend='django.core.mail.backends.smtp.EmailBackend',
-                host=settings.BREVO_EMAIL_HOST,
-                port=settings.BREVO_EMAIL_PORT,
-                username=settings.BREVO_EMAIL_HOST_USER,
-                password=settings.BREVO_EMAIL_HOST_PASSWORD,
-                use_tls=settings.BREVO_EMAIL_USE_TLS
-            ) as connection:
-                email_message = EmailMultiAlternatives(
-                    subject=f"🔒 OTP for {status} - COCOMATIK Account",
-                    body=plain_text_content,
-                    from_email=settings.BREVO_EMAIL_HOST_USER,
-                    to=[email],
-                    connection=connection
-                )
-                email_message.attach_alternative(html_content, "text/html")
-                email_message.send()
-
-            return Response({'message': f"OTP sent successfully for {status} using Brevo SMTP."})
-
-        # If Brevo also fails, fallback to Resend
-        except Exception as brevo_error:
-            resend.api_key = settings.RESEND_API_KEY
-            resend.Emails.send({
-                "from": "onboarding@resend.dev",
-                "to": email,
-                "subject": f"🔒 OTP for {status} - COCOMATIK Account",
-                "html": html_content
-            })
-
-            return Response({'message': f"OTP sent successfully for {status} using Resend."})
+    return Response({'message': f"OTP sent successfully for {status}."})
