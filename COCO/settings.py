@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Accounts.apps.AccountsConfig',
+    'POCOS.apps.PocosConfig',
 
-
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -56,8 +57,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'Accounts.middleware.ActivityLoggerMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    
 ]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL = True
 
 ROOT_URLCONF = 'COCO.urls'
 
@@ -103,6 +107,15 @@ EMAIL_USE_TLS = True
 # Retrieve email settings from environment variables
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+
+import cloudinary
+cloudinary.config(
+    cloud_name="sanskaricoders",
+    api_key="861792463368225",
+    api_secret="RC5xuQlXl9TZmPWquMJobg-ZW4E",
+    secure=True,
+)
 
 
 AUTH_USER_MODEL = "Accounts.UserAccount"
