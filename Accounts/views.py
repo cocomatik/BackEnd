@@ -32,7 +32,7 @@ def login(request):
         user = UserAccount.objects.create(email=email,name=verification.name)
 
     token, created = Token.objects.get_or_create(user=user)
-    verification.delete()
+    # verification.delete()
     return Response({'token': token.key, 'email': email})
 
 
