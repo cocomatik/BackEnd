@@ -14,6 +14,8 @@ from dotenv import load_dotenv
 load_dotenv()
 import dj_database_url
 from pathlib import Path
+import cloudinary
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,10 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(zi1i7$!50u8o)et6g!icnlz=9@_0*6ftp6m6eji*fq8#n37c9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('true', '1')
 
-ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','.onrender.com']
-
+# Read ALLOWED_HOSTS from the environment
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
 # Application definition
 
@@ -109,13 +111,14 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
-import cloudinary
 cloudinary.config(
-    cloud_name="cocomatik",
-    api_key="735653583815775",
-    api_secret="KuXMcPN7bZX9D7ibSKv-fXev0QY",
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('API_KEY'),
+    api_secret=os.getenv('API_SECRET'),
     secure=True,
 )
+
+
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 
