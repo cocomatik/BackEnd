@@ -17,7 +17,7 @@ class POCOS(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='pocos', db_index=True)
     brand = models.CharField(max_length=255, null=True, blank=True)
 
-    poco_id = models.CharField(max_length=6, unique=True, blank=True, editable=False, db_index=True)
+    poco_id = models.CharField(max_length=6, unique=True, blank=True, editable=False, db_index=True,primary_key=True)
 
     display_image = CloudinaryField('image', folder='pocos/display/')
 
