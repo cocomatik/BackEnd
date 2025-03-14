@@ -3,11 +3,7 @@
   "builds": [
     {
       "src": "COCO/wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "python3.13"
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
