@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Accounts.apps.AccountsConfig',
     'POCOS.apps.PocosConfig',
+    'Manager.apps.ManagerConfig',
 
     'corsheaders',
     'rest_framework',
