@@ -1,3 +1,3 @@
-python3.12 -m pip install --upgrade pip
-pip3 install -r requirements.txt
-python3 manage.py collectstatic --noinput
+#!/bin/bash
+python3.13 -m pip install -r requirements.txt
+python3.13 manage.py collectstatic --noinput
