@@ -4,13 +4,11 @@
     {
       "src": "COCO/wsgi.py",
       "use": "@vercel/python",
-      "env": {
-        "NEXT_BUILD_CACHE": "false"
-      },
       "config": {
         "maxLambdaSize": "15mb",
         "runtime": "python3.13"
-      }
+      },
+      "buildCommand": "rm -rf staticfiles .vercel/cache && python manage.py collectstatic --noinput"
     }
   ],
   "routes": [
