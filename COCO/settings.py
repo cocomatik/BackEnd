@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(zi1i7$!50u8o)et6g!icnlz=9@_0*6ftp6m6eji*fq8#n37c9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('true', '1')
+DEBUG = True
 
 # Read ALLOWED_HOSTS from the environment
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
@@ -155,7 +155,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = True 
 
 
 # Static files (CSS, JavaScript, Images)
