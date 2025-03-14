@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Accounts.apps.AccountsConfig',
     'POCOS.apps.PocosConfig',
     'Manager.apps.ManagerConfig',
+    'Api.apps.ApiConfig',
 
     'corsheaders',
     'rest_framework',
