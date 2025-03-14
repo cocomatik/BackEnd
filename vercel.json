@@ -20,8 +20,5 @@
       "src": "/(.*)",
       "dest": "COCO/wsgi.py"
     }
-  ],
-  "static": {
-    "directory": "staticfiles"
-  }
+  ]
 }
