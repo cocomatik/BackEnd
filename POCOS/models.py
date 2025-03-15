@@ -19,7 +19,7 @@ class POCOS(models.Model):
 
     poco_id = models.CharField(max_length=6, unique=True, blank=True, editable=False, db_index=True,primary_key=True)
 
-    display_image = CloudinaryField('image', folder='pocos/display/')
+    display_image = CloudinaryField('image', folder='pocos/display/',default="pocos/display/elfpvad5o7iqzjnipqqa")
 
     rating = models.FloatField(
         default=0.0,
