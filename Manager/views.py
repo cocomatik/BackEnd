@@ -35,7 +35,7 @@ def add_product(request):
         price = request.POST.get("price", 0)
         stock = request.POST.get("stock", 0)
         category_id = request.POST.get("category")
-        image = request.FILES.get("images")
+        image = request.FILES.get("product_image")
 
         if category_id:
             category = Category.objects.get(id=category_id)
