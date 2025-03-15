@@ -41,6 +41,7 @@ def add_product(request):
             category = Category.objects.get(id=category_id)
             POCOS.objects.create(
                 title=title,
+                brand = brand,
                 description=description,
                 price=price,
                 stock=stock,
