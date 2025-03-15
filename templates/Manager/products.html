@@ -11,12 +11,18 @@
         <input type="text" id="search" class="form-control" placeholder="Search products...">
     </div>
     <div class="col-md-3">
-        <select id="categoryFilter" class="form-select">
-            <option value="">All Categories</option>
-            {% for category in categories %}
-                <option value="{{ category.name }}">{{ category.name }}</option>
-            {% endfor %}
-        </select>
+        <form method="GET" action="{% url 'products' %}">
+            <select name="category" id="categoryFilter" class="form-select">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.name }}" {% if request.GET.category == category.name %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Filter</button>
+        </form>
+        
     </div>
     <div class="col-md-3">
         <select id="stockFilter" class="form-select">
