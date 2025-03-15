@@ -3,11 +3,10 @@ from POCOS.models import POCOS
 
 
 def dashboard(request):
-
     return render(request, "Manager/dashboard.html")
 
 def products(request):
-    product_list = POCOS.objects.select_related('category').all()
+    product_list = POCOS.objects.all()
     return render(request, "Manager/products.html", {"products": product_list})
 
 def add_product(request):

@@ -61,8 +61,8 @@
             <td>{{ product.stock }}</td>
             <td>{{ product.rating }} ⭐</td>
             <td>
-                <a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-primary">Edit</a>
-                <a href="{% url 'delete_product' product.id %}" class="btn btn-sm btn-danger">Delete</a>
+                {% comment %} <a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'delete_product' product.id %}" class="btn btn-sm btn-danger">Delete</a> {% endcomment %}
             </td>
         </tr>
         {% empty %}
