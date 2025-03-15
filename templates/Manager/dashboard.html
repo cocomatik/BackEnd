@@ -1,34 +1,26 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{% static 'Manager/dashboard/dashboard.css' %}">
-    <script defer src="{% static 'Manager/dashboard/dashboard.js' %}"></script>
-</head>
-<body>
-    <div class="sidebar">
-        <h2>Dashboard</h2>
-        <ul>
-            <li><a href=">Home</a></li>
-            <li><a href=">Analytics</a></li>
-            <li><a href=">Settings</a></li>
-            <li><a href=">Logout</a></li>
-        </ul>
+{% extends 'manager/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Dashboard</h2>
+
+<!-- Stats Section -->
+<div class="row text-white">
+    <div class="col-md-4 mb-3">
+        <div class="stat-box bg-primary">Total Products: <b>120</b></div>
     </div>
-    <div class="main-content">
-        <header>
-            <h1>Welcome to Dashboard</h1>
-            <button id="theme-toggle">Toggle Theme</button>
-        </header>
-        <div class="cards">
-            <div class="card">Card 1</div>
-            <div class="card">Card 2</div>
-            <div class="card">Card 3</div>
-            <div class="card">Card 4</div>
-        </div>
+    <div class="col-md-4 mb-3">
+        <div class="stat-box bg-success">Total Orders: <b>350</b></div>
     </div>
-</body>
-</html>
+    <div class="col-md-4 mb-3">
+        <div class="stat-box bg-danger">Total Customers: <b>200</b></div>
+    </div>
+</div>
+
+<!-- Graph Section -->
+<div class="graph-container">
+    <h4>Sales</h4>
+    <canvas id="salesChart"></canvas>
+</div>
+{% endblock %}
