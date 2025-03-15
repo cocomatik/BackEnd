@@ -3,6 +3,7 @@ from POCOS.models import POCOS
 
 
 def dashboard(request):
+<<<<<<< HEAD
     return render(request, "manager/dashboard.html")
 
 def products(request):
@@ -27,3 +28,6 @@ def settings(request):
 def logout_view(request):
     # Add logout logic here
     return render(request, "manager/login.html")
+=======
+    return render(request,"Manager/dashboard.html")
+>>>>>>> 7a210bd4e80239b789493a5f440e0e430af87c7b

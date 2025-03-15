@@ -6,7 +6,7 @@ class PocoListSerializer(serializers.ModelSerializer):
     """Serializer for the poco list API."""
     class Meta:
         model = POCOS
-        fields = ["poco_id","title","description","size","price","stock","category","brand","display_image","rating"]
+        fields = ["poco_id","title","size","price","stock","category","brand","display_image","rating"]
 
 class PocoImageSerializer(serializers.ModelSerializer):
     """Serializer for extra poco images."""

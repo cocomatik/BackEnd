@@ -1,24 +1,16 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "COCO/wsgi.py",
-        "use": "@vercel/python",
-        "config": {
-          "maxLambdaSize": "15mb",
-          "runtime": "python3.13"
-        }
-      }
-    ],
-    "routes": [
-      {
-        "src": "/static/(.*)",
-        "dest": "/static/$1"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "COCO/wsgi.py"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    {
+      "src": "COCO/wsgi.py",
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "15mb", "runtime": "python3.13" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "COCO/wsgi.py"
+    }
+  ]
+}
