@@ -69,6 +69,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.getenv("CORS_ALLOWED_ORIGINS") else []
+CORS_ALLOW_ALL_ORIGINS = False
+
 
 ROOT_URLCONF = 'COCO.urls'
 
