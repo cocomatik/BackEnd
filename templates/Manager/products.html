@@ -12,7 +12,7 @@
     </div>
     <div class="col-md-3">
         <form method="GET" action="{% url 'products' %}">
-            <select name="category" id="categoryFilter" class="form-select">
+            <select name="category" id="categoryFilter" class="form-select" onchange="this.form.submit()">
                 <option value="">All Categories</option>
                 {% for category in categories %}
                     <option value="{{ category.name }}" {% if request.GET.category == category.name %}selected{% endif %}>
@@ -20,7 +20,6 @@
                     </option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-primary mt-2">Filter</button>
         </form>
         
     </div>
