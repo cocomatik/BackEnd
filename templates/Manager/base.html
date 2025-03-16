@@ -10,13 +10,17 @@
     <style>
         body { font-family: Arial, sans-serif; }
         .admin-logo { width: 150px; height: auto; margin-bottom: 15px; }
-        .sidebar { width: 250px; background: #212529; color: white; padding: 20px; min-height: 100vh; position: fixed; overflow-y: auto;}
+        .sidebar { width: 200px; background: #212529; color: white; padding: 20px; min-height: 100vh; position: fixed; overflow-y: auto;}
         .sidebar a { color: white; text-decoration: none; padding: 10px 15px; display: block; transition: 0.3s; }
         .sidebar a:hover { background-color: #495057; }
         .container-fluid {margin-left: 250px; width: calc(100% - 250px); padding: 20px;}
         .stat-box { padding: 20px; border-radius: 8px; text-align: center; color: white; font-size: 18px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
         .graph-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
-        @media (max-width: 768px) { .sidebar { display: none; } }
+        @media only screen and (max-width: 950px){
+            body{
+                display:none;
+            }
+        }
     </style>
 </head>
 <body>

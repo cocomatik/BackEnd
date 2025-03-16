@@ -3,7 +3,10 @@
 {% block title %}Products{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Product Management</h2>
+<h2 class="mb-4 text-center">
+    <b>PRODUCT MANAGEMENT</b>
+</h2>
+
 
 <!-- Search & Filters -->
 <div class="row mb-3">
@@ -40,7 +43,7 @@
 <!-- Product List -->
 <table class="table table-striped">
     <thead class="thead-dark">
-        <tr>
+        <tr class="text-center">
             <th>Image</th>
             <th>Title</th>
             <th>Description</th>
@@ -54,7 +57,7 @@
     </thead>
     <tbody>
         {% for product in products %}
-        <tr>
+        <tr class="text-center">
             <td>
                 <img src="{{ product.display_image.url }}" alt="Product Image" width="50">
             </td>
@@ -65,10 +68,11 @@
             <td>${{ product.price }}</td>
             <td>{{ product.stock }}</td>
             <td>{{ product.rating }} ⭐</td>
-            <td>
-                {% comment %} <a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-primary">Edit</a>
-                <a href="{% url 'delete_product' product.id %}" class="btn btn-sm btn-danger">Delete</a> {% endcomment %}
+            <td class="d-flex gap-2">
+                <a href="{% url 'edit_product' product.poco_id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'delete_product' product.poco_id %}" class="btn btn-sm btn-danger">Delete</a>
             </td>
+            
         </tr>
         {% empty %}
         <tr>
