@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from POCOS.models import POCOS, Category
 
@@ -26,7 +26,6 @@ def products(request):
 
 # Correct function names for different views
 def add_product(request):
-    categories = Category.objects.all()
 
     if request.method == "POST":
         title = request.POST.get("title", "")
@@ -57,11 +56,41 @@ def add_product(request):
     categories = Category.objects.all()
     return render(request, "Manager/add_product.html", {"categories": categories})
 
-def edit_product(request):
-    return render(request, "Manager/edit_product.html")
+def edit_product(request, product_id):
+    product = get_object_or_404(POCOS, poco_id=product_id)
+    categories = Category.objects.all()
 
-def delete_product(request):
-    return render(request, "Manager/delete_product.html")
+    if request.method == "POST":
+        product.title = request.POST.get("title", "")
+        product.brand = request.POST.get("brand", "")
+        product.description = request.POST.get("description", "")
+        product.price = request.POST.get("price", 0)
+        product.stock = request.POST.get("stock", 0)
+
+        # Get category
+        category_id = request.POST.get("category")
+        if category_id:
+            product.category = Category.objects.get(id=category_id)
+
+        # Update image if provided
+        if "product_image" in request.FILES:
+            product.display_image = request.FILES["product_image"]
+
+        product.save()
+        messages.success(request, "Product updated successfully!")
+        return redirect("products")
+
+    return render(request, "Manager/edit_product.html", {"product": product, "categories": categories})
+
+
+def delete_product(request, product_id):
+    product = get_object_or_404(POCOS, poco_id=product_id)
+    if request.method == "POST":
+        product.delete()
+        messages.success(request, "Product deleted successfully!")
+        return redirect("products")
+
+    return render(request, "Manager/delete_product.html", {"products":products})
 
 def orders(request):
     return render(request, "Manager/orders.html")
