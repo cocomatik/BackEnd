@@ -33,9 +33,6 @@ DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('true', '1')
 # Read ALLOWED_HOSTS from the environment
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
-# Application definition
-import os
-print(os.getenv("CORS_ALLOWED_ORIGINS"))
 
 
 INSTALLED_APPS = [
@@ -78,11 +75,8 @@ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.ge
     "http://127.0.0.1:5500",  # Allow local testing
 ]
 
-# Ensure it doesn't allow all origins
 CORS_ALLOW_ALL_ORIGINS = False  
 
-# Debugging: Print allowed origins
-print("CORS_ALLOWED_ORIGINS:", CORS_ALLOWED_ORIGINS)
 
 
 ROOT_URLCONF = 'COCO.urls'

@@ -2,9 +2,10 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 import random
 from django.core.validators import MinValueValidator, MaxValueValidator
+import string
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, unique=True, db_index=True)  # Indexed for faster lookups
+    name = models.CharField(max_length=255, unique=True, db_index=True,primary_key=True)  
 
     def __str__(self):
         return self.name
@@ -13,11 +14,12 @@ class POCOS(models.Model):
     title = models.CharField(max_length=500, null=False, blank=False)
     description = models.TextField(null=False, blank=False)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    mrp = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField(default=0)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='pocos', db_index=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='pocos',to_field='name', db_index=True)
     brand = models.CharField(max_length=255, null=True, blank=True)
 
-    poco_id = models.CharField(max_length=6, unique=True, blank=True, editable=False, db_index=True,primary_key=True)
+    poco_id = models.CharField(max_length=20, unique=True, blank=True, editable=False, db_index=True,primary_key=True)
 
     display_image = CloudinaryField('image', folder='pocos/display/',default="pocos/display/elfpvad5o7iqzjnipqqa")
 
@@ -30,13 +32,17 @@ class POCOS(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def generate_poco_id(self):
-        """Generate a 6-digit unique Poco ID."""
-        while True:
-            random_id = str(random.randint(100000, 999999))
-            if not POCOS.objects.filter(poco_id=random_id).exists():
-                return random_id
+    
+    @property
+    def discount_percentage(self):
+        """Calculate discount percentage ((MRP - Price) / MRP) * 100"""
+        if self.mrp > 0 and self.mrp > self.price:
+            return round(((self.mrp - self.price) / self.mrp) * 100, 2)
+        return 0.0
+    def generate_poco_id(self, length=15):
+        """Generate a random alphanumeric + special character ID of given length."""
+        characters = string.ascii_letters + string.digits + "!@#$%^&*"
+        return ''.join(random.choices(characters, k=length))
 
     def save(self, *args, **kwargs):
         if not self.poco_id:
