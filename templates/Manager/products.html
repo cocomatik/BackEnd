@@ -27,11 +27,15 @@
         
     </div>
     <div class="col-md-3">
-        <select id="stockFilter" class="form-select">
-            <option value="">All Stock Status</option>
-            <option value="in-stock">In Stock</option>
-            <option value="out-of-stock">Out of Stock</option>
-        </select>
+        <form method="GET" action="{% url 'products' %}">
+            <select name="stock" id="stockFilter" class="form-select" onchange="this.form.submit()">
+                <option value="">All Stock Status</option>
+                <option value="in-stock" {% if request.GET.stock == "in-stock" %}selected{% endif %}>In Stock</option>
+                <option value="out-of-stock" {% if request.GET.stock == "out-of-stock" %}selected{% endif %}>Out of Stock</option>
+                <option value="low-stock-50" {% if request.GET.stock == "low-stock-50" %}selected{% endif %}>Stock < 50</option>
+                <option value="low-stock-10" {% if request.GET.stock == "low-stock-10" %}selected{% endif %}>Stock < 10</option>
+            </select>
+        </form>
     </div>
     <div class="col-md-2">
         <a href="{% url 'add_product' %}">
@@ -49,7 +53,9 @@
             <th>Description</th>
             <th>Category</th>
             <th>Brand</th>
+            <th>MRP</th>
             <th>Price</th>
+            <th>Discount</th>
             <th>Stock</th>
             <th>Rating</th>
             <th>Actions</th>

@@ -27,7 +27,7 @@
             <label class="form-label">Category</label>
             <select name="category" class="form-select">
                 {% for category in categories %}
-                    <option value="{{ category.id }}" {% if product.category.id == category.id %}selected{% endif %}>
+                    <option value="{{ category.id }}" {% if product.category.name == category.name %}selected{% endif %}>
                         {{ category.name }}
                     </option>
                 {% endfor %}
@@ -35,7 +35,7 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Mrp</label>
+            <label class="form-label">MRP</label>
             <input type="number" name="mrp" class="form-control" value="{{ product.mrp }}" required>
         </div>
         <div class="mb-3">

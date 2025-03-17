@@ -19,7 +19,7 @@
             <label for="" class="form-label">Category</label>
             <select name="category" id="" class="form-select">
                 {% for category in categories %}
-                <option value="{{ category.id }}">{{ category.name }}</option>
+                <option value="{{ category.name }}">{{ category.name }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -28,7 +28,7 @@
             <input type="text" name="brand" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="" class="form-label">Mrp</label>
+            <label for="" class="form-label">MRP</label>
             <input type="number" name="mrp" class="form-control" required>
         </div>
         <div class="mb-3">
