@@ -17,6 +17,16 @@ def products(request):
     categories = Category.objects.all()
 
     selected_category = request.GET.get('category')
+    stock_filter = request.GET.get('stock','')
+
+    if stock_filter =="in-stock":
+        product_list = product_list.filter(stock__gt=0)
+    elif stock_filter == "out-of-stock":
+        product_list = product_list.filter(stock=0)
+    elif stock_filter == "low-stock-50":
+        product_list = product_list.filter(stock__lt=50)
+    elif stock_filter == "low-stock-10":
+        product_list = product_list.filter(stock__lt=10)
 
     if selected_category:
         products = POCOS.objects.filter(category__name=selected_category)
@@ -26,6 +36,8 @@ def products(request):
     context = {
         "products": products,
         "categories": categories,
+        "selected_category": selected_category,
+        "selected_stock": stock_filter,
     }
     return render(request, "Manager/products.html", context)
 @session_auth_required
@@ -35,17 +47,19 @@ def add_product(request):
         title = request.POST.get("title", "")
         brand = request.POST.get("brand","")
         description = request.POST.get("description", "")
+        mrp = request.POST.get("mrp",0)
         price = request.POST.get("price", 0)
         stock = request.POST.get("stock", 0)
-        category_id = request.POST.get("category")
+        category_n = request.POST.get("category")
         image = request.FILES.get("product_image")
 
-        if category_id:
-            category = Category.objects.get(id=category_id)
+        if category_n:
+            category = Category.objects.get(name=category_n)
             POCOS.objects.create(
                 title=title,
                 brand = brand,
                 description=description,
+                mrp=mrp,
                 price=price,
                 stock=stock,
                 category=category,
