@@ -5,6 +5,8 @@ from rest_framework import status
 from .models import POCOS, Review
 from .serializers import PocoListSerializer, PocoDetailSerializer, ReviewSerializer
 
+from Accounts.decorators import token_auth_required,session_auth_required
+
 @api_view(['GET'])
 def get_all_pocos(request):
     pocos = POCOS.objects.all()

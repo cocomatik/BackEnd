@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view
 import random
 from django.core.mail import send_mail
 
+from Accounts.decorators import token_auth_required
+
 @api_view(['POST'])
 def login(request):
     email=request.data.get('email')
@@ -33,7 +35,7 @@ def login(request):
     token, created = Token.objects.get_or_create(user=user)
     return Response({'token': token.key, 'email': email})
 
-
+@token_auth_required
 @api_view(['POST'])
 def logout(request):
     try:
