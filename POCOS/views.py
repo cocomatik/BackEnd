@@ -49,24 +49,19 @@ def search_products(request):
     if not query:
         return Response({"error": "Query parameter 'q' is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Full-text search
     full_text_results = POCOS.objects.annotate(
         search=SearchVector('title', 'description')
     ).filter(Q(search=SearchQuery(query)))
 
-    # Partial match search (icontains)
     partial_results = POCOS.objects.filter(
         Q(title__icontains=query) | Q(description__icontains=query)
     )
     fuzzy_results = POCOS.objects.annotate(similarity=TrigramSimilarity('title', query)).filter(similarity__gt=0.3)
 
-    # Merge results using OR operator and distinct() to avoid duplicates
     products = (full_text_results | partial_results).distinct()
 
-    # If no results found, return a custom message
     if not products.exists():
         return Response({"detail": "No products match the given query."}, status=status.HTTP_404_NOT_FOUND)
 
-    # Serialize the data correctly
     serializer = PocoListSerializer(products, many=True)
     return Response(serializer.data)
