@@ -36,32 +36,18 @@ def reviews(request, poco_id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 from django.db.models import Q
+from .models import POCOS
+from .serializers import PocoListSerializer
 
 @api_view(['GET'])
 def product_search(request):
+    print("🚀 THIS FUNCTION IS RUNNING!")
     query = request.GET.get('q', '').strip()
-    if not query:
-        return Response({"error": "Query parameter 'q' is required"}, status=status.HTTP_400_BAD_REQUEST)
+    print(f"🔍 Received Query: {query}")
 
-    full_text_results = POCOS.objects.annotate(
-        search=SearchVector('title', 'description')
-    ).filter(Q(search=SearchQuery(query)))
-
-    partial_results = POCOS.objects.filter(
-        Q(title__icontains=query) | Q(description__icontains=query)
-    )
-
-    fuzzy_results = POCOS.objects.annotate(
-        similarity=TrigramSimilarity('title', query)
-    ).filter(similarity__gt=0.3).order_by('-similarity')
-
-    products = (full_text_results | partial_results | fuzzy_results).distinct()
-
-    if not products.exists():
-        return Response({"detail": "No products match the given query."}, status=status.HTTP_404_NOT_FOUND)
-
-    serializer = PocoListSerializer(products, many=True)
-    return Response(serializer.data)
+    return Response({"query_received": query})
