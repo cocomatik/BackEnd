@@ -28,4 +28,4 @@ class PocoDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = POCOS
-        fields = ['poco_id', 'title', 'description', 'price', 'stock', 'rating', 'display_image', 'extra_images', 'reviews']
+        fields = ['poco_id', 'title', 'description',"mrp",'price',"discount", 'stock', 'rating', 'display_image', 'extra_images', 'reviews']
