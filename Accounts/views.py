@@ -19,7 +19,7 @@ def user_login(request):
         else:
             messages.error(request, "Invalid credentials!")
 
-    return render(request, "Accounts/admin/login.html")  
+    return render(request, "Accounts/Admin/login.html")  
 
 def user_logout(request):
     logout(request)
