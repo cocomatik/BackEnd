@@ -10,8 +10,4 @@ urlpatterns = [
     path("products/edit/<str:product_id>/", edit_product, name="edit_product"),
     path('products/delete/<str:product_id>/', delete_product, name="delete_product"),
     path('orders/', orders, name='orders'),
-    # path('customers/', customers, name='customers'),
-    # path('reports/', reports, name='reports'),
-    # path('settings/', settings, name='settings'),
-    # path('logout/', logout_view, name='logout'),
 ]

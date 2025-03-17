@@ -26,13 +26,11 @@ def login(request):
 
     
     try:
-        user = UserAccount.objects.get(email=email)  # Try to fetch the user by email
+        user = UserAccount.objects.get(email=email)  
     except UserAccount.DoesNotExist:
-        # Create a new user without a password (just email)
         user = UserAccount.objects.create(email=email)
 
     token, created = Token.objects.get_or_create(user=user)
-    # verification.delete()
     return Response({'token': token.key, 'email': email})
 
 
