@@ -40,6 +40,7 @@ def products(request):
         "selected_stock": stock_filter,
     }
     return render(request, "Manager/products.html", context)
+
 @session_auth_required
 def add_product(request):
 
@@ -73,6 +74,7 @@ def add_product(request):
     
     categories = Category.objects.all()
     return render(request, "Manager/add_product.html", {"categories": categories})
+
 @session_auth_required
 def edit_product(request, product_id):
     product = get_object_or_404(POCOS, poco_id=product_id)
