@@ -35,19 +35,38 @@ def reviews(request, poco_id):
             return Response({"message": "Review added successfully!", "review": serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
+from django.db.models import Q, F
+from django.contrib.postgres.search import SearchVector, SearchQuery,TrigramSimilarity
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Q
 from .models import POCOS
 from .serializers import PocoListSerializer
 
 @api_view(['GET'])
-def product_search(request):
-    print("🚀 THIS FUNCTION IS RUNNING!")
-    query = request.GET.get('q', '').strip()
-    print(f"🔍 Received Query: {query}")
+def search_products(request):
+    query = request.GET.get('q', ' ').strip()
+    if not query:
+        return Response({"error": "Query parameter 'q' is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({"query_received": query})
+    # Full-text search
+    full_text_results = POCOS.objects.annotate(
+        search=SearchVector('title', 'description')
+    ).filter(Q(search=SearchQuery(query)))
+
+    # Partial match search (icontains)
+    partial_results = POCOS.objects.filter(
+        Q(title__icontains=query) | Q(description__icontains=query)
+    )
+    fuzzy_results = POCOS.objects.annotate(similarity=TrigramSimilarity('title', query)).filter(similarity__gt=0.3)
+
+    # Merge results using OR operator and distinct() to avoid duplicates
+    products = (full_text_results | partial_results).distinct()
+
+    # If no results found, return a custom message
+    if not products.exists():
+        return Response({"detail": "No products match the given query."}, status=status.HTTP_404_NOT_FOUND)
+
+    # Serialize the data correctly
+    serializer = PocoListSerializer(products, many=True)
+    return Response(serializer.data)
