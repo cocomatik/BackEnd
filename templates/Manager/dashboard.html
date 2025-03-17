@@ -3,22 +3,53 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'Manager/dashboard/dashboard.css' %}">
 <h2 class="mb-4 text-center">
     <b>DASHBOARD</b>
 </h2>
 
-<!-- Stats Section -->
-<div class="row text-white">
-    <div class="col-md-4 mb-3">
-        <div class="stat-box bg-primary">Total Products: <b>{{ total_products }}</b></div>
+<div class="main-content">
+    <!-- Dashboard Stats -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon products">
+                <i class="fas fa-box"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ total_products }}</h3>
+                <p>Total Products</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orders">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stat-info">
+                <h3>0</h3>
+                <p>Total Orders</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon revenue">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-info">
+                <h3>$00</h3>
+                <p>Total Revenue</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon customers">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h3>00</h3>
+                <p>Total Customers</p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="stat-box bg-success">Total Orders: <b>0</b></div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="stat-box bg-danger">Total Customers: <b>0</b></div>
-    </div>
-</div>
+
 
 <!-- Graph Section -->
 <div class="graph-container">

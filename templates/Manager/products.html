@@ -1,53 +1,47 @@
 {% extends 'Manager/base.html' %}
+{% load static %}
 
 {% block title %}Products{% endblock %}
 
 {% block content %}
-<h2 class="mb-4 text-center">
-    <b>PRODUCT MANAGEMENT</b>
-</h2>
+<link rel="stylesheet" href="{% static 'Manager/product/css/b.css' %}">
 
+<h2 class="page-title">PRODUCT MANAGEMENT</h2>
 
 <!-- Search & Filters -->
-<div class="row mb-3">
-    <div class="col-md-4">
-        <input type="text" id="search" class="form-control" placeholder="Search products...">
-    </div>
-    <div class="col-md-3">
-        <form method="GET" action="{% url 'products' %}">
-            <select name="category" id="categoryFilter" class="form-select" onchange="this.form.submit()">
-                <option value="">All Categories</option>
-                {% for category in categories %}
-                    <option value="{{ category.name }}" {% if request.GET.category == category.name %}selected{% endif %}>
-                        {{ category.name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </form>
-        
-    </div>
-    <div class="col-md-3">
-        <form method="GET" action="{% url 'products' %}">
-            <select name="stock" id="stockFilter" class="form-select" onchange="this.form.submit()">
-                <option value="">All Stock Status</option>
-                <option value="in-stock" {% if request.GET.stock == "in-stock" %}selected{% endif %}>In Stock</option>
-                <option value="out-of-stock" {% if request.GET.stock == "out-of-stock" %}selected{% endif %}>Out of Stock</option>
-                <option value="low-stock-50" {% if request.GET.stock == "low-stock-50" %}selected{% endif %}>Stock < 50</option>
-                <option value="low-stock-10" {% if request.GET.stock == "low-stock-10" %}selected{% endif %}>Stock < 10</option>
-            </select>
-        </form>
-    </div>
-    <div class="col-md-2">
-        <a href="{% url 'add_product' %}">
-            <button class="btn btn-success w-100">➕ Add New Product</button>
-        </a>
-    </div>
+<div class="filter-container">
+    <input type="text" id="search" class="search-box" placeholder="Search products...">
+    
+    <form method="GET" action="{% url 'products' %}" class="filter-form">
+        <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+                <option value="{{ category.name }}" {% if request.GET.category == category.name %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <form method="GET" action="{% url 'products' %}" class="filter-form">
+        <select name="stock" id="stockFilter" class="filter-dropdown" onchange="this.form.submit()">
+            <option value="">All Stock Status</option>
+            <option value="in-stock" {% if request.GET.stock == "in-stock" %}selected{% endif %}>In Stock</option>
+            <option value="out-of-stock" {% if request.GET.stock == "out-of-stock" %}selected{% endif %}>Out of Stock</option>
+            <option value="low-stock-50" {% if request.GET.stock == "low-stock-50" %}selected{% endif %}>Stock < 50</option>
+            <option value="low-stock-10" {% if request.GET.stock == "low-stock-10" %}selected{% endif %}>Stock < 10</option>
+        </select>
+    </form>
+
+    <a href="{% url 'add_product' %}" class="add-product-link">
+        <button class="add-product-btn">➕ Add New Product</button>
+    </a>
 </div>
 
 <!-- Product List -->
-<table class="table table-striped">
-    <thead class="thead-dark">
-        <tr class="text-center">
+<table class="product-table">
+    <thead>
+        <tr>
             <th>Image</th>
             <th>Title</th>
             <th>Description</th>
@@ -63,10 +57,8 @@
     </thead>
     <tbody>
         {% for product in products %}
-        <tr class="text-center">
-            <td>
-                <img src="{{ product.display_image.url }}" alt="Product Image" width="50">
-            </td>
+        <tr>
+            <td><img src="{{ product.display_image.url }}" alt="Product Image" class="product-image"></td>
             <td>{{ product.title }}</td>
             <td>{{ product.description|truncatewords:10 }}</td>
             <td>{{ product.category.name }}</td>
@@ -76,15 +68,14 @@
             <td>{{ product.discount }}%</td>
             <td>{{ product.stock }}</td>
             <td>{{ product.rating }} ⭐</td>
-            <td class="d-flex gap-2">
-                <a href="{% url 'edit_product' product.poco_id %}" class="btn btn-warning btn-sm">Edit</a>
-                <a href="{% url 'delete_product' product.poco_id %}" class="btn btn-sm btn-danger">Delete</a>
+            <td class="action-buttons">
+                <a href="{% url 'edit_product' product.poco_id %}" class="edit-btn">Edit</a>
+                <a href="{% url 'delete_product' product.poco_id %}" class="delete-btn">Delete</a>
             </td>
-            
         </tr>
         {% empty %}
         <tr>
-            <td colspan="9" class="text-center">No products available</td>
+            <td colspan="11" class="no-products">No products available</td>
         </tr>
         {% endfor %}
     </tbody>
