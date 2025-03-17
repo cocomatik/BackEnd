@@ -34,7 +34,7 @@ class POCOS(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     @property
-    def discount_percentage(self):
+    def discount(self):
         """Calculate discount percentage ((MRP - Price) / MRP) * 100"""
         if self.mrp > 0 and self.mrp > self.price:
             return round(((self.mrp - self.price) / self.mrp) * 100, 2)
