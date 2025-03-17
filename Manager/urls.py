@@ -1,9 +1,10 @@
 from django.urls import path
-from Manager.views import dashboard, products, orders,add_product, edit_product,delete_product
+from Manager.views import landing,dashboard, products, orders,add_product, edit_product,delete_product
 
 
 urlpatterns = [
-    path('', dashboard, name='dashboard'),
+    path('', landing, name='landing'),
+    path('dashboard/', dashboard, name='dashboard'),
     path('products/', products, name='products'),
     path('products/add/', add_product, name='add_product'),
     path("products/edit/<str:product_id>/", edit_product, name="edit_product"),

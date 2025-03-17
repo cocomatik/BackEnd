@@ -65,7 +65,7 @@
             <td>{{ product.description|truncatewords:10 }}</td>
             <td>{{ product.category.name }}</td>
             <td>{{ product.brand|default:"N/A" }}</td>
-            <td>${{ product.price }}</td>
+            <td>₹ {{ product.price }}</td>
             <td>{{ product.stock }}</td>
             <td>{{ product.rating }} ⭐</td>
             <td class="d-flex gap-2">

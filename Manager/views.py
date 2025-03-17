@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from POCOS.models import POCOS, Category
+# from .decorators import session_admin_required
 
+def landing(request):
+    return render(request,"landing/landing.html")
+
+# @session_admin_required
 def dashboard(request):
     total_products = POCOS.objects.count()
     return render(request, "Manager/dashboard.html",{"total_products":total_products})
 
+# @session_admin_required
 def products(request):
     product_list = POCOS.objects.all()
     categories = Category.objects.all()
@@ -24,7 +30,7 @@ def products(request):
     }
     return render(request, "Manager/products.html", context)
 
-# Correct function names for different views
+# @session_admin_required
 def add_product(request):
 
     if request.method == "POST":
@@ -56,6 +62,7 @@ def add_product(request):
     categories = Category.objects.all()
     return render(request, "Manager/add_product.html", {"categories": categories})
 
+# @session_admin_required
 def edit_product(request, product_id):
     product = get_object_or_404(POCOS, poco_id=product_id)
     categories = Category.objects.all()
@@ -82,7 +89,7 @@ def edit_product(request, product_id):
 
     return render(request, "Manager/edit_product.html", {"product": product, "categories": categories})
 
-
+# @session_admin_required
 def delete_product(request, product_id):
     product = get_object_or_404(POCOS, poco_id=product_id)
     if request.method == "POST":
@@ -92,17 +99,22 @@ def delete_product(request, product_id):
 
     return render(request, "Manager/delete_product.html", {"products":products})
 
+# @session_admin_required
 def orders(request):
     return render(request, "Manager/orders.html")
 
+# @session_admin_required
 def customers(request):
     return render(request, "Manager/customers.html")
 
+# @session_admin_required
 def reports(request):
     return render(request, "Manager/reports.html")
 
+# @session_admin_required
 def settings(request):
     return render(request, "Manager/settings.html")
 
+# @session_admin_required
 def logout_view(request):
     return render(request, "Manager/login.html")
