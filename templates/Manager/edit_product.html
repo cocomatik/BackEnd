@@ -4,10 +4,10 @@
 {% block title %}Edit Product{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'Manager/product/css/c.css' %}">
+<link rel="stylesheet" href="{% static 'Manager/product/css/edit_product.css' %}">
 
 <div class="form-container">
-    <h2 class="form-title">EDIT PRODUCT</h2>
+    <h2 class="form-title"><b>EDIT PRODUCT</b></h2>
     
     <form action="" method="POST" enctype="multipart/form-data" class="product-form">
         {% csrf_token %}
@@ -17,41 +17,50 @@
             <input type="text" name="title" class="form-input" value="{{ product.title }}" required>
         </div>
 
+
+
         <div class="form-group">
             <label>Brand</label>
             <input type="text" name="brand" class="form-input" value="{{ product.brand }}">
         </div>
+        
+    
+        <div class="flex-container">
+            <div class="form-group">
+                <label>MRP</label>
+                <input type="number" name="mrp" class="form-input" value="{{ product.mrp }}" required>
+            </div>
+        
+            <div class="form-group">
+                <label>Price</label>
+                <input type="number" name="price" class="form-input" value="{{ product.price }}" required>
+            </div>
+        </div>
+        
 
+        <div class="flex-container">
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category" class="form-input">
+                    {% for category in categories %}
+                        <option value="{{ category.name }}" {% if product.category.name == category.name %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <label>Stock</label>
+                <input type="number" name="stock" class="form-input" value="{{ product.stock }}">
+            </div>
+        </div>
         <div class="form-group">
             <label>Description</label>
             <textarea name="description" class="form-input" rows="4">{{ product.description }}</textarea>
         </div>
 
-        <div class="form-group">
-            <label>Category</label>
-            <select name="category" class="form-input">
-                {% for category in categories %}
-                    <option value="{{ category.id }}" {% if product.category.id == category.id %}selected{% endif %}>
-                        {{ category.name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>MRP</label>
-            <input type="number" name="mrp" class="form-input" value="{{ product.mrp }}" required>
-        </div>
-
-        <div class="form-group">
-            <label>Price</label>
-            <input type="number" name="price" class="form-input" value="{{ product.price }}" required>
-        </div>
-
-        <div class="form-group">
-            <label>Stock</label>
-            <input type="number" name="stock" class="form-input" value="{{ product.stock }}">
-        </div>
+        
 
         <div class="form-group">
             <label>Product Image</label>

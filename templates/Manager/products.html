@@ -4,15 +4,19 @@
 {% block title %}Products{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'Manager/product/css/b.css' %}">
+<link rel="stylesheet" href="{% static 'Manager/product/css/product.css' %}">
 
-<h2 class="page-title">PRODUCT MANAGEMENT</h2>
+<h2 class="page-title"><b>PRODUCT MANAGEMENT</b></h2>
 
 <!-- Search & Filters -->
 <div class="filter-container">
-    <input type="text" id="search" class="search-box" placeholder="Search products...">
-    
     <form method="GET" action="{% url 'products' %}" class="filter-form">
+        <!-- Search Bar -->
+        <input type="text" name="q" value="{{ query }}" class="search-box" placeholder="Search products...">
+        <button type="submit" class="search-btn"><i class="fas fa-search"></i>
+        </button>
+
+        <!-- Category Filter -->
         <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Categories</option>
             {% for category in categories %}
@@ -21,9 +25,8 @@
                 </option>
             {% endfor %}
         </select>
-    </form>
 
-    <form method="GET" action="{% url 'products' %}" class="filter-form">
+        <!-- Stock Filter -->
         <select name="stock" id="stockFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Stock Status</option>
             <option value="in-stock" {% if request.GET.stock == "in-stock" %}selected{% endif %}>In Stock</option>
@@ -33,10 +36,13 @@
         </select>
     </form>
 
+    <!-- Add Product Button (Moved outside form) -->
     <a href="{% url 'add_product' %}" class="add-product-link">
-        <button class="add-product-btn">➕ Add New Product</button>
+        <button type="button" class="add-product-btn">➕ Add New Product</button>
     </a>
 </div>
+
+
 
 <!-- Product List -->
 <table class="product-table">
@@ -80,5 +86,5 @@
         {% endfor %}
     </tbody>
 </table>
-
 {% endblock %}
+

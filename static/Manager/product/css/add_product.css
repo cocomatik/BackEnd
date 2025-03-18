@@ -1,0 +1,92 @@
+/* Background with Soft Gradient */
+body {
+    background: linear-gradient(to right, #B0DAF1, #8CB3D9); /* Soft Blue Gradient */
+}
+
+/* Container Styling with Balanced Mid-Tone */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #E3ECF3; /* Muted Blue-Gray */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Soft Shadow for Depth */
+}
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: #2C3E50; /* Deep Gray-Blue */
+    margin-bottom: 20px;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Label Styling */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2C5A85; /* Medium Blue */
+}
+
+/* Input & Select Styling */
+.form-control,
+.form-select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #4A90E2; /* Mid Blue Border */
+    border-radius: 8px;
+    font-size: 16px;
+    background: #F1F5F8; /* Light Muted Gray */
+    color: #2C3E50;
+}
+
+/* Placeholder Color */
+.form-control::placeholder {
+    color: #5D6D7E;
+}
+
+/* Side-by-Side Layout */
+.flex-container {
+    display: flex;
+    gap: 15px;
+}
+
+/* Ensure Equal Width for Inputs in Flex Layout */
+.flex-container .form-group {
+    flex: 1;
+}
+
+/* File Input Styling */
+input[type="file"] {
+    padding: 8px;
+    background: #F1F5F8;
+    border: 2px solid #4A90E2;
+    border-radius: 6px;
+    color: #2C3E50;
+}
+
+/* Submit Button */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #4A90E2; /* Mid Blue */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-submit:hover {
+    background: #357ABD; /* Slightly Darker Blue */
+    transform: scale(1.05);
+}

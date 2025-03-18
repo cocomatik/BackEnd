@@ -1,0 +1,91 @@
+/* Background with Soft Gradient */
+body {
+    background: linear-gradient(to right, #B0DAF1, #8CB3D9); /* Soft Blue Gradient */
+}
+
+/* Form Container */
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #E3ECF3; /* Muted Blue-Gray */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Soft Shadow for Depth */
+}
+
+/* Form Title */
+.form-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: #2C3E50; /* Deep Gray-Blue */
+    margin-bottom: 20px;
+}
+
+/* Flexbox for Side-by-Side Inputs */
+.flex-container {
+    display: flex;
+    gap: 15px;
+}
+
+/* Ensure Equal Width for Inputs Inside Flex Container */
+.flex-container .form-group {
+    flex: 1;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Labels */
+.form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #2C5A85; /* Medium Blue */
+}
+
+/* Input Fields */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #4A90E2; /* Mid Blue Border */
+    border-radius: 8px;
+    font-size: 16px;
+    background: #F1F5F8; /* Light Muted Gray */
+    color: #2C3E50;
+}
+
+/* Textarea */
+.form-input textarea {
+    resize: vertical;
+}
+
+/* Product Image Preview */
+.product-preview {
+    display: block;
+    margin-top: 10px;
+    width: 100px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* Slight Shadow for Image */
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #4A90E2; /* Mid Blue */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.submit-btn:hover {
+    background: #357ABD; /* Slightly Darker Blue */
+    transform: scale(1.05);
+}

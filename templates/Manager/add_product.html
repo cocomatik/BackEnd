@@ -4,10 +4,10 @@
 {% block title %}Add Product{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'Manager/product/css/a.css' %}">
+<link rel="stylesheet" href="{% static 'Manager/product/css/add_product.css' %}">
 
 <div class="container">
-    <h2 class="page-title">ADD PRODUCT</h2>
+    <h2 class="page-title"><b>ADD PRODUCT</b></h2>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
