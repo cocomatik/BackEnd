@@ -1,5 +1,6 @@
 {% extends 'Manager/base.html' %}
 {% load static %}
+
 {% block title %}Delete Product{% endblock %}
 
 {% block content %}
@@ -19,7 +20,6 @@
             <p><strong>Brand:</strong> {{ product.brand|default:"N/A" }}</p>
             <p><strong>MRP:</strong> ₹{{ product.mrp }}</p>
             <p><strong>Price:</strong> ₹{{ product.price }}</p>
-            <p><strong>Discount:</strong> {{ product.discount }}%</p>
             <p><strong>Stock:</strong> {{ product.stock }}</p>
             <p><strong>Rating:</strong> {{ product.rating }} ⭐</p>
         </div>
@@ -30,7 +30,7 @@
         {% csrf_token %}
         <div class="button-group">
             <button type="submit" class="btn-danger">Yes, Delete</button>
-            <a href="{% url 'products' %}" class="btn-secondary">Cancel</a>
+            <a href="{% url 'products' %}?type={{ product_type }}" class="btn-secondary">Cancel</a>
         </div>
     </form>
 </div>

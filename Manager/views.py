@@ -142,6 +142,7 @@ def add_product(request):
                     category=category, 
                     display_image=image
                 )
+                
 
             messages.success(request, "Product added successfully!")
             if product_type == "cosmetic":
@@ -171,7 +172,7 @@ def edit_product(request, product_id):
     # If not found in POCOS, try finding in POJOS (Jewellery)
     if product is None:
         try:
-            product = POJOS.objects.get(poco_id=product_id)
+            product = POJOS.objects.get(pojo_id=product_id)  # Fixed: Use pojo_id for POJOS
             categories = POJOSCategory.objects.all()
             product_type = "jewellery"
         except POJOS.DoesNotExist:
@@ -179,27 +180,31 @@ def edit_product(request, product_id):
             return redirect("products")
 
     if request.method == "POST":
-        product.title = request.POST.get("title", "")
-        product.brand = request.POST.get("brand", "")
-        product.description = request.POST.get("description", "")
+        product.title = request.POST.get("title", "").strip()
+        product.brand = request.POST.get("brand", "").strip()
+        product.description = request.POST.get("description", "").strip()
         product.price = request.POST.get("price", 0)
         product.stock = request.POST.get("stock", 0)
 
         # Get category (Fixed: Use 'name' instead of 'id')
         category_name = request.POST.get("category")
         if category_name:
-            if product_type == "cosmetic":
-                product.category = POCOSCategory.objects.get(name=category_name)
-            elif product_type == "jewellery":
-                product.category = POJOSCategory.objects.get(name=category_name)
+            try:
+                if product_type == "cosmetic":
+                    product.category = POCOSCategory.objects.get(name=category_name)
+                elif product_type == "jewellery":
+                    product.category = POJOSCategory.objects.get(name=category_name)
+            except (POCOSCategory.DoesNotExist, POJOSCategory.DoesNotExist):
+                messages.error(request, "Invalid category selected!")
 
         # Update image if provided
         if "product_image" in request.FILES:
             product.display_image = request.FILES["product_image"]
 
         product.save()
+
         messages.success(request, "Product updated successfully!")
-        return redirect("products")
+        return redirect(f"/products/?type={product_type}")
 
     return render(
         request,
@@ -208,16 +213,25 @@ def edit_product(request, product_id):
     )
 
 
+
 # @session_admin_required
 def delete_product(request, product_id):
-    product = get_object_or_404(POCOS, poco_id=product_id)
+    # Check if the product exists in either POCOS or POJOS
+    product = POCOS.objects.filter(poco_id=product_id).first() or POJOS.objects.filter(pojo_id=product_id).first()
+
+    if not product:
+        messages.error(request, "Product not found!")
+        return redirect("dashboard")  # Redirect to dashboard if product doesn't exist
+
+    product_type = "cosmetic" if isinstance(product, POCOS) else "jewellery"
 
     if request.method == "POST":
         product.delete()
         messages.success(request, "Product deleted successfully!")
-        return redirect("products")
+        return redirect(f"/products/?type={product_type}")
 
-    return render(request, "Manager/product/delete_product.html", {"product": product})
+    return render(request, "Manager/product/delete_product.html", {"product": product, "product_type": product_type})
+
 
 # @session_admin_required
 def orders(request):
