@@ -26,3 +26,19 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('user_name', 'poco', 'rating', 'created_at')
     list_filter = ('rating', 'created_at')
     search_fields = ('user_name', 'poco__title')  
+
+
+
+from .modelsxs import (FeatureProducts, BestSellers, BestOfSkinCare,
+    BestOfImportedProducts, BestOfHairCare, BestOfFragrance,
+    BestOfColorCosmetic, BestOfBodyCare
+)
+# Registering all category models separately
+admin.site.register(FeatureProducts)
+admin.site.register(BestSellers)
+admin.site.register(BestOfSkinCare)
+admin.site.register(BestOfImportedProducts)
+admin.site.register(BestOfHairCare)
+admin.site.register(BestOfFragrance)
+admin.site.register(BestOfColorCosmetic)
+admin.site.register(BestOfBodyCare)

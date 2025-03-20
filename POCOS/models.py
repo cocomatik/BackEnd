@@ -16,7 +16,7 @@ class POCOS(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     mrp = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField(default=0)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='pocos',to_field='name', db_index=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,related_name='pocos',to_field='name', db_index=True)
     brand = models.CharField(max_length=255, null=True, blank=True)
 
     poco_id = models.CharField(max_length=20, unique=True, blank=True, editable=False, db_index=True,primary_key=True)
