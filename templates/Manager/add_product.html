@@ -1,61 +1,66 @@
 {% extends 'Manager/base.html'%}
+{% load static %}
+
 {% block title %}Add Product{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4 text-center"><b>ADD PRODUCTS</b></h2>
+<link rel="stylesheet" href="{% static 'Manager/product/css/add_product.css' %}">
+
+<div class="container">
+    <h2 class="page-title"><b>ADD PRODUCT</b></h2>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <div class="mb-3">
-            <label for="" class="form-label">Product Name</label>
+        <div class="form-group">
+            <label>Product Name</label>
             <input type="text" name="title" class="form-control" required>
         </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Description</label>
-            <textarea type="text" name="description" class="form-control" rows="4"></textarea>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" class="form-control" rows="4"></textarea>
         </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Category</label>
-            <select name="category" id="" class="form-select">
-                {% for category in categories %}
-                <option value="{{ category.name }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
+
+        <div class="flex-container">
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category" class="form-select">
+                    {% for category in categories %}
+                    <option value="{{ category.name }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <label>Brand</label>
+                <input type="text" name="brand" class="form-control">
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Brand</label>
-            <input type="text" name="brand" class="form-control">
+
+        <div class="flex-container">
+            <div class="form-group">
+                <label>MRP</label>
+                <input type="number" name="mrp" class="form-control" required>
+            </div>
+        
+            <div class="form-group">
+                <label>Price</label>
+                <input type="number" name="price" class="form-control" required>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="" class="form-label">MRP</label>
-            <input type="number" name="mrp" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Price</label>
-            <input type="number" name="price" class="form-control" required>
-        </div>
-        <!-- <div class="mb-3">
-            <label for="" class="form-label">Discounted Price</label>
-            <input type="number" name="discounted_price" class="form-control">
-        </div> -->
-        <div class="mb-3">
-            <label for="" class="form-label">Stock</label>
+
+        <div class="form-group">
+            <label>Stock</label>
             <input type="number" name="stock" class="form-control">
         </div>
-        <!-- <div class="mb-3">
-            <label for="" class="form-label">Stock Status</label>
-            <select name="stock_status" class="form-select">
-                <option value="In Stock">In Stock</option>
-                <option value="Out of Stock">Out of Stock</option>
-                <option value="Limited Stock">Limited Stock</option>
-            </select>
-        </div> -->
-        <div class="mb-3">
-            <label for="" class="form-label"> Product Images</label>
+
+        <div class="form-group">
+            <label>Product Images</label>
             <input type="file" name="product_image" class="form-control" multiple>
         </div>
-        <button type="submit" class="btn btn-success">Save & Publish</button>
+
+        <button type="submit" class="btn-submit">Save & Publish</button>
     </form>
 </div>
+
 {% endblock %}

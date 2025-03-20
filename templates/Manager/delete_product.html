@@ -1,15 +1,37 @@
 {% extends 'Manager/base.html' %}
+{% load static %}
 {% block title %}Delete Product{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Delete Product</h2>
-    <p>Are you sure you want to delete <strong>{{ product.title }}</strong>?</p>
-    
+<link rel="stylesheet" href="{% static 'Manager/product/css/delete_product.css' %}">
+
+<div class="delete-card">
+    <h2 class="text-danger">Delete Product</h2>
+    <p class="delete-text">Are you sure you want to delete <strong>{{ product.title }}</strong>?</p>
+
+    <!-- Product Card -->
+    <div class="product-card">
+        <img src="{{ product.display_image.url }}" alt="{{ product.title }}" class="product-image">
+        <div class="product-info">
+            <p><strong>Title:</strong> {{ product.title }}</p>
+            <p><strong>Description:</strong> {{ product.description }}</p>
+            <p><strong>Category:</strong> {{ product.category.name }}</p>
+            <p><strong>Brand:</strong> {{ product.brand|default:"N/A" }}</p>
+            <p><strong>MRP:</strong> ₹{{ product.mrp }}</p>
+            <p><strong>Price:</strong> ₹{{ product.price }}</p>
+            <p><strong>Discount:</strong> {{ product.discount }}%</p>
+            <p><strong>Stock:</strong> {{ product.stock }}</p>
+            <p><strong>Rating:</strong> {{ product.rating }} ⭐</p>
+        </div>
+    </div>
+
+    <!-- Confirmation Buttons -->
     <form method="POST">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Yes, Delete</button>
-        <a href="{% url 'products' %}" class="btn btn-secondary">Cancel</a>
+        <div class="button-group">
+            <button type="submit" class="btn-danger">Yes, Delete</button>
+            <a href="{% url 'products' %}" class="btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 {% endblock %}
