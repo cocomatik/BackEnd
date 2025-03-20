@@ -4,14 +4,14 @@ from .views import get_all_pocos, get_poco_details, reviews,search_products,get_
 
 from rest_framework.routers import DefaultRouter
 from .xsviews import (
-    FeatureProductsViewSet, BestSellersViewSet, BestOfSkinCareViewSet,
+    FeatureProductsViewSet,BestOfSkinCareViewSet,
     BestOfImportedProductsViewSet, BestOfHairCareViewSet, BestOfFragranceViewSet,
     BestOfColorCosmeticViewSet, BestOfBodyCareViewSet
 )
 
 router = DefaultRouter()
 router.register(r'feature-products', FeatureProductsViewSet, basename='feature-products')
-router.register(r'best-sellers', BestSellersViewSet, basename='best-sellers')
+# router.register(r'best-sellers', BestSellersViewSet, basename='best-sellers')
 router.register(r'best-of-skincare', BestOfSkinCareViewSet, basename='best-of-skincare')
 router.register(r'best-of-imported-products', BestOfImportedProductsViewSet, basename='best-of-imported-products')
 router.register(r'best-of-haircare', BestOfHairCareViewSet, basename='best-of-haircare')

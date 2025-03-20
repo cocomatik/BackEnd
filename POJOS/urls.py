@@ -2,12 +2,12 @@ from django.urls import path,include
 from .views import get_all_pojos, get_pojo_details, reviews,search_products,get_categories
 from rest_framework.routers import DefaultRouter
 
-from .xsviews import FeatureProductsViewSet,BestSellersViewSet,BestOfWeddingJewelleryViewSet,BestOfBanglesViewSet,BestOfBraceletsViewSet,BestOfChainsViewSet,BestOfEarRingsViewSet,BestOfFingerRingsViewSet,BestOfNecklaceViewSet,BestOfPendantsViewSet,BestOfNoseRingsViewSet,BestOfImportedJewelleryViewSet,BestOfOneGramGoldenJewelleryViewSet
+from .xsviews import FeatureProductsViewSet,BestOfWeddingJewelleryViewSet,BestOfBanglesViewSet,BestOfBraceletsViewSet,BestOfChainsViewSet,BestOfEarRingsViewSet,BestOfFingerRingsViewSet,BestOfNecklaceViewSet,BestOfPendantsViewSet,BestOfNoseRingsViewSet,BestOfImportedJewelleryViewSet,BestOfOneGramGoldenJewelleryViewSet
 
 
 router = DefaultRouter()
 router.register(r'feature-products', FeatureProductsViewSet, basename='feature-products')
-router.register(r'best-sellers', BestSellersViewSet, basename='best-sellers')
+# router.register(r'best-sellers', BestSellersViewSet, basename='best-sellers')
 router.register(r'best-of-wedding-jewellery', BestOfWeddingJewelleryViewSet, basename='best-of-wedding-jewellery')
 router.register(r'best-of-pendants', BestOfPendantsViewSet, basename='best-of-pendants')
 router.register(r'best-of-nose-rings', BestOfNoseRingsViewSet, basename='best-of-nose-rings')

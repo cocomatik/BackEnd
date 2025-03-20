@@ -11,9 +11,9 @@ class FeatureProductsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = FeatureProducts.objects.all()
     serializer_class = FeatureProductsSerializer
 
-class BestSellersViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = BestSellers.objects.all()
-    serializer_class = BestSellersSerializer
+# class BestSellersViewSet(viewsets.ReadOnlyModelViewSet):
+#     queryset = BestSellers.objects.all()
+#     serializer_class = BestSellersSerializer
 
 class BestOfSkinCareViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = BestOfSkinCare.objects.all()
