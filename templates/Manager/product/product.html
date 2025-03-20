@@ -1,0 +1,119 @@
+{% extends 'Manager/base.html' %}
+{% load static %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'Manager/product/css/product.css' %}">
+
+<h2 class="page-title"><b>PRODUCT MANAGEMENT</b></h2>
+
+<!-- Search & Filters -->
+<div class="filter-container">
+    <form method="GET" action="{% url 'products' %}" class="filter-form">
+        <!-- Search Bar -->
+        <input type="text" name="q" value="{{ query }}" class="search-box" placeholder="Search products...">
+        <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+
+        <!-- Category Filter -->
+        <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+                <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <!-- Stock Filter -->
+        <select name="stock" id="stockFilter" class="filter-dropdown" onchange="this.form.submit()">
+            <option value="">All Stock Status</option>
+            <option value="in-stock" {% if selected_stock == "in-stock" %}selected{% endif %}>In Stock</option>
+            <option value="out-of-stock" {% if selected_stock == "out-of-stock" %}selected{% endif %}>Out of Stock</option>
+            <option value="low-stock-50" {% if selected_stock == "low-stock-50" %}selected{% endif %}>Stock < 50</option>
+            <option value="low-stock-10" {% if selected_stock == "low-stock-10" %}selected{% endif %}>Stock < 10</option>
+        </select>
+
+        <!-- Product Type Filter (Hidden but Ensures Proper Filtering) -->
+        <input type="hidden" name="type" value="{{ product_type }}">
+    </form>
+
+    <!-- Add Product Button -->
+    <a href="{% url 'add_product' %}" class="add-product-link">
+        <button type="button" class="add-product-btn">➕ Add New Product</button>
+    </a>
+</div>
+
+{% if product_type == "cosmetic" %}
+<!-- Cosmetic Products Section -->
+<h3 class="section-title">Cosmetic Products</h3>
+<table class="product-table">
+    <thead>
+        <tr>
+            <th>Image</th><th>Title</th><th>Description</th><th>Category</th>
+            <th>Brand</th><th>MRP</th><th>Price</th><th>Discount</th>
+            <th>Stock</th><th>Rating</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in cosmetic_products %}
+        <tr>
+            <td><img src="{{ product.display_image.url }}" class="product-image"></td>
+            <td>{{ product.title }}</td>
+            <td>{{ product.description|truncatewords:10 }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>{{ product.brand|default:"N/A" }}</td>
+            <td>₹ {{ product.mrp }}</td>
+            <td>₹ {{ product.price }}</td>
+            <td>{{ product.discount }}%</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.rating }} ⭐</td>
+            <td class="action-buttons">
+                <a href="{% url 'edit_product' product.poco_id %}" class="edit-btn">Edit</a>
+                <a href="{% url 'delete_product' product.poco_id %}" class="delete-btn">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="11" class="no-products">No cosmetic products available</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if product_type == "jewellery" %}
+<!-- Jewellery Products Section -->
+<h3 class="section-title">Jewellery Products</h3>
+<table class="product-table">
+    <thead>
+        <tr>
+            <th>Image</th><th>Title</th><th>Description</th><th>Category</th>
+            <th>Brand</th><th>MRP</th><th>Price</th><th>Discount</th>
+            <th>Stock</th><th>Rating</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in jewellery_products %}
+        <tr>
+            <td><img src="{{ product.display_image.url }}" class="product-image"></td>
+            <td>{{ product.title }}</td>
+            <td>{{ product.description|truncatewords:10 }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>{{ product.brand|default:"N/A" }}</td>
+            <td>₹ {{ product.mrp }}</td>
+            <td>₹ {{ product.price }}</td>
+            <td>{{ product.discount }}%</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.rating }} ⭐</td>
+            <td class="action-buttons">
+                <a href="{% url 'edit_product' product.pojo_id %}" class="edit-btn">Edit</a>
+                <a href="{% url 'delete_product' product.pojo_id %}" class="delete-btn">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="11" class="no-products">No jewellery products available</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

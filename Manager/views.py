@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from POCOS.models import POCOS, Category
-from Accounts.decorators import session_auth_required
-
+from POCOS.models import POCOS, Category as POCOSCategory
+from POJOS.models import POJOS, Category as POJOSCategory
+# from .decorators import session_admin_required
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
 
@@ -10,93 +10,173 @@ from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSim
 def landing(request):
     return render(request,"landing/landing.html")
 
-@session_auth_required
+# @session_admin_required
 def dashboard(request):
-    total_products = POCOS.objects.count()
-    return render(request, "Manager/dashboard.html",{"total_products":total_products})
+    total_cosmetic_products = POCOS.objects.count()
+    total_jewellery_products = POJOS.objects.count()
+    total_products = total_cosmetic_products + total_jewellery_products
 
-@session_auth_required
+    return render(request, "Manager/dashboard.html", {
+        "total_products": total_products
+    })
+
+# @session_admin_required
 def products(request):
     query = request.GET.get('q', '').strip()
     selected_category = request.GET.get('category', '')
     stock_filter = request.GET.get('stock', '')
+    product_type = request.GET.get('type', '')
 
-    # Fetch all products
-    product_list = POCOS.objects.all().order_by('title')
-    categories = Category.objects.all()
+    # Determine product types to fetch
+    fetch_cosmetic = product_type in ["", "cosmetic"]
+    fetch_jewellery = product_type in ["", "jewellery"]
 
-    selected_category = request.GET.get('category')
-    stock_filter = request.GET.get('stock','')
+    # Fetch products
+    cosmetic_products = POCOS.objects.all().order_by('title') if fetch_cosmetic else POCOS.objects.none()
+    jewellery_products = POJOS.objects.all().order_by('title') if fetch_jewellery else POJOS.objects.none()
+
+    # Fetch categories
+    categories = list(POCOSCategory.objects.all()) if fetch_cosmetic else []
+    categories += list(POJOSCategory.objects.all()) if fetch_jewellery else []
+
     # Apply search filter
     if query:
-        product_list = product_list.annotate(
-            search=SearchVector('title', 'description')
-        ).filter(Q(search=SearchQuery(query)) | Q(title__icontains=query) | Q(description__icontains=query))
+        search_filter = Q(title__icontains=query) | Q(description__icontains=query)
+        if fetch_cosmetic:
+            cosmetic_products = cosmetic_products.filter(search_filter)
+        if fetch_jewellery:
+            jewellery_products = jewellery_products.filter(search_filter)
 
     # Apply category filter
     if selected_category:
-        product_list = product_list.filter(category__name=selected_category)
+        if fetch_cosmetic:
+            cosmetic_products = cosmetic_products.filter(category__name=selected_category)
+        if fetch_jewellery:
+            jewellery_products = jewellery_products.filter(category__name=selected_category)
 
     # Apply stock filter
-    if stock_filter == "in-stock":
-        product_list = product_list.filter(stock__gt=0)
-    elif stock_filter == "out-of-stock":
-        product_list = product_list.filter(stock=0)
-    elif stock_filter == "low-stock-50":
-        product_list = product_list.filter(stock__lt=50)
-    elif stock_filter == "low-stock-10":
-        product_list = product_list.filter(stock__lt=10)
+    stock_filters = {
+        "in-stock": lambda qs: qs.filter(stock__gt=0),
+        "out-of-stock": lambda qs: qs.filter(stock=0),
+        "low-stock-50": lambda qs: qs.filter(stock__lt=50),
+        "low-stock-10": lambda qs: qs.filter(stock__lt=10),
+    }
 
-    # Reset only the search query after filtering
+    if stock_filter in stock_filters:
+        if fetch_cosmetic:
+            cosmetic_products = stock_filters[stock_filter](cosmetic_products)
+        if fetch_jewellery:
+            jewellery_products = stock_filters[stock_filter](jewellery_products)
+
+    # Reset query in context to clear search bar after submission
     query = ""
 
     context = {
-        "products": product_list,
+        "cosmetic_products": cosmetic_products,
+        "jewellery_products": jewellery_products,
         "categories": categories,
         "selected_category": selected_category,
         "selected_stock": stock_filter,
-        "query": query  # This clears the search bar but keeps filters
+        "product_type": product_type,
+        "query": query,  # Clears search box
     }
-    return render(request, "Manager/products.html", context)
 
-@session_auth_required
+    return render(request, "Manager/product/product.html", context)
+
+
+
+
+# @session_admin_required
 def add_product(request):
+    categories = []
+    selected_type = request.GET.get("product_type", request.POST.get("product_type", ""))  # Remember selection
+
+    if selected_type == "cosmetic":
+        categories = POCOSCategory.objects.all()
+    elif selected_type == "jewellery":
+        categories = POJOSCategory.objects.all()
 
     if request.method == "POST":
-        title = request.POST.get("title", "")
-        brand = request.POST.get("brand","")
-        description = request.POST.get("description", "")
-        mrp = request.POST.get("mrp",0)
-        price = request.POST.get("price", 0)
-        stock = request.POST.get("stock", 0)
-        category_n = request.POST.get("category")
+        title = request.POST.get("title", "").strip()
+        brand = request.POST.get("brand", "").strip()
+        description = request.POST.get("description", "").strip()
+        category_n = request.POST.get("category", "").strip()
+        product_type = request.POST.get("product_type", "").strip()
         image = request.FILES.get("product_image")
 
-        if category_n:
-            category = Category.objects.get(name=category_n)
-            POCOS.objects.create(
-                title=title,
-                brand = brand,
-                description=description,
-                mrp=mrp,
-                price=price,
-                stock=stock,
-                category=category,
-                display_image=image
-            )
+        # Convert numeric values safely
+        try:
+            mrp = int(request.POST.get("mrp", 0))
+            price = int(request.POST.get("price", 0))
+            stock = int(request.POST.get("stock", 0))
+        except ValueError:
+            mrp, price, stock = 0, 0, 0  # Default values if conversion fails
+
+        # Fetch category instance
+        category = None
+        if product_type == "cosmetic":
+            category = POCOSCategory.objects.filter(name=category_n).first()
+        elif product_type == "jewellery":
+            category = POJOSCategory.objects.filter(name=category_n).first()
+
+        if category:
+            if product_type == "cosmetic":
+                POCOS.objects.create(
+                    title=title, 
+                    brand=brand, 
+                    description=description,
+                    mrp=mrp, 
+                    price=price, 
+                    stock=stock,
+                    category=category, 
+                    display_image=image
+                )
+            elif product_type == "jewellery":
+                POJOS.objects.create(
+                    title=title, 
+                    brand=brand, 
+                    description=description,
+                    mrp=mrp, 
+                    price=price, 
+                    stock=stock,
+                    category=category, 
+                    display_image=image
+                )
+
             messages.success(request, "Product added successfully!")
-        else:
-            messages.error(request, "Please select a valid category.")
+            if product_type == "cosmetic":
+                return redirect("/products/?type=cosmetic")
+            elif product_type == "jewellery":
+                return redirect("/products/?type=jewellery")
 
-        return redirect("products")
-    
-    categories = Category.objects.all()
-    return render(request, "Manager/add_product.html", {"categories": categories})
+    return render(request, "Manager/product/add_product.html", {
+        "categories": categories,
+        "selected_type": selected_type
+    })
 
-@session_auth_required
+# @session_admin_required
 def edit_product(request, product_id):
-    product = get_object_or_404(POCOS, poco_id=product_id)
-    categories = Category.objects.all()
+    # Determine if the product is from POCOS (Cosmetics) or POJOS (Jewellery)
+    product = None
+    categories = []
+
+    # Try finding in POCOS (Cosmetic)
+    try:
+        product = POCOS.objects.get(poco_id=product_id)
+        categories = POCOSCategory.objects.all()
+        product_type = "cosmetic"
+    except POCOS.DoesNotExist:
+        pass
+
+    # If not found in POCOS, try finding in POJOS (Jewellery)
+    if product is None:
+        try:
+            product = POJOS.objects.get(poco_id=product_id)
+            categories = POJOSCategory.objects.all()
+            product_type = "jewellery"
+        except POJOS.DoesNotExist:
+            messages.error(request, "Product not found!")
+            return redirect("products")
 
     if request.method == "POST":
         product.title = request.POST.get("title", "")
@@ -105,14 +185,15 @@ def edit_product(request, product_id):
         product.price = request.POST.get("price", 0)
         product.stock = request.POST.get("stock", 0)
 
-        category_id = request.POST.get("category")
-        if category_id:
-            product.category = Category.objects.get(id=category_id)
         # Get category (Fixed: Use 'name' instead of 'id')
         category_name = request.POST.get("category")
         if category_name:
-            product.category = Category.objects.get(name=category_name)
+            if product_type == "cosmetic":
+                product.category = POCOSCategory.objects.get(name=category_name)
+            elif product_type == "jewellery":
+                product.category = POJOSCategory.objects.get(name=category_name)
 
+        # Update image if provided
         if "product_image" in request.FILES:
             product.display_image = request.FILES["product_image"]
 
@@ -120,9 +201,14 @@ def edit_product(request, product_id):
         messages.success(request, "Product updated successfully!")
         return redirect("products")
 
-    return render(request, "Manager/edit_product.html", {"product": product, "categories": categories})
+    return render(
+        request,
+        "Manager/product/edit_product.html",
+        {"product": product, "categories": categories, "product_type": product_type},
+    )
 
-@session_auth_required
+
+# @session_admin_required
 def delete_product(request, product_id):
     product = get_object_or_404(POCOS, poco_id=product_id)
 
@@ -131,24 +217,24 @@ def delete_product(request, product_id):
         messages.success(request, "Product deleted successfully!")
         return redirect("products")
 
-    return render(request, "Manager/delete_product.html", {"product": product})
+    return render(request, "Manager/product/delete_product.html", {"product": product})
 
-@session_auth_required
+# @session_admin_required
 def orders(request):
     return render(request, "Manager/orders.html")
 
-@session_auth_required
+# @session_admin_required
 def customers(request):
     return render(request, "Manager/customers.html")
 
-@session_auth_required
+# @session_admin_required
 def reports(request):
     return render(request, "Manager/reports.html")
 
-@session_auth_required
+# @session_admin_required
 def settings(request):
     return render(request, "Manager/settings.html")
 
-@session_auth_required
+# @session_admin_required
 def logout_view(request):
     return render(request, "Manager/login.html")

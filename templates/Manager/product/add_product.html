@@ -1,0 +1,79 @@
+{% extends 'Manager/base.html' %}
+{% load static %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'Manager/product/css/add_product.css' %}">
+
+<div class="container">
+    <h2 class="page-title"><b>ADD PRODUCT</b></h2>
+
+    <form id="productForm" action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Product Type Selection (Reloads Page to Update Categories) -->
+        <div class="form-group">
+            <label>Product Type</label>
+            <select name="product_type" class="form-select" required onchange="this.form.submit()">
+                <option value="">Select Product Type</option>
+                <option value="cosmetic" {% if selected_type == "cosmetic" %}selected{% endif %}>Cosmetic</option>
+                <option value="jewellery" {% if selected_type == "jewellery" %}selected{% endif %}>Jewellery</option>
+            </select>
+        </div>
+
+        {% if selected_type %}
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category" class="form-select" required>
+                    <option value="">Select Category</option>
+                    {% for category in categories %}
+                        <option value="{{ category.name }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Brand</label>
+                <input type="text" name="brand" class="form-control">
+            </div>
+
+            <div class="flex-container">
+                <div class="form-group">
+                    <label>MRP</label>
+                    <input type="number" name="mrp" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" name="price" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Stock</label>
+                <input type="number" name="stock" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Product Image</label>
+                <input type="file" name="product_image" class="form-control" accept="image/*" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Save & Publish</button>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock %}
