@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 
     'Accounts.apps.AccountsConfig',
     'POCOS.apps.PocosConfig',
+    'POJOS.apps.PojosConfig',
     'Manager.apps.ManagerConfig',
     'Api.apps.ApiConfig',
 

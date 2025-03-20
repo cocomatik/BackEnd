@@ -1,9 +1,11 @@
 from django.urls import path,include
-import POCOS.urls as PU
+import POCOS.urls as PCU
+import POJOS.urls as PJU
 from .view_login import send_otp_login,login,logout
 
 urlpatterns = [
-    path('pocos/', include(PU)),
+    path('pocos/', include(PCU)),
+    path('pojos/', include(PJU)),
 
 
     

@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from POCOS.models import POCOS, Category
-<<<<<<< HEAD
 from Accounts.decorators import session_auth_required
-=======
-# from .decorators import session_admin_required
+
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
 
->>>>>>> df5db99f5847878f5a8d9e11b6dce4544fd96c09
 
 def landing(request):
     return render(request,"landing/landing.html")
@@ -28,16 +25,13 @@ def products(request):
     product_list = POCOS.objects.all().order_by('title')
     categories = Category.objects.all()
 
-<<<<<<< HEAD
     selected_category = request.GET.get('category')
     stock_filter = request.GET.get('stock','')
-=======
     # Apply search filter
     if query:
         product_list = product_list.annotate(
             search=SearchVector('title', 'description')
         ).filter(Q(search=SearchQuery(query)) | Q(title__icontains=query) | Q(description__icontains=query))
->>>>>>> df5db99f5847878f5a8d9e11b6dce4544fd96c09
 
     # Apply category filter
     if selected_category:
@@ -65,13 +59,7 @@ def products(request):
     }
     return render(request, "Manager/products.html", context)
 
-<<<<<<< HEAD
 @session_auth_required
-=======
-
-
-# @session_admin_required
->>>>>>> df5db99f5847878f5a8d9e11b6dce4544fd96c09
 def add_product(request):
 
     if request.method == "POST":
@@ -117,16 +105,13 @@ def edit_product(request, product_id):
         product.price = request.POST.get("price", 0)
         product.stock = request.POST.get("stock", 0)
 
-<<<<<<< HEAD
         category_id = request.POST.get("category")
         if category_id:
             product.category = Category.objects.get(id=category_id)
-=======
         # Get category (Fixed: Use 'name' instead of 'id')
         category_name = request.POST.get("category")
         if category_name:
             product.category = Category.objects.get(name=category_name)
->>>>>>> df5db99f5847878f5a8d9e11b6dce4544fd96c09
 
         if "product_image" in request.FILES:
             product.display_image = request.FILES["product_image"]
@@ -137,12 +122,7 @@ def edit_product(request, product_id):
 
     return render(request, "Manager/edit_product.html", {"product": product, "categories": categories})
 
-<<<<<<< HEAD
 @session_auth_required
-=======
-
-# @session_admin_required
->>>>>>> df5db99f5847878f5a8d9e11b6dce4544fd96c09
 def delete_product(request, product_id):
     product = get_object_or_404(POCOS, poco_id=product_id)
 
