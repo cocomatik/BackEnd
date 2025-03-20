@@ -21,7 +21,7 @@ class POJOS(models.Model):
 
     pojo_id = models.CharField(max_length=20, unique=True, blank=True, editable=False, db_index=True,primary_key=True)
 
-    display_image = CloudinaryField('image', folder='pojos/display/',default="pojos/display/elfpvad5o7iqzjnipqqa")
+    display_image = CloudinaryField('image', folder='pojos/display/')
 
     rating = models.FloatField(
         default=0.0,
@@ -39,9 +39,9 @@ class POJOS(models.Model):
         if self.mrp > 0 and self.mrp > self.price:
             return round(((self.mrp - self.price) / self.mrp) * 100, 2)
         return 0.0
-    def generate_pojo_id(self, length=15):
-        """Generate a random alphanumeric + special character ID of given length."""
-        characters = string.ascii_letters + string.digits + "!@#$%^&*"
+    def generate_pojo_id(length=15):
+        """Generate a random alphanumeric + URL-safe special character ID of given length."""
+        characters = string.ascii_letters + string.digits + "-_~!@%^*"
         return ''.join(random.choices(characters, k=length))
 
     def save(self, *args, **kwargs):

@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .models import POJOS, Review
+from .models import POJOS, Review,Category
 from .serializers import PojoImageSerializer, PojoDetailSerializer,PojoListSerializer, ReviewSerializer
+from rest_framework import serializers
 
 from Accounts.decorators import token_auth_required,session_auth_required
 
@@ -11,6 +13,18 @@ from Accounts.decorators import token_auth_required,session_auth_required
 def get_all_pojos(request):
     pojos = POJOS.objects.all()
     serializer = PojoListSerializer(pojos, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_categories(request):
+    class CategorySerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Category
+            fields = ['name']
+
+    categories = Category.objects.all()  
+    serializer = CategorySerializer(list(categories), many=True)  
+
     return Response(serializer.data)
 
 @api_view(['GET'])
