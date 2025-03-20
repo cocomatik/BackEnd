@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import POJOS, Category, PojoImage, Review
 
+
+
 class PojoImageInline(admin.TabularInline):
     model = PojoImage
     extra = 2  
@@ -26,3 +28,23 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('user_name', 'pojo', 'rating', 'created_at')
     list_filter = ('rating', 'created_at')
     search_fields = ('user_name', 'pojo__title')  
+
+
+from .modelsxs import (
+    FeatureProducts, BestSellers, BestOfWeddingJewellery, BestOfPendants,
+    BestOfNoseRings, BestOfNecklace, BestOfOneGramGoldenJewellery, BestOfImportedJewellery,
+    BestOfFingerRings, BestOfEarRings, BestOfChains, BestOfBracelets, BestOfBangles
+)
+admin.site.register(FeatureProducts)
+admin.site.register(BestSellers)
+admin.site.register(BestOfWeddingJewellery)
+admin.site.register(BestOfPendants)
+admin.site.register(BestOfNoseRings)
+admin.site.register(BestOfNecklace)
+admin.site.register(BestOfOneGramGoldenJewellery)
+admin.site.register(BestOfImportedJewellery)
+admin.site.register(BestOfFingerRings)
+admin.site.register(BestOfEarRings)
+admin.site.register(BestOfChains)
+admin.site.register(BestOfBracelets)
+admin.site.register(BestOfBangles)
