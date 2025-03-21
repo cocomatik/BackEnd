@@ -39,7 +39,7 @@ class POJOS(models.Model):
         if self.mrp > 0 and self.mrp > self.price:
             return round(((self.mrp - self.price) / self.mrp) * 100, 2)
         return 0.0
-    def generate_pojo_id(length=15):
+    def generate_pojo_id(self,length=15):
         """Generate a random alphanumeric + URL-safe special character ID of given length."""
         characters = string.ascii_letters + string.digits + "-_~!@%^*"
         return ''.join(random.choices(characters, k=length))
