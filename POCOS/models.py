@@ -39,6 +39,11 @@ class POCOS(models.Model):
         if self.mrp > 0 and self.mrp > self.price:
             return round(((self.mrp - self.price) / self.mrp) * 100, 2)
         return 0.0
+    
+    @property
+    def pid(self):
+        return self.poco_id
+    
     def generate_poco_id(self, length=15):
         """Generate a random alphanumeric + URL-safe special character ID of given length."""
         characters = string.ascii_letters + string.digits + "-_~!@%^*"

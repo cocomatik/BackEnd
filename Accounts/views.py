@@ -23,4 +23,4 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return redirect("/accounts/admin_login/")  
+    return redirect("/accounts/login/")  
