@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'Accounts.apps.AccountsConfig',
     'POCOS.apps.PocosConfig',
     'POJOS.apps.PojosConfig',
+    'Orders.apps.OrdersConfig',
     'Manager.apps.ManagerConfig',
     'Api.apps.ApiConfig',
 
@@ -62,6 +63,9 @@ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.ge
 
 CORS_ALLOW_ALL_ORIGINS = False  
 
+
+SHIPROCKET_EMAIL = os.getenv("SHIPROCKET_EMAIL", default="")
+SHIPROCKET_PASSWORD = os.getenv("SHIPROCKET_PASSWORD", default="")
 
 
 ROOT_URLCONF = 'COCO.urls'
