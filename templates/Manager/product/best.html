@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Sellers</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Header */
+        h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #28a745;
+        }
+
+        /* Product List */
+        .product-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .product-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        /* Product Info */
+        .product-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            flex-grow: 1;
+            text-align: left;
+            padding-right: 10px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        /* Buttons */
+        .action-btn {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #28a745;
+            color: #fff;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .action-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        /* Small Remove Buttons */
+        .small-btn {
+            padding: 8px 12px;
+            margin-left: 10px;
+            font-size: 12px;
+            background: #dc3545;
+        }
+
+        .small-btn:hover {
+            background: #c82333;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Best Products</h2>
+        <ul class="product-list">
+            {% for pi in prd %}
+            <li class="product-item">
+                <span class="product-title">{{ pi.title }}</span>
+                <span class="product-price">₹{{ pi.price }}</span>
+                <a href="{% url 'best_of_products' %}" class="action-btn small-btn">Remove</a>
+
+                <form method="POST" action="{% url 'df_best_product' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="pid" value="{{p.}}">
+                    <input type="hidden" name="name" value="BestOfBangles">
+                    <button type="submit" class="action-btn">Remove</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'best_of_products' %}" class="action-btn">Back</a>
+        <a href="{% url 'best_of_products' %}" class="action-btn">Add</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+{% extends "Manager/base.html" %}
+{% load static %}
+
+{% block title %}Best of Products{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'Manager/product/css/best_of_product.css' %}">
+
+
+<div class="tables-container">
+    <!-- Left Table -->
+    <div class="table-wrapper">
+        <h2 id="best-category-title">Cosmetics</h2>
+        <table class="best-products-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Best Sellers</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POCOS">
+                            <input type="hidden" name="name" value="BestSellers">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Featured Products</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POCOS">
+                            <input type="hidden" name="name" value="FeatureProducts">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best Of Skin Care</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POCOS">
+                            <input type="hidden" name="name" value="BestOfSkinCare">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of Color Cosmetics</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POCOS">
+                            <input type="hidden" name="name" value="BestOfImportedProducts">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of Fragrances</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POCOS">
+                            <input type="hidden" name="name" value="BestOfFragrance">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of Hair Cares</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POCOS">
+                            <input type="hidden" name="name" value="BestOfHairCare">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of Imported Products</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POCOS">
+                            <input type="hidden" name="name" value="BestOfColorCosmetic">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of Skin Cares</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POCOS">
+                            <input type="hidden" name="name" value="BestOfBodyCare">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Right Table -->
+    <div class="table-wrapper">
+        <h2 id="best-category-title">Jewellery</h2>
+        <table class="best-products-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Best Sellers</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="BestSellers">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Featured Products</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="FeatureProducts">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of bangless</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="BestOfBangles">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of chainss</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="BestOf">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of ear rings</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of finger rings</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of imported jewellerys</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of necklaces</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of nose ringss</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of one gram golden jewellerys</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of imported jewellerys</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of pendantss</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                <tr>
+                    <td>Best of wedding jewellerys</td>
+                    <td><form method="POST" action="{% url 'handle_best_product' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="POJOS">
+                            <input type="hidden" name="name" value="cats">
+                            <button type="submit" class="action-btn">View</button>
+                        </form></td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

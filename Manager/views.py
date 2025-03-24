@@ -1,10 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from django.db import IntegrityError
 from django.contrib import messages
+from django.db import transaction
 from POCOS.models import POCOS, Category as POCOSCategory
 from POJOS.models import POJOS, Category as POJOSCategory
 # from .decorators import session_admin_required
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
+
+#BEST_OF_Cosmetics
+from POCOS.modelsxs import BestOfBodyCare,BestOfColorCosmetic,BestOfFragrance,BestOfHairCare,BestOfImportedProducts,BestOfSkinCare,BestSellers as BSC,FeatureProducts as Fp
+
+#BEST_OF_Jewellery
+from POJOS.modelsxs import BestOfBangles,BestOfBracelets,BestOfChains,BestOfEarRings,BestOfFingerRings,BestOfImportedJewellery,BestOfNecklace,BestOfNoseRings,BestOfOneGramGoldenJewellery,BestOfPendants,BestOfWeddingJewellery,BestSellers as BSJ,FeatureProducts as FPJ
 
 
 def landing(request):
@@ -233,7 +242,78 @@ def delete_product(request, product_id):
     return render(request, "Manager/product/delete_product.html", {"product": product, "product_type": product_type})
 
 
-# @session_admin_required
+
+def bop(request):
+    tp = request.POST.get('type')
+    nm = request.POST.get('name')
+
+
+    if tp=="POCOS" and nm == "BestOfSkinCare":
+        p = BestOfSkinCare.objects.get(id=1).pocos.all().pocos.all()
+
+    elif tp=="POCOS" and nm == "BestOfImportedProducts":
+        p = BestOfImportedProducts.objects.get(id=1).pocos.all()
+
+    elif tp=="POCOS" and nm == "BestOfHairCare":
+        p = BestOfHairCare.objects.get(id=1).pocos.all()
+
+    elif tp=="POCOS" and nm == "BestOfFragrance":
+        p = BestOfFragrance.objects.get(id=1).pocos.all()
+
+    elif tp=="POCOS" and nm == "BestOfColorCosmetic":
+        p = BestOfColorCosmetic.objects.get(id=1).pocos.all()
+
+    elif tp=="POCOS" and nm == "BestOfBodyCare":
+        p = BestOfBodyCare.objects.get(id=1).pocos.all()
+
+
+    elif tp=="POJOS" and nm=="BestOfWeddingJewellery":
+        p = BestOfWeddingJewellery.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfPendants":
+        p = BestOfPendants.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfNoseRings":
+        p = BestOfNoseRings.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfNecklace":
+        p = BestOfNecklace.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfOneGramGoldenJewellery":
+        p = BestOfOneGramGoldenJewellery.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfImportedJewellery":
+        p = BestOfImportedJewellery.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfFingerRings":
+        p = BestOfFingerRings.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfEarRings":
+        p = BestOfEarRings.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfChains":
+        p = BestOfChains.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfBracelets":
+        p = BestOfBracelets.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="BestOfBangles":
+        p = BestOfBangles.objects.get(id=1).pojos.all()
+
+
+    elif tp=="POCOS" and nm=="BestSellers":
+        p = BSC.objects.get(id=1).pocos.all()
+    elif tp=="POCOS" and nm=="FeatureProducts":
+        p = Fp.objects.get(id=1).pocos.all()
+    elif tp=="POJOS" and nm=="BestSellers":
+        p = BSJ.objects.get(id=1).pojos.all()
+    elif tp=="POJOS" and nm=="FeatureProducts":
+        p = FPJ.objects.get(id=1).pojos.all()
+
+
+    context = {
+    "prd": p
+    }
+    return render(request, "Manager/product/best.html", context)
+
+def dbop(request):
+    pid = request.POST.get('pid')
+    return redirect('best_of_products')
+
+
+
+#@session_auth_required
+
 def orders(request):
     return render(request, "Manager/orders.html")
 
@@ -252,3 +332,50 @@ def settings(request):
 # @session_admin_required
 def logout_view(request):
     return render(request, "Manager/login.html")
+
+
+
+def best_of_products(request):
+    
+    return render(request,"Manager/product/best_of_products.html",)
+
+
+# def update_best_of_category(request):
+#     if request.method == "POST":
+#         best_of_cosmetics = request.POST.getlist("best_of_cosmetic")
+#         best_of_jewellery = request.POST.getlist("best_of_jewellery")
+
+#         try:
+#             with transaction.atomic():  # Ensures atomic updates
+
+#                 # Update Cosmetics
+#                 all_cosmetics = POCOS.objects.all()
+#                 cosmetics_to_update = []
+#                 for product in all_cosmetics:
+#                     is_best = str(product.id) in best_of_cosmetics
+#                     if product.is_best_of != is_best:
+#                         product.is_best_of = is_best
+#                         cosmetics_to_update.append(product)
+
+#                 if cosmetics_to_update:
+#                     POCOS.objects.bulk_update(cosmetics_to_update, ["is_best_of"])
+
+#                 # Update Jewellery
+#                 all_jewellery = POJOS.objects.all()
+#                 jewellery_to_update = []
+#                 for product in all_jewellery:
+#                     is_best = str(product.id) in best_of_jewellery
+#                     if product.is_best_of != is_best:
+#                         product.is_best_of = is_best
+#                         jewellery_to_update.append(product)
+
+#                 if jewellery_to_update:
+#                     POJOS.objects.bulk_update(jewellery_to_update, ["is_best_of"])
+
+#             return JsonResponse({"status": "success", "message": "Best of Products updated successfully!"})
+
+#         except Exception as e:
+#             return JsonResponse({"status": "error", "message": f"Error: {str(e)}"})
+
+#     return JsonResponse({"status": "error", "message": "Invalid request method."})
+
