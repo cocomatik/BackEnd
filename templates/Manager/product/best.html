@@ -120,12 +120,12 @@
             <li class="product-item">
                 <span class="product-title">{{ pi.title }}</span>
                 <span class="product-price">₹{{ pi.price }}</span>
-                <a href="{% url 'best_of_products' %}" class="action-btn small-btn">Remove</a>
 
                 <form method="POST" action="{% url 'df_best_product' %}">
                     {% csrf_token %}
-                    <input type="hidden" name="pid" value="{{p.}}">
-                    <input type="hidden" name="name" value="BestOfBangles">
+                    <input type="hidden" name="pid" value="{{p.pid}}">
+                    <input type="hidden" name="type" value="{{tp}}">
+                    <input type="hidden" name="name" value="{{nm}}">
                     <button type="submit" class="action-btn">Remove</button>
                 </form>
             </li>

@@ -302,12 +302,20 @@ def bop(request):
 
 
     context = {
-    "prd": p
+    "prd": p,
+    "tp":tp,
+    "nm":nm
     }
     return render(request, "Manager/product/best.html", context)
 
 def dbop(request):
     pid = request.POST.get('pid')
+    tp = request.POST.get('type')
+    nm = request.POST.get('name')
+    pm = nm.objects.get(id=1)
+    pn = tp.objects.get(pid=pid)
+    tp.lower()
+    pm.tp.remove(pn)
     return redirect('best_of_products')
 
 
