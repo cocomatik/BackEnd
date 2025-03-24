@@ -43,7 +43,7 @@ class POJOS(models.Model):
     
     @property
     def pid(self):
-        return self.poco_id
+        return self.pojo_id
     
     
     def generate_pojo_id(self,length=15):

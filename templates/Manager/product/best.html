@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Best Sellers</title>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
     <style>
         /* General Styling */
         body {
@@ -114,16 +115,16 @@
 <body>
 
     <div class="container">
-        <h2>Best Products</h2>
+        <h2>{{nm}}</h2>
         <ul class="product-list">
             {% for pi in prd %}
             <li class="product-item">
                 <span class="product-title">{{ pi.title }}</span>
                 <span class="product-price">₹{{ pi.price }}</span>
 
-                <form method="POST" action="{% url 'df_best_product' %}">
+                <form hx-post="{% url 'df_best_product' %}" hx-target=".product-list">
                     {% csrf_token %}
-                    <input type="hidden" name="pid" value="{{p.pid}}">
+                    <input type="hidden" name="pid" value="{{pi.pid}}">
                     <input type="hidden" name="type" value="{{tp}}">
                     <input type="hidden" name="name" value="{{nm}}">
                     <button type="submit" class="action-btn">Remove</button>

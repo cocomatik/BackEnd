@@ -29,7 +29,7 @@ class BestOfOneGramGoldenJewellery(models.Model):
     pojos = models.ManyToManyField(POJOS, limit_choices_to={'category': 'One Gram Golden Jewellery'})
 
 class BestOfImportedJewellery(models.Model):
-    pojos = models.ManyToManyField(POJOS, limit_choices_to={'category': 'Imported jewellery'})
+    pojos = models.ManyToManyField(POJOS, limit_choices_to={'category': 'Imported Jewellery'})
 
 class BestOfFingerRings(models.Model):
     pojos = models.ManyToManyField(POJOS, limit_choices_to={'category': 'Finger Rings'})

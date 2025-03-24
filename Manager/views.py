@@ -10,7 +10,7 @@ from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
 
 #BEST_OF_Cosmetics
-from POCOS.modelsxs import BestOfBodyCare,BestOfColorCosmetic,BestOfFragrance,BestOfHairCare,BestOfImportedProducts,BestOfSkinCare,BestSellers as BSC,FeatureProducts as Fp
+from POCOS.modelsxs import BestOfBodyCare,BestOfColorCosmetic,BestOfFragrance,BestOfHairCare,BestOfImportedProducts,BestOfSkinCare,BestSellers as BSC,FeatureProducts as FPC
 
 #BEST_OF_Jewellery
 from POJOS.modelsxs import BestOfBangles,BestOfBracelets,BestOfChains,BestOfEarRings,BestOfFingerRings,BestOfImportedJewellery,BestOfNecklace,BestOfNoseRings,BestOfOneGramGoldenJewellery,BestOfPendants,BestOfWeddingJewellery,BestSellers as BSJ,FeatureProducts as FPJ
@@ -248,53 +248,53 @@ def bop(request):
     nm = request.POST.get('name')
 
 
-    if tp=="POCOS" and nm == "BestOfSkinCare":
-        p = BestOfSkinCare.objects.get(id=1).pocos.all().pocos.all()
+    if  nm == "BestOfSkinCare":
+        p = BestOfSkinCare.objects.get(id=1).pocos.all()
 
-    elif tp=="POCOS" and nm == "BestOfImportedProducts":
+    elif  nm == "BestOfImportedProducts":
         p = BestOfImportedProducts.objects.get(id=1).pocos.all()
 
-    elif tp=="POCOS" and nm == "BestOfHairCare":
+    elif  nm == "BestOfHairCare":
         p = BestOfHairCare.objects.get(id=1).pocos.all()
 
-    elif tp=="POCOS" and nm == "BestOfFragrance":
+    elif  nm == "BestOfFragrance":
         p = BestOfFragrance.objects.get(id=1).pocos.all()
 
-    elif tp=="POCOS" and nm == "BestOfColorCosmetic":
+    elif  nm == "BestOfColorCosmetic":
         p = BestOfColorCosmetic.objects.get(id=1).pocos.all()
 
-    elif tp=="POCOS" and nm == "BestOfBodyCare":
+    elif  nm == "BestOfBodyCare":
         p = BestOfBodyCare.objects.get(id=1).pocos.all()
 
 
-    elif tp=="POJOS" and nm=="BestOfWeddingJewellery":
+    elif  nm=="BestOfWeddingJewellery":
         p = BestOfWeddingJewellery.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfPendants":
+    elif  nm=="BestOfPendants":
         p = BestOfPendants.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfNoseRings":
+    elif  nm=="BestOfNoseRings":
         p = BestOfNoseRings.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfNecklace":
+    elif  nm=="BestOfNecklace":
         p = BestOfNecklace.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfOneGramGoldenJewellery":
+    elif  nm=="BestOfOneGramGoldenJewellery":
         p = BestOfOneGramGoldenJewellery.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfImportedJewellery":
+    elif  nm=="BestOfImportedJewellery":
         p = BestOfImportedJewellery.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfFingerRings":
+    elif  nm=="BestOfFingerRings":
         p = BestOfFingerRings.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfEarRings":
+    elif  nm=="BestOfEarRings":
         p = BestOfEarRings.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfChains":
+    elif  nm=="BestOfChains":
         p = BestOfChains.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfBracelets":
+    elif  nm=="BestOfBracelets":
         p = BestOfBracelets.objects.get(id=1).pojos.all()
-    elif tp=="POJOS" and nm=="BestOfBangles":
+    elif  nm=="BestOfBangles":
         p = BestOfBangles.objects.get(id=1).pojos.all()
 
 
     elif tp=="POCOS" and nm=="BestSellers":
         p = BSC.objects.get(id=1).pocos.all()
     elif tp=="POCOS" and nm=="FeatureProducts":
-        p = Fp.objects.get(id=1).pocos.all()
+        p = FPC.objects.get(id=1).pocos.all()
     elif tp=="POJOS" and nm=="BestSellers":
         p = BSJ.objects.get(id=1).pojos.all()
     elif tp=="POJOS" and nm=="FeatureProducts":
@@ -310,13 +310,36 @@ def bop(request):
 
 def dbop(request):
     pid = request.POST.get('pid')
-    tp = request.POST.get('type')
-    nm = request.POST.get('name')
+    tpn = (request.POST.get('type'))
+    tp = globals().get(tpn)
+    nmn = (request.POST.get('name'))
+    if nmn == 'BestSellers' and tp == POCOS :
+        nm=BSC
+    elif nmn =='FeatureProducts' and tp == POCOS:
+        nm=FPC
+    if nmn == 'BestSellers' and tp == POJOS :
+        nm=BSJ
+    elif nmn =='FeatureProducts' and tp == POJOS:
+        nm=FPJ
+    else :
+        nm=globals().get(nmn)
+    print(tp)
+    print(nm)
+    print(pid)
     pm = nm.objects.get(id=1)
-    pn = tp.objects.get(pid=pid)
-    tp.lower()
-    pm.tp.remove(pn)
-    return redirect('best_of_products')
+    if tp == POCOS:
+        pn = tp.objects.get(poco_id=pid)
+        pm.pocos.remove(pn)
+        p = nm.objects.get(id=1).pocos.all()
+    else :
+        pn = tp.objects.get(pojo_id=pid)
+        pm.pojos.remove(pn)
+        p = nm.objects.get(id=1).pojos.all()
+    
+    
+    context = {'prd': p, 'tp': tpn, 'nm': nmn}
+
+    return render(request, 'Manager/product/http/bpl.html', context)
 
 
 
