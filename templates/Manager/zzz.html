@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Example</title>
+    <style>
+        /* Hide the popup by default */
+        .popup-overlay {
+            display: inline;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* Hide checkbox */
+        #popup-toggle {
+            display: none;
+        }
+
+        /* Show popup when checkbox is checked */
+        #popup-toggle:checked + .popup-overlay {
+            display: block;
+        }
+
+        /* Button styling */
+        label {
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        label:hover {
+            background: #0056b3;
+        }
+
+        /* Close button styling */
+        .close-btn {
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .close-btn:hover {
+            background: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Open Button -->
+    <label for="popup-toggle">Open Popup</label>
+    <!-- Hidden checkbox to control popup -->
+    <input type="checkbox" id="popup-toggle">
+    <!-- Popup -->
+    <div class="popup-overlay">
+        <div class="popup">
+            <p>Hello</p>
+            <label for="popup-toggle" class="close-btn">Close</label>
+        </div>
+    </div>
+
+</body>
+</html>
