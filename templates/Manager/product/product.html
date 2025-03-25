@@ -1,21 +1,15 @@
 {% extends 'Manager/base.html' %}
-{% load static %}
-
-{% block title %}Products{% endblock %}
-
 {% block content %}
+{% load static %}
 <link rel="stylesheet" href="{% static 'Manager/product/css/product.css' %}">
+<script src="https://unpkg.com/htmx.org@2.0.4"></script>
 
 <h2 class="page-title"><b>PRODUCT MANAGEMENT</b></h2>
 
 <!-- Search & Filters -->
 <div class="filter-container">
     <form method="GET" action="{% url 'products' %}" class="filter-form">
-        <!-- Search Bar -->
-        <input type="text" name="q" value="{{ query }}" class="search-box" placeholder="Search products...">
-        <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
-
-        <!-- Category Filter -->
+        <input type="text" id="searchBox" class="search-box" placeholder="Search products..." onkeyup="filterProducts()">
         <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Categories</option>
             {% for category in categories %}
@@ -24,8 +18,6 @@
                 </option>
             {% endfor %}
         </select>
-
-        <!-- Stock Filter -->
         <select name="stock" id="stockFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Stock Status</option>
             <option value="in-stock" {% if selected_stock == "in-stock" %}selected{% endif %}>In Stock</option>
@@ -33,19 +25,14 @@
             <option value="low-stock-50" {% if selected_stock == "low-stock-50" %}selected{% endif %}>Stock < 50</option>
             <option value="low-stock-10" {% if selected_stock == "low-stock-10" %}selected{% endif %}>Stock < 10</option>
         </select>
-
-        <!-- Product Type Filter (Hidden but Ensures Proper Filtering) -->
         <input type="hidden" name="type" value="{{ product_type }}">
     </form>
-
-    <!-- Add Product Button -->
     <a href="{% url 'add_product' %}" class="add-product-link">
         <button type="button" class="add-product-btn">➕ Add New Product</button>
     </a>
 </div>
 
 {% if product_type == "cosmetic" %}
-<!-- Cosmetic Products Section -->
 <h3 class="section-title">Cosmetic Products</h3>
 <table class="product-table">
     <thead>
@@ -81,7 +68,6 @@
 {% endif %}
 
 {% if product_type == "jewellery" %}
-<!-- Jewellery Products Section -->
 <h3 class="section-title">Jewellery Products</h3>
 <table class="product-table">
     <thead>
@@ -115,5 +101,27 @@
     </tbody>
 </table>
 {% endif %}
+
+<!-- Place JavaScript Here -->
+<script>
+    function filterProducts() {
+        let input = document.getElementById("searchBox").value.toLowerCase();
+        let table = document.querySelector(".product-table tbody");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            let productTitle = rows[i].getElementsByTagName("td")[1]; // Target title column
+
+            if (productTitle) {
+                let txtValue = productTitle.textContent || productTitle.innerText;
+                if (txtValue.toLowerCase().indexOf(input) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 
 {% endblock %}
