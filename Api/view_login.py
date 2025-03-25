@@ -81,7 +81,7 @@ def send_otp_login(request):
     email_message = EmailMultiAlternatives(
         subject=f"🔒 OTP for {status} - COCOMATIK Account",
         body=plain_text_content,
-        from_email='login.cocomatikofficial@gmail.com',
+        from_email='auth@cocomatik.com',
         to=[email]
     )
     email_message.attach_alternative(html_content, "text/html")
