@@ -1,50 +1,88 @@
-{% extends "Manager/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 { text-align: center; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        .actions a {
+            text-decoration: none;
+            margin-right: 8px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .view { background: #17a2b8; color: white; }
+        .edit { background: #ffc107; color: black; }
+        .delete { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Orders</h2>
 
-{% block content %}
-<div class="container mt-4">
-    <h2 class="mb-3">Orders</h2>
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-            <tr>
-                <td>{{ order.order_id }}</td>
-                <td>{{ order.customer.name }}</td>
-                <td>{{ order.poco.title }}</td>
-                <td>{{ order.quantity }}</td>
-                <td>${{ order.total_price }}</td>
-                <td>
-                    {% if order.status == "Pending" %}
-                        <span class="badge bg-warning">Pending</span>
-                    {% elif order.status == "Shipped" %}
-                        <span class="badge bg-info">Shipped</span>
-                    {% elif order.status == "Delivered" %}
-                        <span class="badge bg-success">Delivered</span>
-                    {% else %}
-                        <span class="badge bg-danger">Cancelled</span>
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'edit_order' order.id %}" class="btn btn-sm btn-primary">Edit</a>
-                    <a href="{% url 'delete_order' order.id %}" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="7" class="text-center">No orders found</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>User</th>
+                    <th>Cart ID</th>
+                    <th>Payment Mode</th>
+                    <th>Address ID</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in order_list %}
+                <tr>
+                    <td>{{ order.order_number }}</td>
+                    <td>{{ order.user.username }}</td>
+                    <td>{{ order.cart.id }}</td>
+                    <td>{{ order.payment_mode }}</td>
+                    <td>{{ order.address.id }}</td>
+                    <td>{{ order.created_at|date:"M d, Y" }}</td>
+                    <td class="actions">
+                        <a href="{% url 'order_detail' order.id %}" class="view">👁 View</a>
+                        <a href="{% url 'order_edit' order.id %}" class="edit">✏️ Edit</a>
+                        <a href="{% url 'order_delete' order.id %}" class="delete" onclick="return confirm('Delete this order?')">🗑 Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align: center;">No orders available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

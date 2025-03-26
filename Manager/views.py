@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.db import transaction
 from POCOS.models import POCOS, Category as POCOSCategory
 from POJOS.models import POJOS, Category as POJOSCategory
-# from .decorators import session_admin_required
+#from Accounts.decorators import session_auth_required
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
 
@@ -165,7 +165,7 @@ def edit_product(request, product_id):
 
     # Try finding in POCOS (Cosmetic)
     try:
-        product = POCOS.objects.get(poco_id=product_id)
+        product = POCOS.objects.get(sku=product_id)
         categories = POCOSCategory.objects.all()
         product_type = "cosmetic"
     except POCOS.DoesNotExist:
@@ -174,7 +174,7 @@ def edit_product(request, product_id):
     # If not found in POCOS, try finding in POJOS (Jewellery)
     if product is None:
         try:
-            product = POJOS.objects.get(pojo_id=product_id)  # Fixed: Use pojo_id for POJOS
+            product = POJOS.objects.get(sku=product_id)  # Fixed: Use sku for POJOS
             categories = POJOSCategory.objects.all()
             product_type = "jewellery"
         except POJOS.DoesNotExist:
@@ -219,7 +219,7 @@ def edit_product(request, product_id):
 # @session_admin_required
 def delete_product(request, product_id):
     # Check if the product exists in either POCOS or POJOS
-    product = POCOS.objects.filter(poco_id=product_id).first() or POJOS.objects.filter(pojo_id=product_id).first()
+    product = POCOS.objects.filter(sku=product_id).first() or POJOS.objects.filter(sku=product_id).first()
 
     if not product:
         messages.error(request, "Product not found!")
@@ -244,32 +244,32 @@ def bop(request):
     if  nm == "BestOfSkinCare":
         p = BestOfSkinCare.objects.get(id=1).pocos.all().order_by('title')
         z = POCOS.objects.filter(category= 'Skincare')
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfImportedProducts":
         p = BestOfImportedProducts.objects.get(id=1).pocos.all().order_by('title')
         z = POCOS.objects.filter(category= 'Imported Products')
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfHairCare":
         p = BestOfHairCare.objects.get(id=1).pocos.all().order_by('title')
         z = POCOS.objects.filter(category= 'Haircare')
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfFragrance":
         p = BestOfFragrance.objects.get(id=1).pocos.all().order_by('title')
         z = POCOS.objects.filter(category= 'Fragrances')
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfColorCosmetic":
         p = BestOfColorCosmetic.objects.get(id=1).pocos.all().order_by('title')
         z = POCOS.objects.filter(category= 'Color Cosmetics')
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfBodyCare":
         p = BestOfBodyCare.objects.get(id=1).pocos.all().order_by('title')
         z = POCOS.objects.filter(category= 'Bodycare')
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
 
@@ -345,12 +345,12 @@ def bop(request):
     elif tp=="POCOS" and nm=="BestSellers":
         p = BSC.objects.get(id=1).pocos.all().order_by('title')
         z = POCOS.objects.all()
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif tp=="POCOS" and nm=="FeatureProducts":
         p = FPC.objects.get(id=1).pocos.all().order_by('title')
         z = POCOS.objects.all()
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif tp=="POJOS" and nm=="BestSellers":
         p = BSJ.objects.get(id=1).pojos.all().order_by('title')
@@ -406,7 +406,7 @@ def dbop(request):
             z=POCOS.objects.all()
         else:
             z = POCOS.objects.filter(category= f'{x}')
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
     else :
         pn = tp.objects.get(pojo_id=pid)
         pm.pojos.remove(pn)
@@ -450,7 +450,9 @@ def abop(request):
     else :
         nm=globals().get(nmn)
     pm = nm.objects.get(id=1)
-    
+    for s in lst:
+        pn = tp.objects.get(sku=s)
+
     if tp == POCOS:
         for s in lst:
             
@@ -486,11 +488,16 @@ def abop(request):
     
 
 
-
+from Orders.models import Order
 #@session_auth_required
 
 def orders(request):
-    return render(request, "Manager/orders.html")
+    order_list = Order.objects.all()
+
+    context ={
+        'order_list':order_list
+    }
+    return render(request, "Manager/orders.html",context)
 
 # @session_admin_required
 def customers(request):
