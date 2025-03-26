@@ -48,7 +48,7 @@
 <body>
     <div class="container">
         <h2>Orders</h2>
-
+    
         <table>
             <thead>
                 <tr>
@@ -56,7 +56,7 @@
                     <th>User</th>
                     <th>Cart ID</th>
                     <th>Payment Mode</th>
-                    <th>Address ID</th>
+                    <th>Price</th>
                     <th>Created At</th>
                     <th>Actions</th>
                 </tr>
@@ -65,24 +65,20 @@
                 {% for order in order_list %}
                 <tr>
                     <td>{{ order.order_number }}</td>
-                    <td>{{ order.user.username }}</td>
-                    <td>{{ order.cart.id }}</td>
+                    <td>{{ order.user }} </td>
+                    <td>{{ order.cart.id }}</td>  
                     <td>{{ order.payment_mode }}</td>
-                    <td>{{ order.address.id }}</td>
+                    <td>{{ order.cart.value }}</td> 
                     <td>{{ order.created_at|date:"M d, Y" }}</td>
-                    <td class="actions">
-                        <a href="{% url 'order_detail' order.id %}" class="view">👁 View</a>
-                        <a href="{% url 'order_edit' order.id %}" class="edit">✏️ Edit</a>
-                        <a href="{% url 'order_delete' order.id %}" class="delete" onclick="return confirm('Delete this order?')">🗑 Delete</a>
-                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7" style="text-align: center;">No orders available.</td>
+                    <td colspan="9" style="text-align: center;">No orders available.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    
 </body>
 </html>

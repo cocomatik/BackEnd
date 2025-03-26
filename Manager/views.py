@@ -242,32 +242,32 @@ def bop(request):
 
 
     if  nm == "BestOfSkinCare":
-        p = BestOfSkinCare.objects.get(id=1).pocos.all().order_by('title')
+        p = BestOfSkinCare.objects.get(id=1).objs.all().order_by('title')
         z = POCOS.objects.filter(category= 'Skincare')
         q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfImportedProducts":
-        p = BestOfImportedProducts.objects.get(id=1).pocos.all().order_by('title')
+        p = BestOfImportedProducts.objects.get(id=1).objs.all().order_by('title')
         z = POCOS.objects.filter(category= 'Imported Products')
         q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfHairCare":
-        p = BestOfHairCare.objects.get(id=1).pocos.all().order_by('title')
+        p = BestOfHairCare.objects.get(id=1).objs.all().order_by('title')
         z = POCOS.objects.filter(category= 'Haircare')
         q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfFragrance":
-        p = BestOfFragrance.objects.get(id=1).pocos.all().order_by('title')
+        p = BestOfFragrance.objects.get(id=1).objs.all().order_by('title')
         z = POCOS.objects.filter(category= 'Fragrances')
         q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfColorCosmetic":
-        p = BestOfColorCosmetic.objects.get(id=1).pocos.all().order_by('title')
+        p = BestOfColorCosmetic.objects.get(id=1).objs.all().order_by('title')
         z = POCOS.objects.filter(category= 'Color Cosmetics')
         q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif  nm == "BestOfBodyCare":
-        p = BestOfBodyCare.objects.get(id=1).pocos.all().order_by('title')
+        p = BestOfBodyCare.objects.get(id=1).objs.all().order_by('title')
         z = POCOS.objects.filter(category= 'Bodycare')
         q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
@@ -275,93 +275,93 @@ def bop(request):
 
 
     elif  nm=="BestOfWeddingJewellery":
-        p = BestOfWeddingJewellery.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfWeddingJewellery.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Wedding Jewellery')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfPendants":
-        p = BestOfPendants.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfPendants.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Pendants')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfNoseRings":
-        p = BestOfNoseRings.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfNoseRings.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Nose Rings')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfNecklace":
-        p = BestOfNecklace.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfNecklace.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Necklace')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfOneGramGoldenJewellery":
-        p = BestOfOneGramGoldenJewellery.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfOneGramGoldenJewellery.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'One Gram Golden Jewellery')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfImportedJewellery":
-        p = BestOfImportedJewellery.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfImportedJewellery.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Imported Jewellery')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfFingerRings":
-        p = BestOfFingerRings.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfFingerRings.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Finger Rings')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfEarRings":
-        p = BestOfEarRings.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfEarRings.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Ear Rings')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfChains":
-        p = BestOfChains.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfChains.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Chains')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfBracelets":
-        p = BestOfBracelets.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfBracelets.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Bracelets')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif  nm=="BestOfBangles":
-        p = BestOfBangles.objects.get(id=1).pojos.all().order_by('title')
+        p = BestOfBangles.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.filter(category= 'Bangles')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
 
 
     elif tp=="POCOS" and nm=="BestSellers":
-        p = BSC.objects.get(id=1).pocos.all().order_by('title')
+        p = BSC.objects.get(id=1).objs.all().order_by('title')
         z = POCOS.objects.all()
         q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif tp=="POCOS" and nm=="FeatureProducts":
-        p = FPC.objects.get(id=1).pocos.all().order_by('title')
+        p = FPC.objects.get(id=1).objs.all().order_by('title')
         z = POCOS.objects.all()
         q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
     elif tp=="POJOS" and nm=="BestSellers":
-        p = BSJ.objects.get(id=1).pojos.all().order_by('title')
+        p = BSJ.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.all()
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
     elif tp=="POJOS" and nm=="FeatureProducts":
-        p = FPJ.objects.get(id=1).pojos.all().order_by('title')
+        p = FPJ.objects.get(id=1).objs.all().order_by('title')
         z = POJOS.objects.all()
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
 
 
@@ -375,8 +375,8 @@ def bop(request):
     return render(request, "Manager/product/best.html", context)
 
 def dbop(request):
-    #pid=product id
-    pid = request.POST.get('pid')
+    #sku=product id
+    sku = request.POST.get('sku')
     #tpn = product type(" POCOS/POJOS as string") 
     tpn = (request.POST.get('type'))
     #tp = search particular variables by tpn
@@ -396,28 +396,15 @@ def dbop(request):
     else :
         nm=globals().get(nmn)
     pm = nm.objects.get(id=1)
-
-    if tp == POCOS:
-        pn = tp.objects.get(poco_id=pid)
-        pm.pocos.remove(pn)
-        p = pm.pocos.all().order_by('title')
-        x = p.first().category if p.exists() else None
-        if nm =='BestSellers' or nm == 'FeatureProducts':
-            z=POCOS.objects.all()
-        else:
-            z = POCOS.objects.filter(category= f'{x}')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-    else :
-        pn = tp.objects.get(pojo_id=pid)
-        pm.pojos.remove(pn)
-        p = pm.pojos.all().order_by('title')
-        x = p.first().category if p.exists() else None
-        if nm =='BestSellers' or nm == 'FeatureProducts':
-            z=POJOS.objects.all()
-        else:
-            z = POJOS.objects.filter(category= f'{x}')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
-
+    pn = tp.objects.get(sku=sku)
+    pm.objs.remove(pn)
+    p = pm.objs.all().order_by('title')
+    x = p.first().category if p.exists() else None
+    if nm =='BestSellers' or nm == 'FeatureProducts':
+        z=POCOS.objects.all()
+    else:
+        z = POCOS.objects.filter(category= f'{x}')
+    q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
     
     
     context = {'prd': p, 'tp': tpn, 'nm': nmn, 'qrd':q}
@@ -452,32 +439,15 @@ def abop(request):
     pm = nm.objects.get(id=1)
     for s in lst:
         pn = tp.objects.get(sku=s)
-
-    if tp == POCOS:
-        for s in lst:
+        pm.objs.add(pn)
+    p = pm.objs.all().order_by('title')
+    x = p.first().category if p.exists() else None
+    if nm==BSC or nm==FPC:
+        z = tp.objects.all()
+    else:
+        z = tp.objects.filter(category= f'{x}')
             
-            pn = tp.objects.get(poco_id=s)
-            pm.pocos.add(pn)
-        p = pm.pocos.all().order_by('title')
-        x = p.first().category if p.exists() else None
-        if nm==BSC or nm==FPC:
-            z = POCOS.objects.all()
-        else:
-            z = POCOS.objects.filter(category= f'{x}')
-        
-        q=z.exclude(poco_id__in=p.values_list('poco_id', flat=True)).order_by('title')        
-    else :
-        for s in lst:
-                
-            pn = tp.objects.get(pojo_id=s)
-            pm.pojos.add(pn)
-        p = pm.pojos.all().order_by('title')
-        x = p.first().category if p.exists() else None
-        if nm==BSJ or nm ==FPJ:
-            z = POJOS.objects.all()
-        else:
-            z = POJOS.objects.filter(category= f'{x}')
-        q=z.exclude(pojo_id__in=p.values_list('pojo_id', flat=True)).order_by('title')
+    q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title') 
     
 
     
@@ -494,10 +464,27 @@ from Orders.models import Order
 def orders(request):
     order_list = Order.objects.all()
 
-    context ={
-        'order_list':order_list
-    }
-    return render(request, "Manager/orders.html",context)
+    return render(request, "Manager/orders.html", {"order_list": order_list})
+
+# def order_detail(request, order_id):
+#     order = get_object_or_404(Order, id=order_id)
+#     return render(request, "Manager/order_detail.html", {"order": order})
+
+# def order_edit(request, order_id):
+#     order = get_object_or_404(Order, id=order_id)
+#     if request.method == "POST":
+#         order.payment_mode = request.POST.get("payment_mode")
+#         order.save()
+#         messages.success(request, "Order updated successfully.")
+#         return redirect("orders")
+#     return render(request, "Manager/order_edit.html", {"order": order})
+
+# def order_delete(request, order_id):
+#     order = get_object_or_404(Order, id=order_id)
+#     if request.method == "POST":
+#         order.delete()
+#         messages.success(request, "Order deleted successfully.")
+#     return redirect("orders")
 
 # @session_admin_required
 def customers(request):
