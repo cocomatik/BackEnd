@@ -56,8 +56,8 @@
             <td>{{ product.stock }}</td>
             <td>{{ product.rating }} ⭐</td>
             <td class="action-buttons">
-                <a href="{% url 'edit_product' product.poco_id %}" class="edit-btn">Edit</a>
-                <a href="{% url 'delete_product' product.poco_id %}" class="delete-btn">Delete</a>
+                <a href="{% url 'edit_product' product.sku %}" class="edit-btn">Edit</a>
+                <a href="{% url 'delete_product' product.sku %}" class="delete-btn">Delete</a>
             </td>
         </tr>
         {% empty %}
@@ -91,8 +91,8 @@
             <td>{{ product.stock }}</td>
             <td>{{ product.rating }} ⭐</td>
             <td class="action-buttons">
-                <a href="{% url 'edit_product' product.pojo_id %}" class="edit-btn">Edit</a>
-                <a href="{% url 'delete_product' product.pojo_id %}" class="delete-btn">Delete</a>
+                <a href="{% url 'edit_product' product.sku %}" class="edit-btn">Edit</a>
+                <a href="{% url 'delete_product' product.sku %}" class="delete-btn">Delete</a>
             </td>
         </tr>
         {% empty %}

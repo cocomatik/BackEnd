@@ -14,5 +14,5 @@ urlpatterns = [
     path('dbop/',dbop, name='df_best_product'),
     path('abop/',abop, name='ad_best_product'),
 
-    path('orders/', orders, name='orders'),
+    path("orders/", orders, name="order_list"),
 ]
