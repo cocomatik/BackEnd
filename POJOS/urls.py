@@ -24,8 +24,8 @@ router.register(r'best-of-bangles', BestOfBanglesViewSet, basename='best-of-bang
 urlpatterns = [
     path('', get_all_pojos, name='all-pojos'),
     path('categories/', get_categories, name='pojos-categories'),
-    path('details/<str:pojo_id>/', get_pojo_details, name='pojo-details'),
-    path('reviews/<str:pojo_id>/', reviews, name='add-review'),
+    path('details/<str:sku>/', get_pojo_details, name='pojo-details'),
+    path('reviews/<str:sku>/', reviews, name='add-review'),
     path('search/', search_products, name='product-search'),
     path('xs/',include(router.urls)),
 ]
