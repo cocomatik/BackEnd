@@ -43,7 +43,7 @@ class CartItem(models.Model):
 
 class Order(models.Model):
     order_number = models.CharField(max_length=15, editable=False, unique=True)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="orders")
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, related_name="order")  # One order per cart
     payment_mode = models.CharField(max_length=30, choices=PaymentMode.choices)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
