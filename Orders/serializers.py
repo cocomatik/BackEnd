@@ -15,16 +15,17 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields = ["id", "quantity", "sku", "product_details"]
 
     def get_product_details(self, obj):
-        """Retrieve product details using SKU"""
-        product_model = obj.product_type.model_class()  # Get the model class
-        product = product_model.objects.filter(sku=obj.sku).first()  
-
-        if product:
-            return {
-                "sku": obj.sku,
-                "name": product.title,
-                "price": product.price
-            }
+        """Retrieve product details using SKU from the correct model (POCOS/POJOS)"""
+        product_model = obj.product_type.model_class() if obj.product_type else None  
+        
+        if product_model in [POCOS, POJOS]:  
+            product = product_model.objects.filter(sku=obj.sku).first()
+            if product:
+                return {
+                    "sku": obj.sku,
+                    "name": product.title,
+                    "price": product.price
+                }
         return {"error": "Product not found"}
 
 class CartSerializer(serializers.ModelSerializer):
@@ -38,13 +39,19 @@ class CartSerializer(serializers.ModelSerializer):
         fields = ["id", "status", "items", "total_items", "total_value"]
 
     def get_total_items(self, obj):
+        """Calculate total number of items in cart"""
         return sum(item.quantity for item in obj.cart_items.all())
 
     def get_total_value(self, obj):
-        return sum(
-            item.quantity * item.product.price 
-            for item in obj.cart_items.all() if item.product
-        )
+        """Calculate total cart value"""
+        total = 0
+        for item in obj.cart_items.all():
+            product_model = item.product_type.model_class() if item.product_type else None
+            if product_model in [POCOS, POJOS]:  
+                product = product_model.objects.filter(sku=item.sku).first()
+                if product:
+                    total += item.quantity * product.price  
+        return total
 
 class OrderSerializer(serializers.ModelSerializer):
     """Serializes the order with full details"""
