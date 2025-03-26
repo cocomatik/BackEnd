@@ -13,7 +13,7 @@ class PocoListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = POCOS
-        fields = ["sku", "title", "size", "mrp", "price", "discount", "stock", "category", "brand", "display_image", "rating"]
+        fields = ["sku", "title","description", "size", "mrp", "price", "discount", "stock", "category", "brand", "display_image", "rating"]
 
     def get_discount(self, obj):
         """Ensure discount is serialized correctly."""
