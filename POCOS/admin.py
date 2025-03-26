@@ -7,10 +7,10 @@ class PocoImageInline(admin.TabularInline):
 
 @admin.register(POCOS)
 class POCOSAdmin(admin.ModelAdmin):
-    list_display = ('title', 'poco_id', 'price', 'stock', 'category', 'created_at')
-    search_fields = ('title', 'poco_id')  
+    list_display = ('title', 'sku', 'price', 'stock', 'category', 'created_at')
+    search_fields = ('title', 'sku')  
     list_filter = ('category', 'created_at')  
-    readonly_fields = ('poco_id',)  
+    readonly_fields = ('sku',)  
     inlines = [PocoImageInline]
 
 @admin.register(Category)
@@ -27,12 +27,12 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ('rating', 'created_at')
     search_fields = ('user_name', 'poco__title')  
 
-
-
-from .modelsxs import (FeatureProducts, BestSellers, BestOfSkinCare,
+from .modelsxs import (
+    FeatureProducts, BestSellers, BestOfSkinCare,
     BestOfImportedProducts, BestOfHairCare, BestOfFragrance,
     BestOfColorCosmetic, BestOfBodyCare
 )
+
 # Registering all category models separately
 admin.site.register(FeatureProducts)
 admin.site.register(BestSellers)
