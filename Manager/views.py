@@ -458,33 +458,64 @@ def abop(request):
     
 
 
-from Orders.models import Order
+from Orders.models import Order,CartItem,Address
 #@session_auth_required
 
 def orders(request):
     order_list = Order.objects.all()
 
-    return render(request, "Manager/orders.html", {"order_list": order_list})
+    return render(request, "Manager/order/orders.html", {"order_list": order_list})
 
-# def order_detail(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     return render(request, "Manager/order_detail.html", {"order": order})
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'Manager/order/order_detail.html', {'order': order})
 
-# def order_edit(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     if request.method == "POST":
-#         order.payment_mode = request.POST.get("payment_mode")
-#         order.save()
-#         messages.success(request, "Order updated successfully.")
-#         return redirect("orders")
-#     return render(request, "Manager/order_edit.html", {"order": order})
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.delete()
+    messages.success(request, "Order deleted successfully.")
+    return redirect("order_list")
 
-# def order_delete(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     if request.method == "POST":
-#         order.delete()
-#         messages.success(request, "Order deleted successfully.")
-#     return redirect("orders")
+def delete_cart_item(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id)
+    order_id = item.cart.order.id if hasattr(item.cart, 'order') else None  # Get order ID to redirect back
+    item.delete()
+    messages.success(request, "Item removed from cart successfully.")
+    
+    if order_id:
+        return redirect("order_detail", order_id=order_id)  # Redirect to order detail page
+    return redirect("order_list") 
+
+def delete_order(request, order_id):
+    """View to delete an order"""
+    order = get_object_or_404(Order, id=order_id)
+    
+    if request.method == "POST":
+        order.delete()
+        messages.success(request, "Order deleted successfully.")
+        return redirect("order_list")  # Redirect back to orders list
+    
+    return redirect("order_detail", order_id=order_id)
+
+
+def edit_order(request, order_id):
+    """View to edit an order's details"""
+    order = get_object_or_404(Order, id=order_id)
+    addresses = Address.objects.filter(user=order.user)  # Fetch addresses for this user
+
+    if request.method == "POST":
+        payment_mode = request.POST.get("payment_mode")
+        address_id = request.POST.get("address")
+
+        order.payment_mode = payment_mode
+        order.address = Address.objects.get(id=address_id)
+        order.save()
+
+        messages.success(request, "Order updated successfully.")
+        return redirect("order_detail", order_id=order.id)
+
+    return render(request, "Manager/order/edit_order.html", {"order": order, "addresses": addresses})
+
 
 # @session_admin_required
 def customers(request):

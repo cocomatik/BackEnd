@@ -1,0 +1,184 @@
+{% extends 'Manager/base.html' %}
+{% block content %}
+{% load static %}
+
+<h2 class="page-title"><b>Order Management</b></h2>
+
+<style>
+     body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+    }
+    .container {
+        width: 90%;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 { text-align: center; }
+
+    /* Filters Section */
+    .filters {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .search {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .drpdn {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .new-order {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        color: white;
+        background-color: #28a745; /* Green */
+    }
+
+    .new-order:hover {
+        background-color: #218838;
+    }
+
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background: #007bff;
+        color: white;
+    }
+
+    /* Action Buttons */
+    .actions a {
+        text-decoration: none;
+        margin-right: 8px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    .view { background: #17a2b8; color: white; }
+    .edit { background: #ffc107; color: black; }
+    .delete { background: #dc3545; color: white; }
+    .actions a:hover {
+        opacity: 0.8;
+    }
+</style>
+
+<div class="container">
+    <!-- Filters -->
+    <div class="filters">
+        <input type="text" id="searchBox" class="search" placeholder="🔍 Search orders..." onkeyup="filterOrders()">
+        
+        <select class="drpdn">
+            <option>Cancelled</option>
+            <option>Completed</option>
+            <option>Processing</option>
+        </select>
+
+        <select class="drpdn">
+            <option>Last 7 days</option>
+            <option>Last 30 days</option>
+            <option>All Time</option>
+        </select>
+    </div>
+
+    <!-- Orders Table -->
+    <table id="ordersTable">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>User</th>
+                <th>Cart ID</th>
+                <th>Payment Mode</th>
+                <th>Price</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in order_list %}
+            <tr>
+                <td>{{ order.order_number }}</td>
+                <td>{% if order.user.first_name %}{{ order.user.first_name }} {% else %}{{ order.user.email }}{% endif %}</td>
+                <td>{{ order.cart.id }}</td>  
+                <td>{{ order.payment_mode }}</td>
+                <td>₹{{ order.cart.value }}</td> 
+                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                <td class="actions">
+                    <a href="{% url 'order_detail' order.id %}" class="view">View</a>
+                    <a href="{% url 'edit_order' order.id%}" class="edit">Edit</a>
+                    <form method="POST" action="{% url 'delete_order' order.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                        {% csrf_token %}
+                        <button type="submit" class="delete" style="text-decoration: none;margin-right: 8px;padding: 5px 10px;border-radius: 4px;font-size: 14px;display: inline-block; border: none;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" style="text-align: center;">No orders available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this order?");
+    }
+    function filterOrders() {
+        let input = document.getElementById("searchBox").value.toLowerCase();
+        let table = document.getElementById("ordersTable").getElementsByTagName("tbody")[0];
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            let orderIdCell = rows[i].getElementsByTagName("td")[0]; // Order ID column
+            let userCell = rows[i].getElementsByTagName("td")[1]; // User column
+
+            if (orderIdCell && userCell) {
+                let orderIdText = orderIdCell.textContent || orderIdCell.innerText;
+                let userText = userCell.textContent || userCell.innerText;
+
+                if (orderIdText.toLowerCase().includes(input) || userText.toLowerCase().includes(input)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+{% endblock %}
