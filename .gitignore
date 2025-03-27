@@ -1,4 +1,5 @@
 .env
 /zenv
 .vercel
+.pyc
 a.html

@@ -1,7 +1,5 @@
 from django.urls import path
-from Manager.views import bop,dbop,abop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products
-
-# order_detail,order_edit,order_delete
+from Manager.views import bop,dbop,abop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,delete_order,delete_cart_item,edit_order
 
 
 urlpatterns = [
@@ -17,7 +15,9 @@ urlpatterns = [
     path('abop/',abop, name='ad_best_product'),
 
     path("orders/", orders, name="order_list"),
-    # path('order/<int:order_id>/', order_detail, name='order_detail'),  # View order details
-    # path('order/<int:order_id>/edit/', order_edit, name='order_edit'),  # Edit order
-    # path('order/<int:order_id>/delete/', order_delete, name='order_delete'),
+    path('order/<int:order_id>/', order_detail, name='order_detail'),
+    path("order/<int:order_id>/delete/", delete_order, name="delete_order"),
+    path("cart-item/<int:item_id>/delete/", delete_cart_item, name="delete_cart_item"),
+    path("order/<int:order_id>/edit/", edit_order, name="edit_order"),
+ 
 ]

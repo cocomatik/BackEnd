@@ -8,12 +8,20 @@ import random, string
 User = get_user_model()
 
 class CartStatus(models.TextChoices):  
-    ORDERED = "ordered", "Ordered"
-    PENDING = "pending", "Pending"
+    ORDERED = "ORDERED", "ORDERED"
+    PENDING = "PENDING", "PENDING"
+class OrderStatus(models.TextChoices):  
+    PENDING = "PENDING", "PENDING"
+    PROCESSING = "PROCESSING", "PROCESSING"
+    SHIPPED = "SHIPPED", "SHIPPED"
+    DELIVERED = "DELIVERED", "DELIVERED"
+    CANCELLED = "CANCELLED", "CANCELLED"
+    REFUNDED = "REFUNDED", "REFUNDED"
+
 
 class PaymentMode(models.TextChoices):  
-    PG = "paymentgateway", "Payment Gateway"
-    COD = "cashondelivery", "Cash On Delivery"
+    PG = "PG", "PG"
+    COD = "COD", "COD"
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="carts")
@@ -45,6 +53,7 @@ class Order(models.Model):
     order_number = models.CharField(max_length=15, editable=False, unique=True)
     cart = models.OneToOneField(Cart, on_delete=models.CASCADE, related_name="order")  # One order per cart
     payment_mode = models.CharField(max_length=30, choices=PaymentMode.choices)
+    status = models.CharField(max_length=30,choices=OrderStatus.choices,default=OrderStatus.PENDING)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     created_at = models.DateTimeField(auto_now_add=True)
