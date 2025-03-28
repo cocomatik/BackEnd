@@ -517,9 +517,13 @@ def edit_order(request, order_id):
     return render(request, "Manager/order/edit_order.html", {"order": order, "addresses": addresses})
 
 
+from Accounts.models import UserAccount
 # @session_admin_required
 def customers(request):
-    return render(request, "Manager/customers.html")
+    customer_list = UserAccount.objects.all()
+    return render(request, "Manager/customer/customer.html")
+
+
 
 # @session_admin_required
 def reports(request):

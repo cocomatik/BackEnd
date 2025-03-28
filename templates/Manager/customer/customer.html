@@ -1,0 +1,157 @@
+{% extends 'Manager/base.html' %}
+{% block content %}
+{% load static %}
+
+<h2 class="page-title"><b>Customer Management</b></h2>
+<style>
+    /* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Search Box */
+.search-box {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    width: 250px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin-top: 10px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background: #007bff;
+    color: white;
+    text-transform: uppercase;
+}
+
+table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+table tr:hover {
+    background: #f1f1f1;
+}
+
+/* Buttons */
+button {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.view-btn {
+    background: #28a745;
+    color: white;
+}
+
+.view-btn:hover {
+    background: #218838;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 1000px) {
+    .container {
+        display: none;
+    }
+}
+
+</style>
+
+<div class="container">
+    <div class="search-box">
+        <input type="text" id="search" placeholder="🔍 Search users..." onkeyup="searchUsers()">
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Last Login</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="userTable">
+            {% for user in customer_list %}
+            <tr>
+                <td>
+                    <div class="name">
+                        {{ user.name|default:"N/A" }}
+                    </div>
+                </td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone|default:"N/A" }}</td>
+                <td>{{ user.last_login|default:"Never" }}</td>
+                <td>{{user.is_activer}}</td>
+                <td>
+                    <button class="view-btn" onclick="viewUser('{{ user.id }}')">View</button>
+                    <button class="delete-btn" onclick="deleteUser('{{ user.id }}')">Delete</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align:center;">No customers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="{% static 'js/customers.js' %}"></script>
+
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.urls import path
-from Manager.views import bop,dbop,abop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,delete_order,delete_cart_item,edit_order
+from Manager.views import bop,dbop,abop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,delete_order,delete_cart_item,edit_order,customers
 
 
 urlpatterns = [
@@ -19,5 +19,7 @@ urlpatterns = [
     path("order/<int:order_id>/delete/", delete_order, name="delete_order"),
     path("cart-item/<int:item_id>/delete/", delete_cart_item, name="delete_cart_item"),
     path("order/<int:order_id>/edit/", edit_order, name="edit_order"),
+
+    path('customers/',customers,name='customer_list')
  
 ]
