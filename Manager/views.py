@@ -24,10 +24,17 @@ def dashboard(request):
     total_cosmetic_products = POCOS.objects.count()
     total_jewellery_products = POJOS.objects.count()
     total_products = total_cosmetic_products + total_jewellery_products
+    total_orders = Order.objects.count()
+    total_customers = UserAccount.objects.count()
 
-    return render(request, "Manager/dashboard.html", {
-        "total_products": total_products
-    })
+    context = {
+        "total_products": total_products,
+        'total_orders': total_orders,
+        'total_customers': total_customers
+    }
+    
+
+    return render(request, "Manager/dashboard.html", context)
 
 # @session_admin_required
 def products(request):
@@ -512,7 +519,7 @@ def edit_order(request, order_id):
         order.save()
 
         messages.success(request, "Order updated successfully.")
-        return redirect("order_detail", order_id=order.id)
+        return redirect("order_list")
 
     return render(request, "Manager/order/edit_order.html", {"order": order, "addresses": addresses})
 
@@ -521,7 +528,20 @@ from Accounts.models import UserAccount
 # @session_admin_required
 def customers(request):
     customer_list = UserAccount.objects.all()
-    return render(request, "Manager/customer/customer.html")
+    return render(request, "Manager/customer/customer.html",{'customer_list':customer_list})
+
+def customer_details(request, customer_id):
+    customer = get_object_or_404(UserAccount, id=customer_id)  # Fetch customer by ID
+    orders = Order.objects.filter(user=customer)  # Fetch orders of this customer
+    address = Address.objects.filter(user=customer).first()  # Get the first address or None
+
+    context = {
+        'customer': customer,
+        'orders': orders,
+        'address': address  # Pass the single address
+    }
+    
+    return render(request, 'Manager/customer/customer_details.html', context)
 
 
 

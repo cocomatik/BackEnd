@@ -1,9 +1,20 @@
-/* General Page Styling */
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background: #eef2f7; /* Solid background */
+    background-color: #2a2a2a; /* Dark background for the body */
     margin: 0;
+    padding: 0;
+    color: #f5f5f5; /* Light text for general readability */
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 200px; /* Adjusted to match sidebar width */
     padding: 20px;
+    width: calc(100% - 200px); /* Ensuring it doesn't overlap with the sidebar */
+    background-color: #2a2a2a; /* Dark background for the main content */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Dark shadow for depth */
 }
 
 /* Page Title */
@@ -11,186 +22,142 @@ body {
     text-align: center;
     font-size: 26px;
     font-weight: bold;
-    color: #343a40;
+    color: #e3e3e3; /* Light color for page title */
     margin-bottom: 20px;
 }
 
-/* Filter Section */
+/* Filter & Search Container */
 .filter-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
     justify-content: space-between;
-    width: 100%;
-    background: #ffffff;
-    padding: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #3c3c3c; /* Darker background */
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Filter Form */
-.filter-form {
-    display: flex;
-    gap: 10px;
-    flex-grow: 1;
-}
-
-/* Search Box */
 .search-box {
-    flex: 2;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    width: 600px;
+    padding: 10px;
+    border: 2px solid #3498db; /* Blue border */
+    border-radius: 5px;
     font-size: 16px;
-    transition: all 0.3s ease-in-out;
+    background-color: #3c3c3c; /* Darker background */
+    color: white; /* Light text */
 }
 
-.search-box:focus {
-    border-color: #007bff;
-    background: #f0f8ff;
-    outline: none;
-}
-
-/* Search Button */
-.search-btn {
-    padding: 12px 16px;
-    background: #3591f3;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    font-size: 16px;
-}
-
-.search-btn:hover {
-    background: #0056b3;
-    transform: scale(1.05);
-}
-
-/* Filter Dropdowns */
 .filter-dropdown {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: white;
-    cursor: pointer;
-    font-size: 14px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #3498db;
+    width: 200px;
+    height: 40px;
+    font-size: 16px;
+    margin: 10px;
+    background-color: #3c3c3c; /* Darker background */
+    color: white; /* Light text */
 }
 
 /* Add Product Button */
 .add-product-btn {
-    flex: 1;
-    background: #28a745;
+    background-color: #40b85c;
     color: white;
     border: none;
-    cursor: pointer;
+    padding: 10px 20px;
     font-size: 16px;
-    padding: 12px;
-    border-radius: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
     font-weight: bold;
-    transition: all 0.3s ease-in-out;
-    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .add-product-btn:hover {
-    background: #218838;
-    transform: scale(1.05);
+    background-color: #2e8f45;
 }
 
 /* Product Table */
 .product-table {
     width: 100%;
-    border-collapse: collapse; /* Ensures clean table layout */
-    background: #ffffff;
-    border-radius: 12px;
+    border-collapse: collapse;
+    background: #3c3c3c; /* Dark background for table */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
 }
 
-/* Table Headers */
-.product-table th {
-    background: #343a40; /* Solid color */
-    color: white;
-    padding: 14px;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-}
-
-/* Table Cells */
+.product-table th,
 .product-table td {
-    padding: 14px;
+    padding: 12px;
     text-align: center;
-    font-size: 14px;
-    color: #333;
+    border: 1px solid #555; /* Darker borders */
 }
 
-/* Alternate Row Colors */
+.product-table th {
+    background-color: #2980b9; /* Deep blue */
+    color: white;
+    font-size: 16px;
+}
+
 .product-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #444; /* Darker gray for alternating rows */
 }
 
-
-/* Product Image */
-.product-image {
-    width: 60px;   /* Set a fixed width */
-    height: 60px;  /* Set the same height for a square */
-    object-fit: cover; /* Ensures the image fills the box without distortion */
+.product-table td img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
     border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Action Buttons */
 .action-buttons {
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    align-items: center; /* Center horizontally */
-    gap: 5px; /* Space between buttons */
+    justify-content: center;
 }
 
-/* Ensure buttons are the same size and aligned properly */
-.action-buttons a {
-    display: inline-block; /* Ensures proper alignment */
-    min-width: 60px; /* Reduced width */
+.edit-btn, .delete-btn {
+    display: inline-block;
+    width: 90px; /* Equal width for both buttons */
+    padding: 8px;
     text-align: center;
-    padding: 6px 10px; /* Smaller padding */
-    font-size: 14px; /* Slightly smaller text */
-    border-radius: 5px; /* Adjusted border radius */
     text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    transition: 0.3s;
     font-weight: bold;
-    transition: all 0.3s ease-in-out;
+    margin: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Edit Button */
-.action-buttons .edit-btn {
-    background: #ffc107;
-    color: white;
+.edit-btn {
+    background-color: #1abc9c; /* Teal */
 }
 
-/* Delete Button */
-.action-buttons .delete-btn {
-    background: #dc3545;
-    color: white;
+.edit-btn:hover {
+    background-color: #16a085;
 }
 
+.delete-btn {
+    background-color: #e74c3c; /* Bright red */
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
 
 /* No Products Message */
 .no-products {
     text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 20px;
-    color: #343a40;
+    font-size: 16px;
+    color: #bbb; /* Lighter gray text */
+    padding: 15px;
 }
-.section-title{
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    color: #343a40;
-    margin-top: 8px;
+
+/* Hide Everything on Small Screens */
+@media (max-width: 1000px) {
+    .sidebar, .main-content {
+        display: none;
+    }
 }

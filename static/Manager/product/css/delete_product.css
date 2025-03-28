@@ -1,85 +1,122 @@
-/* Card Container */
-.delete-card {
-    max-width: 500px;
-    margin: 40px auto;
-    background: #d4e9ff;  /* Light blue background */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    color: #05445E; /* Dark blue text for contrast */
-    border: 1px solid #b6d4fe;
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
 }
 
-/* Warning Text */
-.delete-text {
-    font-size: 18px;
+/* Delete Card */
+.delete-card {
+    width: 50%;
+    margin: 80px auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Delete Title */
+h2 {
+    color: #dc3545;
+    font-size: 28px;
     font-weight: bold;
     margin-bottom: 15px;
 }
 
+/* Delete Text */
+.delete-text {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 /* Product Card */
 .product-card {
-    background: #ffffff;
-    border-radius: 8px;
+    display: flex;
+    background: #f1f1f1;
     padding: 15px;
-    text-align: left;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border: 1px solid #b6d4fe;
+    border-radius: 8px;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-/* Product Image */
 .product-image {
     width: 100px;
-    height: auto;
-    border-radius: 5px;
-    display: block;
-    margin: 10px auto;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 3px solid #dc3545;
 }
 
-/* Product Information */
+.product-info {
+    text-align: left;
+}
+
 .product-info p {
     margin: 5px 0;
-    color: #333;
+    font-size: 16px;
+    color: #444;
 }
 
-/* Buttons */
+.product-info strong {
+    color: #222;
+}
+
+/* Button Group */
 .button-group {
-    margin-top: 15px;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
+    margin-top: 15px;
 }
 
 /* Delete Button */
 .btn-danger {
-    background: #d9534f;
+    background-color: #dc3545;
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
+    transition: 0.3s;
 }
 
 .btn-danger:hover {
-    background: #c82333;
+    background-color: #b02a37;
 }
 
 /* Cancel Button */
 .btn-secondary {
-    background: #6c757d;
+    background-color: #6c757d;
     color: white;
     padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     text-decoration: none;
-    display: inline-block;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
 .btn-secondary:hover {
-    background: #565e64;
+    background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 1000px) {
+    .sidebar, .main-content {
+        display: none;
+    }
+
+    .delete-card {
+        width: 90%;
+    }
+
+    .product-card {
+        flex-direction: column;
+        text-align: center;
+    }
 }

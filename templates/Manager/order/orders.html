@@ -5,20 +5,26 @@
 <h2 class="page-title"><b>Order Management</b></h2>
 
 <style>
-     body {
+    body {
         font-family: Arial, sans-serif;
         margin: 20px;
-        background-color: #f4f4f4;
+        background-color: #2c2c2c; /* Darker Background */
+        color: #e1e1e1; /* Light Text */
     }
+
     .container {
         width: 90%;
         margin: auto;
-        background: white;
+        background: #3b3b3b; /* Darker Background */
         padding: 20px;
         border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Softer Shadow */
     }
-    h2 { text-align: center; }
+
+    h2 {
+        text-align: center;
+        color: #e1e1e1; /* Light Text */
+    }
 
     /* Filters Section */
     .filters {
@@ -32,18 +38,32 @@
     .search {
         flex: 1;
         padding: 10px;
-        border: 1px solid #ddd;
+        border: 1px solid #555; /* Darker Border */
         border-radius: 4px;
         font-size: 16px;
+        background: #444; /* Darker Input Background */
+        color: #e1e1e1; /* Light Text */
+        transition: border-color 0.3s ease;
+    }
+
+    .search:focus {
+        border-color: #3498db; /* Highlight Border on Focus */
+        outline: none;
     }
 
     .drpdn {
         padding: 10px;
-        border: 1px solid #ddd;
+        border: 1px solid #555;
         border-radius: 4px;
-        background: white;
+        background: #444;
         font-size: 16px;
+        color: #e1e1e1;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .drpdn:hover {
+        background: #555; /* Darker on Hover */
     }
 
     .new-order {
@@ -54,10 +74,11 @@
         font-size: 16px;
         color: white;
         background-color: #28a745; /* Green */
+        transition: background-color 0.3s ease;
     }
 
     .new-order:hover {
-        background-color: #218838;
+        background-color: #218838; /* Darker Green */
     }
 
     /* Table Styling */
@@ -70,11 +91,11 @@
     th, td {
         padding: 10px;
         text-align: center;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #555; /* Darker Border */
     }
 
     th {
-        background: #007bff;
+        background: #007bff; /* Blue Header */
         color: white;
     }
 
@@ -86,15 +107,42 @@
         border-radius: 4px;
         font-size: 14px;
         display: inline-block;
+        transition: background-color 0.3s ease, opacity 0.3s ease;
     }
 
-    .view { background: #17a2b8; color: white; }
-    .edit { background: #ffc107; color: black; }
-    .delete { background: #dc3545; color: white; }
+    .view {
+        background: #17a2b8; /* Light Blue */
+        color: white;
+    }
+
+    .edit {
+        background: #ffc107; /* Yellow */
+        color: black;
+    }
+
+    .delete {
+        background: #dc3545; /* Red */
+        color: white;
+    }
+
     .actions a:hover {
         opacity: 0.8;
     }
+
+    .view:hover {
+        background: #138496; /* Darker Blue */
+    }
+
+    .edit:hover {
+        background: #e0a800; /* Darker Yellow */
+    }
+
+    .delete:hover {
+        background: #c82333; /* Darker Red */
+    }
+
 </style>
+
 
 <div class="container">
     <!-- Filters -->

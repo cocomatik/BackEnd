@@ -1,16 +1,16 @@
 /* Background with Soft Gradient */
 body {
-    background: linear-gradient(to right, #B0DAF1, #8CB3D9); /* Soft Blue Gradient */
+    background: linear-gradient(to right, #4A4A4A, #2A2A2A); /* Darker Gradient */
 }
 
-/* Container Styling with Balanced Mid-Tone */
+/* Container Styling with Balanced Dark-Tone */
 .container {
     max-width: 800px;
     margin: 40px auto;
-    background: #E3ECF3; /* Muted Blue-Gray */
+    background: #3C3C3C; /* Dark Gray for container */
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Soft Shadow for Depth */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* Darker Shadow for Depth */
 }
 
 /* Page Title */
@@ -18,7 +18,7 @@ body {
     text-align: center;
     font-size: 26px;
     font-weight: bold;
-    color: #2C3E50; /* Deep Gray-Blue */
+    color: #E1E1E1; /* Light Gray for better contrast */
     margin-bottom: 20px;
 }
 
@@ -32,7 +32,7 @@ body {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
-    color: #2C5A85; /* Medium Blue */
+    color: #A1C4E7; /* Soft Blue for labels */
 }
 
 /* Input & Select Styling */
@@ -40,16 +40,16 @@ body {
 .form-select {
     width: 100%;
     padding: 10px;
-    border: 2px solid #4A90E2; /* Mid Blue Border */
+    border: 2px solid #5A6B7A; /* Soft Gray-Blue Border */
     border-radius: 8px;
     font-size: 16px;
-    background: #F1F5F8; /* Light Muted Gray */
-    color: #2C3E50;
+    background: #4A4A4A; /* Darker Background for inputs */
+    color: #E1E1E1; /* Light Text */
 }
 
 /* Placeholder Color */
 .form-control::placeholder {
-    color: #5D6D7E;
+    color: #A9B0B9;
 }
 
 /* Side-by-Side Layout */
@@ -66,17 +66,17 @@ body {
 /* File Input Styling */
 input[type="file"] {
     padding: 8px;
-    background: #F1F5F8;
-    border: 2px solid #4A90E2;
+    background: #4A4A4A; /* Darker Background */
+    border: 2px solid #5A6B7A;
     border-radius: 6px;
-    color: #2C3E50;
+    color: #E1E1E1;
 }
 
 /* Submit Button */
 .btn-submit {
     width: 100%;
     padding: 12px;
-    background: #4A90E2; /* Mid Blue */
+    background: #5A6B7A; /* Soft Blue-Green */
     color: white;
     font-weight: bold;
     border: none;
@@ -87,6 +87,6 @@ input[type="file"] {
 }
 
 .btn-submit:hover {
-    background: #357ABD; /* Slightly Darker Blue */
+    background: #4C5864; /* Slightly Darker Blue-Green */
     transform: scale(1.05);
 }
