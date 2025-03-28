@@ -11,4 +11,4 @@ class UserSerializer(serializers.ModelSerializer):
     """Serializes user details"""
     class Meta:
         model = UserAccount
-        fields = ["id", "name", "email"]
+        fields = ["id", "name", "email","phone"]
