@@ -1,19 +1,20 @@
 /* General Styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
+    background-color: #343a40; /* Darker background */
     margin: 0;
     padding: 0;
+    color: white; /* Adjust text color for contrast */
 }
 
 /* Delete Card */
 .delete-card {
     width: 50%;
     margin: 80px auto;
-    background: #ffffff;
+    background: #212529; /* Darker card background */
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
     text-align: center;
 }
 
@@ -28,19 +29,19 @@ h2 {
 /* Delete Text */
 .delete-text {
     font-size: 18px;
-    color: #333;
+    color: #ddd; /* Lighter text for readability */
     margin-bottom: 20px;
 }
 
 /* Product Card */
 .product-card {
     display: flex;
-    background: #f1f1f1;
+    background: #495057; /* Dark gray background */
     padding: 15px;
     border-radius: 8px;
     align-items: center;
     gap: 15px;
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 3px 10px rgba(255, 255, 255, 0.1);
     margin-bottom: 20px;
 }
 
@@ -59,11 +60,11 @@ h2 {
 .product-info p {
     margin: 5px 0;
     font-size: 16px;
-    color: #444;
+    color: #f8f9fa; /* Lighter text */
 }
 
 .product-info strong {
-    color: #222;
+    color: #ffffff;
 }
 
 /* Button Group */
