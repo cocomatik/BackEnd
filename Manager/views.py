@@ -15,21 +15,34 @@ from POCOS.modelsxs import BestOfBodyCare,BestOfColorCosmetic,BestOfFragrance,Be
 #BEST_OF_Jewellery
 from POJOS.modelsxs import BestOfBangles,BestOfBracelets,BestOfChains,BestOfEarRings,BestOfFingerRings,BestOfImportedJewellery,BestOfNecklace,BestOfNoseRings,BestOfOneGramGoldenJewellery,BestOfPendants,BestOfWeddingJewellery,BestSellers as BSJ,FeatureProducts as FPJ
 
+from Orders.models import Order
 
 def landing(request):
     return render(request,"landing/landing.html")
 
-# @session_admin_required
+# @session_auth_required
 def dashboard(request):
     total_cosmetic_products = POCOS.objects.count()
     total_jewellery_products = POJOS.objects.count()
     total_products = total_cosmetic_products + total_jewellery_products
+    total_orders = Order.objects.count()
+    total_customers = UserAccount.objects.count()
+    orders=Order.objects.all()
+    value=0
+    for order in orders:
+        value += order.cart.value
 
-    return render(request, "Manager/dashboard.html", {
-        "total_products": total_products
-    })
+    context = {
+        "total_products": total_products,
+        'total_orders': total_orders,
+        'total_customers': total_customers,
+        'value':value
+    }
+    
 
-# @session_admin_required
+    return render(request, "Manager/dashboard.html", context)
+
+#@session_auth_required
 def products(request):
     query = request.GET.get('q', '').strip()
     selected_category = request.GET.get('category', '')
@@ -88,7 +101,7 @@ def products(request):
 
 
 
-# @session_admin_required
+# @session_auth_required
 def add_product(request):
     categories = []
     selected_type = request.GET.get("product_type", request.POST.get("product_type", ""))  # Remember selection
@@ -157,7 +170,7 @@ def add_product(request):
         "selected_type": selected_type
     })
 
-# @session_admin_required
+# @session_auth_required
 def edit_product(request, product_id):
     # Determine if the product is from POCOS (Cosmetics) or POJOS (Jewellery)
     product = None
@@ -216,7 +229,7 @@ def edit_product(request, product_id):
 
 
 
-# @session_admin_required
+# @session_auth_required
 def delete_product(request, product_id):
     # Check if the product exists in either POCOS or POJOS
     product = POCOS.objects.filter(sku=product_id).first() or POJOS.objects.filter(sku=product_id).first()
@@ -234,8 +247,10 @@ def delete_product(request, product_id):
 
     return render(request, "Manager/product/delete_product.html", {"product": product, "product_type": product_type})
 
-
-
+# @session_auth_required
+def best_of_products(request):
+    return render(request,"Manager/product/best_of_products.html",)
+# @session_auth_required
 def bop(request):
     tp = request.POST.get('type')
     nm = request.POST.get('name')
@@ -373,7 +388,7 @@ def bop(request):
     "qrd":q
     }
     return render(request, "Manager/product/best.html", context)
-
+# @session_auth_required
 def dbop(request):
     #sku=product id
     sku = request.POST.get('sku')
@@ -409,7 +424,7 @@ def dbop(request):
     
     context = {'prd': p, 'tp': tpn, 'nm': nmn, 'qrd':q}
     return render(request, 'Manager/product/best.html', context)
-    
+# @session_auth_required
 def abop(request):
     lst = request.POST.getlist("selected_products")
     #tpn = product type(" POCOS/POJOS as string") 
@@ -459,8 +474,8 @@ def abop(request):
 
 
 from Orders.models import Order,CartItem,Address
-#@session_auth_required
 
+#@session_auth_required
 def orders(request):
     order_list = Order.objects.all()
 
@@ -512,31 +527,46 @@ def edit_order(request, order_id):
         order.save()
 
         messages.success(request, "Order updated successfully.")
-        return redirect("order_detail", order_id=order.id)
+        return redirect("order_list")
 
     return render(request, "Manager/order/edit_order.html", {"order": order, "addresses": addresses})
 
 
-# @session_admin_required
+from Accounts.models import UserAccount
+# @session_auth_required
 def customers(request):
-    return render(request, "Manager/customers.html")
+    customer_list = UserAccount.objects.all()
+    return render(request, "Manager/customer/customer.html",{'customer_list':customer_list})
+# @session_auth_required
+def customer_details(request, customer_id):
+    customer = get_object_or_404(UserAccount, id=customer_id)  # Fetch customer by ID
+    orders = Order.objects.filter(user=customer)  # Fetch orders of this customer
+    address = Address.objects.filter(user=customer).first()  # Get the first address or None
 
-# @session_admin_required
+    context = {
+        'customer': customer,
+        'orders': orders,
+        'address': address  # Pass the single address
+    }
+    
+    return render(request, 'Manager/customer/customer_details.html', context)
+
+
+
+# @session_auth_required
 def reports(request):
     return render(request, "Manager/reports.html")
 
-# @session_admin_required
+# @session_auth_required
 def settings(request):
     return render(request, "Manager/settings.html")
 
-# @session_admin_required
+# @session_auth_required
 def logout_view(request):
     return render(request, "Manager/login.html")
 
 
 
-def best_of_products(request):
-    
-    return render(request,"Manager/product/best_of_products.html",)
+
 
 

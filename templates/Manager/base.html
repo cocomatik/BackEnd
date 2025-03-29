@@ -26,6 +26,7 @@
     left: 0;
     overflow-y: auto;
     transition: width 0.3s;
+    position: fixed;
 }
 
 .sidebar a {
@@ -98,7 +99,7 @@
 }
 
 /* Hide everything on small screens */
-@media (max-width: 992px) {
+@media (max-width: 1000px) {
     .sidebar, .main-content {
         display: none;
     }
@@ -123,6 +124,8 @@
         
         <a href="{% url 'best_of_products' %}"><i class="fa-solid fa-star"></i> Best Items</a>
         <a href="{% url 'order_list' %}"><i class="fa-solid fa-receipt"></i> Orders</a>
+        <a href="{% url 'customer_list' %}"><i class="fas fa-users"></i> Customers</a>
+
     </div>
 
     <!-- Main Content -->

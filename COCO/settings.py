@@ -7,8 +7,7 @@ import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-SECRET_KEY = 'django-insecure-(zi1i7$!50u8o)et6g!icnlz=9@_0*6ftp6m6eji*fq8#n37c9'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('true', '1')
 
@@ -33,9 +32,11 @@ INSTALLED_APPS = [
     'Manager.apps.ManagerConfig',
     'Api.apps.ApiConfig',
 
+    'django_extensions',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+
 
 ]
 

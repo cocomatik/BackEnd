@@ -1,0 +1,178 @@
+{% extends 'Manager/base.html' %}
+{% block content %}
+{% load static %}
+
+<h2 class="page-title"><b>Customer Management</b></h2>
+
+<style>
+    /* General Styling */
+    body {
+        font-family: 'Roboto', sans-serif; /* Modern font */
+        background-color: #2c2f38; /* Dark background */
+        color: #f5f5f5; /* Light text for contrast */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Page Title */
+    .page-title {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 28px;
+        font-weight: bold;
+        color: #f5f5f5; /* Light text for contrast */
+    }
+
+    /* Container */
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+        background: #1f2229; /* Darker container background */
+        padding: 30px;
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .container:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* More shadow on hover */
+    }
+
+    /* Search Box */
+    .search-box {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+
+    .search-box input {
+        width: 300px;
+        padding: 12px;
+        border: 2px solid #444; /* Darker border */
+        border-radius: 8px; /* Rounded input */
+        font-size: 16px;
+        background: #333; /* Dark input background */
+        color: #f5f5f5; /* Light text */
+        transition: border-color 0.3s;
+    }
+
+    .search-box input:focus {
+        border-color: #007bff; /* Blue border on focus */
+        outline: none;
+    }
+
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        border: 1px solid #444; /* Darker border */
+        padding: 12px;
+        text-align: left;
+        font-size: 16px;
+        color: #f5f5f5; /* Light text */
+    }
+
+    table th {
+        background: #343a40; /* Dark header */
+        color: #f5f5f5; /* Light text */
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    table tr:nth-child(even) {
+        background: #2c3036; /* Darker alternating rows */
+    }
+
+    table tr:hover {
+        background: #3a3f47; /* Slightly lighter background on hover */
+    }
+
+    /* Buttons */
+    .view-btn, .delete-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .view-btn {
+        background: #28a745; /* Green button */
+        color: white;
+    }
+
+    .view-btn:hover {
+        background: #218838; /* Darker green on hover */
+    }
+
+    .delete-btn {
+        background: #dc3545; /* Red button */
+        color: white;
+    }
+
+    .delete-btn:hover {
+        background: #c82333; /* Darker red on hover */
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 15px;
+        }
+
+        .search-box input {
+            width: 100%;
+        }
+
+        table {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="search-box">
+        <input type="text" id="search" placeholder="🔍 Search users...">
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Last Login</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="userTable">
+            {% for user in customer_list %}
+            <tr>
+                <td>{{ user.name|default:"N/A" }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone|default:"N/A" }}</td>
+                <td>{{ user.last_login|default:"Never" }}</td>
+                <td>{% if user.is_active %} Yes {% else %} No {% endif %}</td>
+                <td>
+                    <a href="{% url 'customer_details' user.id %}" class="view-btn">View</a>
+                    <a href="" class="delete-btn">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align:center;">No customers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
