@@ -1,38 +1,43 @@
 #!/bin/bash
-set -e
+set -e  # Exit immediately on error
 
-echo "Deployment started ..."
+echo "🚀 Deployment started ..."
 
-# Pull the latest version of the app
-echo "Copying New changes...."
+# Navigate to project directory
+cd ~/Backend || { echo "❌ Failed to navigate to Backend directory"; exit 1; }
+
+# Pull latest changes
+echo "📦 Pulling latest changes..."
 git pull origin master
-echo "New changes copied to server !"
+echo "✅ New changes copied to server!"
 
-# Activate Virtual Env
-#Syntax:- source virtual_env_name/bin/activate
+# Activate Virtual Environment
+echo "🐍 Activating Virtual Environment..."
 source zenv/bin/activate
-echo "Virtual env 'mb' Activated !"
+echo "✅ Virtual env 'zenv' Activated!"
 
-echo "Clearing Cache..."
-python manage.py clean_pyc
-python manage.py clear_cache
+# Clearing Cache
+echo "🗑️ Clearing Cache..."
+find . -name "*.pyc" -delete
+python manage.py clear_cache || echo "⚠️ No clear_cache command found, skipping."
 
-echo "Installing Dependencies..."
+# Install Dependencies
+echo "📦 Installing Dependencies..."
 pip install -r requirements.txt --no-input
 
-echo "Serving Static Files..."
+# Collect Static Files
+echo "🎨 Collecting Static Files..."
 python manage.py collectstatic --noinput
 
-echo "Running Database migration..."
-python manage.py makemigrations
+# Run Migrations
+echo "🔄 Running Database Migration..."
 python manage.py migrate
 
-# Deactivate Virtual Env
+# Deactivate Virtual Environment
 deactivate
-echo "Virtual env 'zenv' Deactivated !"
+echo "✅ Virtual env 'zenv' Deactivated!"
 
-echo "Reloading App..."
-#kill -HUP `ps -C gunicorn fch -o pid | head -n 1`
-ps aux |grep gunicorn |grep inner_project_folder_name | awk '{ print $2 }' |xargs kill -HUP
-
-echo "Deployment Finished !"
+# Restart Gunicorn
+echo "🔄 Reloading Gunicorn..."
+pkill -HUP -f "gunicorn" || echo "⚠️ Gunicorn process not found, starting a new one..."
+echo "✅ Deployment Finished!"

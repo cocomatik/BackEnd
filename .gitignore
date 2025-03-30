@@ -3,6 +3,7 @@
 .vercel
 .pyc
 a.html
+static
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

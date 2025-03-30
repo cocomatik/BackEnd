@@ -16,6 +16,7 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
 
 INSTALLED_APPS = [
+    "cloudinary_storage",
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     'Api.apps.ApiConfig',
 
     'django_extensions',
+    "cloudinary",
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -132,8 +134,6 @@ cloudinary.config(
 )
 
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-
 
 AUTH_USER_MODEL = "Accounts.UserAccount"
 
@@ -164,11 +164,9 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" 
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_STORAGE = "cloudinary_storage.storage.StaticHashedCloudinaryStorage"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
