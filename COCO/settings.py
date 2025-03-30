@@ -16,7 +16,6 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
 
 INSTALLED_APPS = [
-    "cloudinary_storage",
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
