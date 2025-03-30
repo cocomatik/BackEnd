@@ -6,7 +6,7 @@ from pathlib import Path
 import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+CDN_URL =os.getenv('CDN_URL')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DJANGO_DEBUG')
@@ -159,10 +159,13 @@ USE_I18N = True
 USE_TZ = True 
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_STORAGE = "cloudinary_storage.storage.StaticHashedCloudinaryStorage"
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+STATIC_URL = f"{CDN_URL}/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"] 
+STATIC_ROOT = BASE_DIR / "staticfiles"   
 
+MEDIA_URL = f"{CDN_URL}/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
+# WhiteNoise for Static File Serving
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

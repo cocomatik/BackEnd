@@ -4,6 +4,7 @@
 .pyc
 a.html
 static
+staticfiles
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
