@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.db import transaction
 from POCOS.models import POCOS, Category as POCOSCategory
 from POJOS.models import POJOS, Category as POJOSCategory
-#from Accounts.decorators import session_auth_required
+from Accounts.decorators import session_auth_required
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
 
@@ -20,7 +20,7 @@ from Orders.models import Order
 def landing(request):
     return render(request,"landing/landing.html")
 
-# @session_auth_required
+@session_auth_required
 def dashboard(request):
     total_cosmetic_products = POCOS.objects.count()
     total_jewellery_products = POJOS.objects.count()
@@ -42,7 +42,7 @@ def dashboard(request):
 
     return render(request, "Manager/dashboard.html", context)
 
-#@session_auth_required
+@session_auth_required
 def products(request):
     query = request.GET.get('q', '').strip()
     selected_category = request.GET.get('category', '')
@@ -101,7 +101,7 @@ def products(request):
 
 
 
-# @session_auth_required
+@session_auth_required
 def add_product(request):
     categories = []
     selected_type = request.GET.get("product_type", request.POST.get("product_type", ""))  # Remember selection
@@ -170,7 +170,7 @@ def add_product(request):
         "selected_type": selected_type
     })
 
-# @session_auth_required
+@session_auth_required
 def edit_product(request, product_id):
     # Determine if the product is from POCOS (Cosmetics) or POJOS (Jewellery)
     product = None
@@ -229,7 +229,7 @@ def edit_product(request, product_id):
 
 
 
-# @session_auth_required
+@session_auth_required
 def delete_product(request, product_id):
     # Check if the product exists in either POCOS or POJOS
     product = POCOS.objects.filter(sku=product_id).first() or POJOS.objects.filter(sku=product_id).first()
@@ -247,10 +247,11 @@ def delete_product(request, product_id):
 
     return render(request, "Manager/product/delete_product.html", {"product": product, "product_type": product_type})
 
-# @session_auth_required
+@session_auth_required
 def best_of_products(request):
     return render(request,"Manager/product/best_of_products.html",)
-# @session_auth_required
+
+@session_auth_required
 def bop(request):
     tp = request.POST.get('type')
     nm = request.POST.get('name')
@@ -388,43 +389,46 @@ def bop(request):
     "qrd":q
     }
     return render(request, "Manager/product/best.html", context)
-# @session_auth_required
+
+@session_auth_required
 def dbop(request):
-    #sku=product id
-    sku = request.POST.get('sku')
-    #tpn = product type(" POCOS/POJOS as string") 
-    tpn = (request.POST.get('type'))
-    #tp = search particular variables by tpn
-    tp = globals().get(tpn)
-    #nmn = bestOfCategories as a string
-    nmn = (request.POST.get('name'))
-    if nmn == 'BestSellers'  :
-        if tp == POCOS:
-            nm=BSC
+        #sku=product id
+        sku = request.POST.get('sku')
+        #tpn = product type(" POCOS/POJOS as string") 
+        tpn = (request.POST.get('type'))
+        #tp = search particular variables by tpn
+        tp = globals().get(tpn)
+        #nmn = bestOfCategories as a string
+        nmn = (request.POST.get('name'))
+        if nmn == 'BestSellers'  :
+            if tp == POCOS:
+                nm=BSC
+            else:
+                nm=BSJ
+        elif nmn =='FeatureProducts' :
+            if tp == POCOS:
+                nm=FPC
+            else:
+                nm=FPJ
+        else :
+            nm=globals().get(nmn)
+        pm = nm.objects.get(id=1)
+        pn = tp.objects.get(sku=sku)
+        pm.objs.remove(pn)
+        p = pm.objs.all().order_by('title')
+        x = p.first().category if p.exists() else None
+        if nm =='BestSellers' or nm == 'FeatureProducts':
+            z=POCOS.objects.all()
         else:
-            nm=BSJ
-    elif nmn =='FeatureProducts' :
-        if tp == POCOS:
-            nm=FPC
-        else:
-            nm=FPJ
-    else :
-        nm=globals().get(nmn)
-    pm = nm.objects.get(id=1)
-    pn = tp.objects.get(sku=sku)
-    pm.objs.remove(pn)
-    p = pm.objs.all().order_by('title')
-    x = p.first().category if p.exists() else None
-    if nm =='BestSellers' or nm == 'FeatureProducts':
-        z=POCOS.objects.all()
-    else:
-        z = POCOS.objects.filter(category= f'{x}')
-    q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-    
-    
-    context = {'prd': p, 'tp': tpn, 'nm': nmn, 'qrd':q}
-    return render(request, 'Manager/product/best.html', context)
-# @session_auth_required
+            z = POCOS.objects.filter(category= f'{x}')
+        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        
+        
+        context = {'prd': p, 'tp': tpn, 'nm': nmn, 'qrd':q}
+        return render(request, 'Manager/product/best.html', context)
+
+
+@session_auth_required
 def abop(request):
     lst = request.POST.getlist("selected_products")
     #tpn = product type(" POCOS/POJOS as string") 
@@ -475,22 +479,22 @@ def abop(request):
 
 from Orders.models import Order,CartItem,Address
 
-#@session_auth_required
+@session_auth_required
 def orders(request):
-    order_list = Order.objects.all()
+    order_list = Order.objects.all().order_by('-created_at')
 
     return render(request, "Manager/order/orders.html", {"order_list": order_list})
-
+@session_auth_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'Manager/order/order_detail.html', {'order': order})
-
+@session_auth_required
 def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.delete()
     messages.success(request, "Order deleted successfully.")
     return redirect("order_list")
-
+@session_auth_required
 def delete_cart_item(request, item_id):
     item = get_object_or_404(CartItem, id=item_id)
     order_id = item.cart.order.id if hasattr(item.cart, 'order') else None  # Get order ID to redirect back
@@ -500,7 +504,7 @@ def delete_cart_item(request, item_id):
     if order_id:
         return redirect("order_detail", order_id=order_id)  # Redirect to order detail page
     return redirect("order_list") 
-
+@session_auth_required
 def delete_order(request, order_id):
     """View to delete an order"""
     order = get_object_or_404(Order, id=order_id)
@@ -512,7 +516,7 @@ def delete_order(request, order_id):
     
     return redirect("order_detail", order_id=order_id)
 
-
+@session_auth_required
 def edit_order(request, order_id):
     """View to edit an order's details"""
     order = get_object_or_404(Order, id=order_id)
@@ -533,7 +537,7 @@ def edit_order(request, order_id):
 
 
 from Accounts.models import UserAccount
-# @session_auth_required
+@session_auth_required
 def customers(request):
     customer_list = UserAccount.objects.all()
     return render(request, "Manager/customer/customer.html",{'customer_list':customer_list})

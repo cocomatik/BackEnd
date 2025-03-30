@@ -1,0 +1,165 @@
+ body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #2a2a2a; /* Dark Background */
+    color: #f0f0f0; /* Light Text */
+    height: 100%;
+    overflow: hidden; /* Prevent body scroll */
+}
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #e1e1e1;
+    padding: 15px 0;
+    background-color: #1f1f1f; /* Darker Background */
+    border-bottom: 3px solid #3498db;
+}
+
+/* Container (Full Screen) */
+.container {
+    width: 95%;
+    margin: auto;
+    background: #1f1f1f;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    height: calc(100vh - 70px); /* Full height minus title */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+    .search {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #555; /* Darker Border */
+        border-radius: 4px;
+        font-size: 16px;
+        background: #444; /* Darker Input Background */
+        color: #e1e1e1; /* Light Text */
+        transition: border-color 0.3s ease;
+    }
+
+    .search:focus {
+        border-color: #3498db; /* Highlight Border on Focus */
+        outline: none;
+    }
+
+    .drpdn {
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 4px;
+        background: #444;
+        font-size: 16px;
+        color: #e1e1e1;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .drpdn:hover {
+        background: #555; /* Darker on Hover */
+    }
+
+    .new-order {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        color: white;
+        background-color: #28a745; /* Green */
+        transition: background-color 0.3s ease;
+    }
+
+    .new-order:hover {
+        background-color: #218838; /* Darker Green */
+    }
+
+    .table-wrapper {
+    flex-grow: 1;
+    overflow-y: auto; /* Enables scrolling */
+    border-radius: 8px;
+}
+
+/* Scrollbar Customization */
+.table-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #2978b5;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+/* Table Header (Fixed on Scroll) */
+thead {
+    position: sticky;
+    top: 0;
+    background: #007bff;
+    color: white;
+    z-index: 10;
+}
+
+/* Table Cells */
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #555;
+}
+
+th {
+    background: #007bff;
+    color: white;
+}
+
+/* Alternating Row Colors */
+tbody tr:nth-child(even) {
+    background-color: #2b2b2b;
+}
+
+tbody tr:hover {
+    background-color: #3c3c3c;
+}
+
+/* Buttons */
+.actions a, .delete {
+    text-decoration: none;
+    margin-right: 5px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: inline-block;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.view { background: #17a2b8; color: white; }
+.edit { background: #ffc107; color: black; }
+.delete { background: #dc3545; color: white; cursor: pointer; }
+
+.view:hover { background: #138496; }
+.edit:hover { background: #e0a800; }
+.delete:hover { background: #c82333; }

@@ -2,204 +2,62 @@
 {% block content %}
 {% load static %}
 
-<h2 class="page-title"><b>Order Management</b></h2>
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #2c2c2c; /* Darker Background */
-        color: #e1e1e1; /* Light Text */
-    }
-
-    .container {
-        width: 90%;
-        margin: auto;
-        background: #3b3b3b; /* Darker Background */
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Softer Shadow */
-    }
-
-    h2 {
-        text-align: center;
-        color: #e1e1e1; /* Light Text */
-    }
-
-    /* Filters Section */
-    .filters {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-    }
-
-    .search {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #555; /* Darker Border */
-        border-radius: 4px;
-        font-size: 16px;
-        background: #444; /* Darker Input Background */
-        color: #e1e1e1; /* Light Text */
-        transition: border-color 0.3s ease;
-    }
-
-    .search:focus {
-        border-color: #3498db; /* Highlight Border on Focus */
-        outline: none;
-    }
-
-    .drpdn {
-        padding: 10px;
-        border: 1px solid #555;
-        border-radius: 4px;
-        background: #444;
-        font-size: 16px;
-        color: #e1e1e1;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .drpdn:hover {
-        background: #555; /* Darker on Hover */
-    }
-
-    .new-order {
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        color: white;
-        background-color: #28a745; /* Green */
-        transition: background-color 0.3s ease;
-    }
-
-    .new-order:hover {
-        background-color: #218838; /* Darker Green */
-    }
-
-    /* Table Styling */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th, td {
-        padding: 10px;
-        text-align: center;
-        border-bottom: 1px solid #555; /* Darker Border */
-    }
-
-    th {
-        background: #007bff; /* Blue Header */
-        color: white;
-    }
-
-    /* Action Buttons */
-    .actions a {
-        text-decoration: none;
-        margin-right: 8px;
-        padding: 5px 10px;
-        border-radius: 4px;
-        font-size: 14px;
-        display: inline-block;
-        transition: background-color 0.3s ease, opacity 0.3s ease;
-    }
-
-    .view {
-        background: #17a2b8; /* Light Blue */
-        color: white;
-    }
-
-    .edit {
-        background: #ffc107; /* Yellow */
-        color: black;
-    }
-
-    .delete {
-        background: #dc3545; /* Red */
-        color: white;
-    }
-
-    .actions a:hover {
-        opacity: 0.8;
-    }
-
-    .view:hover {
-        background: #138496; /* Darker Blue */
-    }
-
-    .edit:hover {
-        background: #e0a800; /* Darker Yellow */
-    }
-
-    .delete:hover {
-        background: #c82333; /* Darker Red */
-    }
-
-</style>
-
+<link rel="stylesheet" href="{% static 'Manager/order/css/order.css' %}">
 
 <div class="container">
+    <h2 class="page-title"><b>Order Management</b></h2>
+
     <!-- Filters -->
     <div class="filters">
         <input type="text" id="searchBox" class="search" placeholder="🔍 Search orders..." onkeyup="filterOrders()">
         
-        <select class="drpdn">
-            <option>Cancelled</option>
-            <option>Completed</option>
-            <option>Processing</option>
-        </select>
-
-        <select class="drpdn">
-            <option>Last 7 days</option>
-            <option>Last 30 days</option>
-            <option>All Time</option>
+        <select id="filterDropdown" class="drpdn" onchange="filterOrders()">
+            <option value="all">All Time</option>
+            <option value="7days">Last 7 days</option>
+            <option value="30days">Last 30 days</option>
         </select>
     </div>
 
-    <!-- Orders Table -->
-    <table id="ordersTable">
-        <thead>
-            <tr>
-                <th>Order #</th>
-                <th>User</th>
-                <th>Cart ID</th>
-                <th>Payment Mode</th>
-                <th>Price</th>
-                <th>Created At</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in order_list %}
-            <tr>
-                <td>{{ order.order_number }}</td>
-                <td>{% if order.user.first_name %}{{ order.user.first_name }} {% else %}{{ order.user.email }}{% endif %}</td>
-                <td>{{ order.cart.id }}</td>  
-                <td>{{ order.payment_mode }}</td>
-                <td>₹{{ order.cart.value }}</td> 
-                <td>{{ order.created_at|date:"M d, Y" }}</td>
-                <td class="actions">
-                    <a href="{% url 'order_detail' order.id %}" class="view">View</a>
-                    <a href="{% url 'edit_order' order.id%}" class="edit">Edit</a>
-                    <form method="POST" action="{% url 'delete_order' order.id %}" style="display:inline;" onsubmit="return confirmDelete();">
-                        {% csrf_token %}
-                        <button type="submit" class="delete" style="text-decoration: none;margin-right: 8px;padding: 5px 10px;border-radius: 4px;font-size: 14px;display: inline-block; border: none;">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="9" style="text-align: center;">No orders available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Scrollable Table -->
+    <div class="table-wrapper">
+        <table id="ordersTable">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>User</th>
+                    <th>Cart ID</th>
+                    <th>Payment Mode</th>
+                    <th>Price</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in order_list %}
+                <tr>
+                    <td>{{ order.order_number }}</td>
+                    <td>{% if order.user.first_name %}{{ order.user.first_name }} {% else %}{{ order.user.email }}{% endif %}</td>
+                    <td>{{ order.cart.id }}</td>  
+                    <td>{{ order.payment_mode }}</td>
+                    <td>₹{{ order.cart.value }}</td> 
+                    <td>{{ order.created_at|date:"M d, Y" }}</td>
+                    <td class="actions">
+                        <a href="{% url 'order_detail' order.id %}" class="view">View</a>
+                        <a href="{% url 'edit_order' order.id%}" class="edit">Edit</a>
+                        <form method="POST" action="{% url 'delete_order' order.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                            {% csrf_token %}
+                            <button type="submit" class="delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align: center;">No orders available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
@@ -207,26 +65,51 @@
         return confirm("Are you sure you want to delete this order?");
     }
     function filterOrders() {
-        let input = document.getElementById("searchBox").value.toLowerCase();
-        let table = document.getElementById("ordersTable").getElementsByTagName("tbody")[0];
-        let rows = table.getElementsByTagName("tr");
+    let input = document.getElementById("searchBox").value.toLowerCase();
+    let filterValue = document.getElementById("filterDropdown").value;
+    let table = document.getElementById("ordersTable").getElementsByTagName("tbody")[0];
+    let rows = table.getElementsByTagName("tr");
+    
+    let now = new Date();
+    let cutoffDate = null;
 
-        for (let i = 0; i < rows.length; i++) {
-            let orderIdCell = rows[i].getElementsByTagName("td")[0]; // Order ID column
-            let userCell = rows[i].getElementsByTagName("td")[1]; // User column
+    if (filterValue === "7days") {
+        cutoffDate = new Date();
+        cutoffDate.setDate(now.getDate() - 7);
+    } else if (filterValue === "30days") {
+        cutoffDate = new Date();
+        cutoffDate.setDate(now.getDate() - 30);
+    }
 
-            if (orderIdCell && userCell) {
-                let orderIdText = orderIdCell.textContent || orderIdCell.innerText;
-                let userText = userCell.textContent || userCell.innerText;
+    for (let i = 0; i < rows.length; i++) {
+        let orderIdCell = rows[i].getElementsByTagName("td")[0];
+        let userCell = rows[i].getElementsByTagName("td")[1];
+        let dateCell = rows[i].getElementsByTagName("td")[5]; // Created At column
+        
+        if (orderIdCell && userCell && dateCell) {
+            let orderIdText = orderIdCell.textContent || orderIdCell.innerText;
+            let userText = userCell.textContent || userCell.innerText;
+            let dateText = dateCell.textContent || dateCell.innerText.trim();
 
-                if (orderIdText.toLowerCase().includes(input) || userText.toLowerCase().includes(input)) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
+            let orderDate = new Date(dateText);
+
+            // Skip row if date is invalid
+            if (isNaN(orderDate.getTime())) {
+                console.warn("Invalid date format:", dateText);
+                continue;
+            }
+
+            let matchesSearch = orderIdText.toLowerCase().includes(input) || userText.toLowerCase().includes(input);
+            let matchesDate = cutoffDate ? orderDate >= cutoffDate : true;
+
+            if (matchesSearch && matchesDate) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
             }
         }
     }
+}
 </script>
 
 {% endblock %}

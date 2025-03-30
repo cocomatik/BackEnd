@@ -1,127 +1,19 @@
 {% extends 'Manager/base.html' %}
 {% block content %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'Manager/order/css/order_detail.css' %}">
+
 
 <h2 class="page-title"><b>Order Details</b></h2>
-
-<style>
-    body {
-        background-color: #121212; /* Very dark background for the whole page */
-        font-family: Arial, sans-serif;
-        color: #f0f0f0; /* Light text color */
-    }
-
-    .container {
-        width: 80%;
-        margin: auto;
-        background: #1f1f1f; /* Darker Background */
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Softer shadow */
-    }
-
-    h2 {
-        text-align: center;
-        color: #e1e1e1; /* Light Text */
-    }
-
-    .order-info, .cart-items {
-        margin-bottom: 20px;
-    }
-
-    .order-info p {
-        font-size: 16px;
-        margin: 5px 0;
-        color: #e1e1e1; /* Light Text */
-    }
-
-    .cart-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    .cart-table th, .cart-table td {
-        padding: 10px;
-        border-bottom: 1px solid #555; /* Darker Border */
-        text-align: center;
-        color: #f0f0f0; /* Light Text */
-    }
-
-    .cart-table th {
-        background: #007bff; /* Blue for Header */
-        color: white;
-    }
-
-    .back-btn {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 15px;
-        background: #007bff; /* Blue */
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-    }
-
-    .back-btn:hover {
-        background: #0056b3; /* Darker Blue */
-    }
-
-    .actions a {
-        text-decoration: none;
-        margin-right: 8px;
-        padding: 5px 10px;
-        border-radius: 4px;
-        font-size: 14px;
-        transition: background-color 0.3s ease, opacity 0.3s ease;
-    }
-
-    .delete {
-        background: #dc3545; /* Red */
-        color: white;
-    }
-
-    .delete:hover {
-        background: #c82333; /* Darker Red */
-    }
-
-    .status {
-        font-weight: bold;
-        padding: 5px 10px;
-        border-radius: 5px;
-        text-align: center;
-    }
-
-    .ordered {
-        background: #28a745; /* Green for Ordered */
-        color: white;
-    }
-
-    .ordered:hover {
-        background: #218838; /* Darker Green on Hover */
-    }
-
-    .pending {
-        background: #ffc107; /* Yellow for Pending */
-        color: black;
-    }
-
-    .pending:hover {
-        background: #e0a800; /* Darker Yellow on Hover */
-    }
-
-</style>
-
 <div class="container">
     <div class="order-info">
         <p><strong>Order Number:</strong> {{ order.order_number }}</p>
-        <p><strong>User:</strong> {{ order.user.first_name }} ({{ order.user.email }})</p>
+        <p><strong>User:</strong> {{ order.user.name }} ({{ order.user.email }})</p>
         <p><strong>Payment Mode:</strong> {{ order.get_payment_mode_display }}</p>
         <p><strong>Shipping Address:</strong> {{ order.address.name }}, {{order.address.contact_no}}, {{order.address.house_no}}, {{order.address.street}}, {{order.address.locality}}, {{order.address.city}}, {{order.address.district}}, {{order.address.state}}, {{order.address.pincode}}</p>
     </div>
 
-    <h3>Cart Items</h3>
+    <h3><strong>CART ITEMS</strong></h3>
     <table class="cart-table">
         <thead>
             <tr>
@@ -160,7 +52,8 @@
 
     <p><strong>Total Order Price:</strong> ₹{{ order.cart.value }}</p>
 
-    <a href="{% url 'order_list' %}" class="back-btn">← Back to Orders</a>
+    <a href="javascript:history.back()" class="back-btn">← Back</a>
+
 </div>
 
 <script>

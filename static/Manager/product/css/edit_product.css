@@ -1,6 +1,6 @@
 /* Background with Soft Gradient */
 body {
-    background: linear-gradient(to right, #4A4A4A, #2A2A2A); /* Darker Gradient */
+    background: #2a2a2a;
 }
 
 /* Form Container */
@@ -76,7 +76,7 @@ body {
 .submit-btn {
     width: 100%;
     padding: 12px;
-    background: #5A6B7A; /* Soft Blue-Green */
+    background: #25a53c; /* Soft Blue-Green */
     color: white;
     font-weight: bold;
     border: none;
@@ -87,6 +87,6 @@ body {
 }
 
 .submit-btn:hover {
-    background: #4C5864; /* Slightly Darker Blue-Green */
+    background: #0b781f; /* Slightly Darker Blue-Green */
     transform: scale(1.05);
 }
