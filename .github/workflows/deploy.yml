@@ -15,15 +15,6 @@ jobs:
         with:
           fetch-depth: 0  # Fetch full history for proper git operations
 
-      - name: Debug GitHub Secrets
-        run: |
-          echo "🔍 Checking available secrets..."
-          env | grep SECRET_ || echo "❌ No secrets found!"
-
-
-
-
-
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
