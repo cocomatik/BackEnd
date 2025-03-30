@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('true', '1')
+DEBUG = os.getenv('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
@@ -59,16 +59,12 @@ MIDDLEWARE = [
 ]
 
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.getenv("CORS_ALLOWED_ORIGINS") else [
-    "https://cocomatik.com",
-    "http://127.0.0.1:5500",  
-]
-
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
 CORS_ALLOW_ALL_ORIGINS = False  
 
 
-SHIPROCKET_EMAIL = os.getenv("SHIPROCKET_EMAIL", default="")
-SHIPROCKET_PASSWORD = os.getenv("SHIPROCKET_PASSWORD", default="")
+SHIPROCKET_EMAIL = os.getenv("SHIPROCKET_EMAIL")
+SHIPROCKET_PASSWORD = os.getenv("SHIPROCKET_PASSWORD")
 
 
 ROOT_URLCONF = 'COCO.urls'
