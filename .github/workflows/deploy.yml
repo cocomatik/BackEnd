@@ -15,11 +15,11 @@ jobs:
         with:
           fetch-depth: 0  # Fetch full history for proper git operations
 
-      - name: Debug SSH Keyscan
+      - name: Debug SSH Connection
         run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} || echo "❌ SSH key scan failed!"
-          ls -lah ~/.ssh  # Check if the directory exists
+          echo "🔍 Checking SSH Host: ${{ secrets.SSH_HOST }}"
+          ping -c 3 ${{ secrets.SSH_HOST }} || echo "❌ Host unreachable!"
+
 
 
       - name: Deploy to Server
