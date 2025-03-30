@@ -6,12 +6,13 @@ echo "🚀 Deployment started ..."
 # Navigate to project directory
 cd ~/COCOMATIK/BackEnd || { echo "❌ Failed to navigate to BackEnd directory"; exit 1; }
 
-# Pull latest changes
+# Safe Git Pull
 echo "📦 Pulling latest changes..."
-git pull origin master
+git reset --hard HEAD
+git pull origin master --rebase
 echo "✅ New changes copied to server!"
 
-# Check if virtual environment exists, if not create it
+# Ensure Virtual Environment Exists
 if [ ! -d "zenv" ]; then
     echo "🛠️ Virtual environment 'zenv' not found, creating one..."
     python3 -m venv zenv
@@ -42,13 +43,14 @@ python manage.py collectstatic --noinput
 
 # Run Migrations
 echo "🔄 Running Database Migration..."
-python manage.py migrate
+python manage.py migrate --noinput
 
 # Deactivate Virtual Environment
 deactivate
 echo "✅ Virtual env 'zenv' Deactivated!"
 
-# Restart Gunicorn
-echo "🔄 Reloading Gunicorn..."
-pkill -HUP -f "gunicorn" || echo "⚠️ Gunicorn process not found, starting a new one..."
+# Reload Gunicorn & Nginx for Zero Downtime
+echo "🔄 Reloading Services..."
+sudo systemctl reload nginx
+sudo systemctl reload engine.cocomatik.com.gunicorn.service
 echo "✅ Deployment Finished!"
