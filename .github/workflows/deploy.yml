@@ -15,11 +15,12 @@ jobs:
         with:
           fetch-depth: 0  # Fetch full history for proper git operations
 
-      - name: Add SSH Known Hosts
+      - name: Debug SSH Keyscan
         run: |
-          mkdir -p ~/.ssh  # Ensure the .ssh directory exists
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts  # Secure the file
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} || echo "❌ SSH key scan failed!"
+          ls -lah ~/.ssh  # Check if the directory exists
+
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
