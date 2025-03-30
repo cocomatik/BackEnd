@@ -1,0 +1,123 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #343a40; /* Darker background */
+    margin: 0;
+    padding: 0;
+    color: white; /* Adjust text color for contrast */
+}
+
+/* Delete Card */
+.delete-card {
+    width: 50%;
+    margin: 80px auto;
+    background: #212529; /* Darker card background */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+/* Delete Title */
+h2 {
+    color: #dc3545;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Delete Text */
+.delete-text {
+    font-size: 18px;
+    color: #ddd; /* Lighter text for readability */
+    margin-bottom: 20px;
+}
+
+/* Product Card */
+.product-card {
+    display: flex;
+    background: #495057; /* Dark gray background */
+    padding: 15px;
+    border-radius: 8px;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0px 3px 10px rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+}
+
+.product-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 3px solid #dc3545;
+}
+
+.product-info {
+    text-align: left;
+}
+
+.product-info p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #f8f9fa; /* Lighter text */
+}
+
+.product-info strong {
+    color: #ffffff;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* Delete Button */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #b02a37;
+}
+
+/* Cancel Button */
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 1000px) {
+    .sidebar, .main-content {
+        display: none;
+    }
+
+    .delete-card {
+        width: 90%;
+    }
+
+    .product-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}

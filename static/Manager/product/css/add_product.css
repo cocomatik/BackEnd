@@ -1,0 +1,92 @@
+/* Background with Soft Gradient */
+body {
+    background: linear-gradient(to right, #4A4A4A, #2A2A2A); /* Darker Gradient */
+}
+
+/* Container Styling with Balanced Dark-Tone */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #3C3C3C; /* Dark Gray for container */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* Darker Shadow for Depth */
+}
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: #E1E1E1; /* Light Gray for better contrast */
+    margin-bottom: 20px;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Label Styling */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #A1C4E7; /* Soft Blue for labels */
+}
+
+/* Input & Select Styling */
+.form-control,
+.form-select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #5A6B7A; /* Soft Gray-Blue Border */
+    border-radius: 8px;
+    font-size: 16px;
+    background: #4A4A4A; /* Darker Background for inputs */
+    color: #E1E1E1; /* Light Text */
+}
+
+/* Placeholder Color */
+.form-control::placeholder {
+    color: #A9B0B9;
+}
+
+/* Side-by-Side Layout */
+.flex-container {
+    display: flex;
+    gap: 15px;
+}
+
+/* Ensure Equal Width for Inputs in Flex Layout */
+.flex-container .form-group {
+    flex: 1;
+}
+
+/* File Input Styling */
+input[type="file"] {
+    padding: 8px;
+    background: #4A4A4A; /* Darker Background */
+    border: 2px solid #5A6B7A;
+    border-radius: 6px;
+    color: #E1E1E1;
+}
+
+/* Submit Button */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #5A6B7A; /* Soft Blue-Green */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-submit:hover {
+    background: #4C5864; /* Slightly Darker Blue-Green */
+    transform: scale(1.05);
+}

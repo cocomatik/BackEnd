@@ -4,17 +4,28 @@ set -e  # Exit immediately on error
 echo "🚀 Deployment started ..."
 
 # Navigate to project directory
-cd ~/Backend || { echo "❌ Failed to navigate to Backend directory"; exit 1; }
+cd ~/COCOMATIK/BackEnd || { echo "❌ Failed to navigate to BackEnd directory"; exit 1; }
 
 # Pull latest changes
 echo "📦 Pulling latest changes..."
 git pull origin master
 echo "✅ New changes copied to server!"
 
+# Check if virtual environment exists, if not create it
+if [ ! -d "zenv" ]; then
+    echo "🛠️ Virtual environment 'zenv' not found, creating one..."
+    python3 -m venv zenv
+    echo "✅ Virtual environment 'zenv' created!"
+fi
+
 # Activate Virtual Environment
 echo "🐍 Activating Virtual Environment..."
 source zenv/bin/activate
 echo "✅ Virtual env 'zenv' Activated!"
+
+# Upgrade pip
+echo "⬆️ Upgrading pip..."
+pip install --upgrade pip
 
 # Clearing Cache
 echo "🗑️ Clearing Cache..."
