@@ -53,4 +53,5 @@ echo "✅ Virtual env 'zenv' Deactivated!"
 echo "🔄 Reloading Services..."
 sudo systemctl reload nginx
 sudo systemctl reload engine.cocomatik.com.gunicorn.service
+sudo systemctl reload admin.cocomatik.com.gunicorn.service
 echo "✅ Deployment Finished!"
