@@ -24,6 +24,7 @@ class BestOfPendantsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = BestOfPendants.objects.all()
     serializer_class = BestOfPendantsSerializer
 
+
 class BestOfNoseRingsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = BestOfNoseRings.objects.all()
     serializer_class = BestOfNoseRingsSerializer
