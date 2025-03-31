@@ -106,18 +106,4 @@ h2 {
     background-color: #5a6268;
 }
 
-/* Responsive Design */
-@media (max-width: 1000px) {
-    .sidebar, .main-content {
-        display: none;
-    }
 
-    .delete-card {
-        width: 90%;
-    }
-
-    .product-card {
-        flex-direction: column;
-        text-align: center;
-    }
-}
