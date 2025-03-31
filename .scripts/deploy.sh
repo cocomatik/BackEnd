@@ -49,8 +49,14 @@ python manage.py migrate --noinput
 deactivate
 echo "✅ Virtual env 'zenv' Deactivated!"
 
-# Reload Gunicorn & Nginx for Zero Downtime
-echo "🔄 Reloading Services..."
-sudo systemctl restart cocoengine.service
-sudo systemctl restart nginx
+# Reload Gunicorn for Zero Downtime
+echo "🔄 Reloading Gunicorn..."
+sudo systemctl reload cocoengine.service
+echo "✅ Gunicorn Reloaded!"
+
+# Reload Nginx for Zero Downtime
+echo "🔄 Reloading Nginx..."
+sudo systemctl reload nginx
+echo "✅ Nginx Reloaded!"
+
 echo "✅ Deployment Finished!"
