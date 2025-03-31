@@ -1,57 +1,39 @@
 #!/bin/bash
-set -e  # Exit immediately on error
+set -e
 
-echo "🚀 Deployment started ..."
+echo "Deployment started ..."
 
-# Navigate to project directory
-cd ~/COCOMATIK/BackEnd || { echo "❌ Failed to navigate to BackEnd directory"; exit 1; }
+# Pull the latest version of the app
+echo "Copying New changes....
+git restore ."
+git pull origin master
+echo "New changes copied to server !"
 
-# Safe Git Pull
-echo "📦 Pulling latest changes..."
-git reset --hard HEAD
-git pull origin master --rebase
-echo "✅ New changes copied to server!"
-
-# Ensure Virtual Environment Exists
-if [ ! -d "zenv" ]; then
-    echo "🛠️ Virtual environment 'zenv' not found, creating one..."
-    python3 -m venv zenv
-    echo "✅ Virtual environment 'zenv' created!"
-fi
-
-# Activate Virtual Environment
-echo "🐍 Activating Virtual Environment..."
+# Activate Virtual Env
+#Syntax:- source virtual_env_name/bin/activate
 source zenv/bin/activate
-echo "✅ Virtual env 'zenv' Activated!"
+echo "Virtual env 'zenv' Activated !"
 
-# Upgrade pip
-echo "⬆️ Upgrading pip..."
-pip install --upgrade pip
+echo "Clearing Cache..."
+python manage.py clean_pyc
+python manage.py clear_cache
 
-# Clearing Cache
-echo "🗑️ Clearing Cache..."
-find . -name "*.pyc" -delete
-python manage.py clear_cache || echo "⚠️ No clear_cache command found, skipping."
-
-# Install Dependencies
-echo "📦 Installing Dependencies..."
+echo "Installing Dependencies..."
 pip install -r requirements.txt --no-input
 
-# Collect Static Files
-echo "🎨 Collecting Static Files..."
+echo "Serving Static Files..."
 python manage.py collectstatic --noinput
 
-# Run Migrations
-echo "🔄 Running Database Migration..."
-python manage.py migrate --noinput
+echo "Running Database migration..."
+python manage.py makemigrations
+python manage.py migrate
 
-# Deactivate Virtual Environment
+# Deactivate Virtual Env
 deactivate
-echo "✅ Virtual env 'zenv' Deactivated!"
+echo "Virtual env 'zenv' Deactivated !"
 
-# Reload Gunicorn & Nginx for Zero Downtime
-echo "🔄 Reloading Services..."
-sudo systemctl reload nginx
-sudo systemctl reload engine.cocomatik.com.gunicorn.service
-sudo systemctl reload admin.cocomatik.com.gunicorn.service
-echo "✅ Deployment Finished!"
+echo "Reloading App..."
+#kill -HUP `ps -C gunicorn fch -o pid | head -n 1`
+ps aux |grep gunicorn |grep COCO | awk '{ print $2 }' |xargs kill -HUP
+
+echo "Deployment Finished !"
