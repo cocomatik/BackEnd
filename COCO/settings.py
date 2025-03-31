@@ -12,8 +12,12 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 
-ALLOWED_HOSTS = ['127.0.0.1','admin.cocomatik.com','engine.cocomatik.com']
-
+ALLOWED_HOSTS = [
+    'engine.cocomatik.com', 
+    'admin.cocomatik.com', 
+    '178.16.138.130',  # Add your server's IP
+    '127.0.0.1' 
+]
 
 SESSION_COOKIE_SECURE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
