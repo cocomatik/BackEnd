@@ -3,102 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Cosmetics</title>
+    <title>Luxury Cosmetics & Jewelry</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f8f5f2;
+            background-color: #f9f6f2;
             color: #333;
             margin: 0;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+            background-image: linear-gradient(135deg, rgba(249, 246, 242, 0.9) 0%, rgba(237, 227, 219, 0.9) 100%);
         }
         .container {
             text-align: center;
             background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 500px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
             display: flex;
-            flex-direction:column;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(196, 154, 108, 0.2);
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #c49a6c 0%, #d4af37 100%);
+        }
+        .logo-container {
+            margin-bottom: 20px;
+            display: flex;
             align-items: center;
             justify-content: center;
         }
-        h1 {
+        .logo-icon {
+            font-size: 32px;
+            margin: 0 10px;
+        }
+        .cosmetic-icon {
             color: #c49a6c;
-            font-size: 28px;
+        }
+        .jewelry-icon {
+            color: #d4af37;
+        }
+        h1 {
+            color: #83603b;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: #d4af37;
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
         p {
             font-size: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #666;
         }
-        ul {
-            list-style: none;
-            padding: 0;
+        .features {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 30px;
         }
-        li {
-            background: #faf1ea;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            font-size: 18px;
+        .feature {
+            text-align: center;
+            padding: 15px;
+            width: 45%;
         }
-        .icon {
-            color: #c49a6c;
-            margin-right: 8px;
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .feature-desc {
+            font-size: 14px;
+            color: #777;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 250px;
         }
         .admin-button {
             display: block;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 16px;
-            background-color: #83603b ;
+            background-color: #83603b;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
             text-decoration: none;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(131, 96, 59, 0.2);
+        }
+        .admin-button:hover {
+            background-color: #6e5032;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(131, 96, 59, 0.3);
         }
         .main-button {
             display: block;
-            padding: 3px 6px;
-            font-size: 14px;
-            background-color: #c49a6c;
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #d4af37;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
             text-decoration: none;
-            margin-top:4px;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.2);
         }
         .main-button:hover {
-            background-color: #a07850;
+            background-color: #b8972f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
         }
+        .divider {
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #c49a6c 0%, #d4af37 100%);
+            margin: 20px auto;
+        }
+        
+        .mobile-restricted {
+                display: none;
+                background-color: black; 
+                color: white;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center; 
+                justify-content: center;
+                text-align: center;
+                font-size: 20px;
+                z-index: 1000;
+                padding: 30px;
+            }
+
+
+            /* CSS media query to show the message when screen width is less than 992px */
+            @media (max-width: 992px) {
+                .mobile-restricted {
+                    display: block; /* Show the message */
+                }
+            }
     </style>
     
-
-<script>
-    function redirectToAdmin() {
-        window.location.href = "/dashboard/";  
-    }
-    function redirectToMain() {
-        window.location.href = "https://cocomatik.com";  
-    }
-</script>
-
-    
+    <script>
+        function redirectToAdmin() {
+            window.location.href = "/dashboard/";  
+        }
+        function redirectToMain() {
+            window.location.href = "https://cocomatik.com";  
+        }
+    </script>
 </head>
 <body>
     <div class="container">
+<<<<<<< HEAD
         <h1>Luxury Cosmetics</h1>
         <p>Indulge in the finest skincare and beauty products.</p>
         <button class="admin-button" onclick="redirectToAdmin()">AdminPanel</button>
         <button class="main-button" onclick="redirectToMain()" >MainSite</button>
+=======
+        <div class="logo-container">
+            <i class="fas fa-spa logo-icon cosmetic-icon"></i>
+            <i class="fas fa-gem logo-icon jewelry-icon"></i>
+        </div>
+        <h1>Luxury Cosmetics & Jewelry</h1>
+        <p class="subtitle">Elegance Redefined</p>
+        <div class="divider"></div>
+        <p>Indulge in the finest skincare, beauty products, and exquisite jewelry pieces. Where luxury meets beauty, and elegance meets craftsmanship.</p>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-magic feature-icon cosmetic-icon"></i>
+                <div class="feature-title">Premium Cosmetics</div>
+                <div class="feature-desc">Luxurious skincare and beauty solutions</div>
+            </div>
+            <div class="feature">
+                <i class="fas fa-ring feature-icon jewelry-icon"></i>
+                <div class="feature-title">Elegant Jewelry</div>
+                <div class="feature-desc">Timeless pieces crafted with precision</div>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="admin-button" onclick="redirectToAdmin()">Admin Panel</button>
+            <button class="main-button" onclick="redirectToMain()">Visit Main Site</button>
+        </div>
+>>>>>>> 15192c9432870a04a0ed09555036982b5fccff4d
     </div>
+    <div class="mobile-restricted" id="mobileMessage">
+        This website is not accessible on mobile devices. Please use a desktop.
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var message = document.getElementById('mobileMessage');
+    
+            function checkScreenSize() {
+                if (window.innerWidth < 992) {
+                    message.style.display = 'block';
+                } else {
+                    message.style.display = 'none';
+                }
+            }
+    
+            window.addEventListener('resize', checkScreenSize);
+            checkScreenSize(); // Run on page load
+        });
+    </script>
 </body>
 </html>

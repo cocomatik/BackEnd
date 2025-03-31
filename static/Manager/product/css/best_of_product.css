@@ -106,15 +106,4 @@ body {
     background: #1f77b1; 
 }
 
-/* Responsive Design */
-@media (max-width: 1000px) {
-    .tables-container {
-        flex-direction: column;
-        align-items: center;
-    }
 
-    .table-wrapper {
-        width: 90%;
-        margin-bottom: 20px;
-    }
-}

@@ -98,17 +98,3 @@ a {
     color: white;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-
-    table {
-        font-size: 14px;
-    }
-
-    .customer-info h3 {
-        font-size: 22px;
-    }
-}

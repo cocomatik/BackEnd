@@ -113,17 +113,3 @@ table tr:hover {
     background: #c82333; /* Darker red on hover */
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-
-    .search-box input {
-        width: 100%;
-    }
-
-    table {
-        font-size: 14px;
-    }
-}

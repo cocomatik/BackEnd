@@ -93,14 +93,3 @@ body {
     font-size: 16px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1000px) {
-    .stats-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .stat-card {
-        margin-bottom: 20px; /* Spacing between cards on small screens */
-    }
-}

@@ -154,10 +154,3 @@ body {
     color: #bbb; /* Lighter gray text */
     padding: 15px;
 }
-
-/* Hide Everything on Small Screens */
-@media (max-width: 1000px) {
-    .sidebar, .main-content {
-        display: none;
-    }
-}
