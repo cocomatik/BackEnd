@@ -51,6 +51,6 @@ echo "✅ Virtual env 'zenv' Deactivated!"
 
 # Reload Gunicorn & Nginx for Zero Downtime
 echo "🔄 Reloading Services..."
-sudo systemctl reload cocoengine.service
-sudo systemctl reload nginx
+sudo systemctl restart cocoengine.service
+sudo systemctl restart nginx
 echo "✅ Deployment Finished!"
