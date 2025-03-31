@@ -1,25 +1,58 @@
 name: Deploy
 
-# Trigger the workflow on push and
-# pull request events on the master branch
 on:
   push:
     branches: ["master"]
   pull_request:
     branches: ["master"]
 
-# Authenticate to the the server via ssh
-# and run our deployment script
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch full history for proper git operations
+
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets._SSH_PORT }}
+          port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: "cd ~/Backend && ./.scripts/deploy.sh"
+          script: |
+            echo "🚀 Starting deployment on server..."
+
+            # Navigate to the correct project directory
+            cd ~/COCOMATIK/BackEnd
+            echo "📂 Now inside: $(pwd)"
+
+            # Set environment variables dynamically
+            echo "🔄 Setting Environment Variables..."
+            cat <<EOF > .env
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
+            DJANGO_DEBUG=${{ secrets.DJANGO_DEBUG }}
+            ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}
+            CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}
+            EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}
+            CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
+            CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}
+            CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}
+            SHIPROCKET_EMAIL=${{ secrets.SHIPROCKET_EMAIL }}
+            SHIPROCKET_PASSWORD=${{ secrets.SHIPROCKET_PASSWORD }}
+            CDN_URL=${{ secrets.CDN_URL }}
+            EOF
+            echo "✅ Environment variables set!"
+
+            # Ensure deploy script is executable
+            chmod +x ./.scripts/deploy.sh
+
+            # Run deployment script
+            echo "🔄 Running Deploy Script..."
+            ./.scripts/deploy.sh
+
+            echo "✅ Deployment completed successfully!"

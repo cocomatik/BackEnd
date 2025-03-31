@@ -57,14 +57,26 @@
             display: block;
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #c49a6c;
+            background-color: #83603b ;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
         }
-        .admin-button:hover {
+        .main-button {
+            display: block;
+            padding: 3px 6px;
+            font-size: 14px;
+            background-color: #c49a6c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top:4px;
+        }
+        .main-button:hover {
             background-color: #a07850;
         }
     </style>
@@ -74,6 +86,9 @@
     function redirectToAdmin() {
         window.location.href = "/dashboard/";  
     }
+    function redirectToMain() {
+        window.location.href = "https://cocomatik.com";  
+    }
 </script>
 
     
@@ -82,7 +97,9 @@
     <div class="container">
         <h1>Luxury Cosmetics</h1>
         <p>Indulge in the finest skincare and beauty products.</p>
-        <button class="admin-button" onclick="redirectToAdmin()">Admin Panel</button>
+        <button class="admin-button" onclick="redirectToAdmin()">AdminPanel</button>
+        
+        <button class="main-button" onclick="redirectToMain()" >MainSite</button>
     </div>
 </body>
 </html>
