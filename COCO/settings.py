@@ -9,10 +9,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 CDN_URL =os.getenv('CDN_URL')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = os.getenv('DJANGO_DEBUG')
-#test
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
+
+
+SESSION_COOKIE_SECURE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 
 
@@ -44,7 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Should be first
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,10 +57,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'Manager.middleware.SessionAuthOnlyMiddleware',
-
-    
-    
 ]
 
 
