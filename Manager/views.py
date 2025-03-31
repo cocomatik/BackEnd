@@ -537,6 +537,7 @@ def edit_order(request, order_id):
 
 
 from Accounts.models import UserAccount
+
 @session_auth_required
 def customers(request):
     customer_list = UserAccount.objects.all()
