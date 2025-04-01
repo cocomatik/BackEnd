@@ -7,14 +7,14 @@
 <link rel="stylesheet" href="{% static 'Manager/product/css/add_product.css' %}">
 
 <div class="container">
-    <h2 class="page-title"><b>ADD PRODUCT</b></h2>
+    <h2 class="page-title"><b>Add Product</b></h2>
 
     <form id="productForm" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <!-- Product Type Selection (Reloads Page to Update Categories) -->
+        <!-- Product Type Selection -->
         <div class="form-group">
-            <label>Product Type</label>
+            <label for="product_type">Product Type</label>
             <select name="product_type" class="form-select" required onchange="this.form.submit()">
                 <option value="">Select Product Type</option>
                 <option value="cosmetic" {% if selected_type == "cosmetic" %}selected{% endif %}>Cosmetic</option>
@@ -24,18 +24,18 @@
 
         {% if selected_type %}
             <div class="form-group">
-                <label>Product Name</label>
+                <label for="title">Product Name</label>
                 <input type="text" name="title" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label>Description</label>
+                <label for="description">Description</label>
                 <textarea name="description" class="form-control" rows="4" required></textarea>
             </div>
 
             <!-- Category Selection -->
             <div class="form-group">
-                <label>Category</label>
+                <label for="category">Category</label>
                 <select name="category" class="form-select" required>
                     <option value="">Select Category</option>
                     {% for category in categories %}
@@ -45,29 +45,29 @@
             </div>
 
             <div class="form-group">
-                <label>Brand</label>
+                <label for="brand">Brand</label>
                 <input type="text" name="brand" class="form-control">
             </div>
 
             <div class="flex-container">
                 <div class="form-group">
-                    <label>MRP</label>
+                    <label for="mrp">MRP</label>
                     <input type="number" name="mrp" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Price</label>
+                    <label for="price">Price</label>
                     <input type="number" name="price" class="form-control" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Stock</label>
+                <label for="stock">Stock</label>
                 <input type="number" name="stock" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label>Product Image</label>
+                <label for="product_image">Product Image</label>
                 <input type="file" name="product_image" class="form-control" accept="image/*" required>
             </div>
 

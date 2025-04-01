@@ -1,109 +1,128 @@
 /* General Styles */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #2a2a2a; /* Dark background */
-    color: #f5f5f5; /* Light text for contrast */
-    margin: 0;
+    font-family: "Arial", sans-serif;
+    background-color: #f9f6f2;
+    color: #333;
     padding: 0;
+    margin: 0;
 }
 
-/* Tables Container */
+/* Adjust the top margin to prevent content from going under the navbar */
 .tables-container {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
     padding: 20px;
-    height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Prevents full-page scroll */
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 70px; /* Added margin to push content below the navbar */
 }
 
 /* Table Wrapper */
 .table-wrapper {
     width: 48%;
-    background: #1e1e1e; /* Darker background for tables */
-    padding: 20px;
+    background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Dark shadow for better contrast */
-    text-align: center;
-    transition: 0.3s;
-    max-height: calc(100vh - 50px); /* Adjust height dynamically */
-    overflow-y: auto; /* Scroll inside the div */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    margin: 0 10px;
 }
 
-/* Scrollbar Styling */
-.table-wrapper::-webkit-scrollbar {
-    width: 8px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-    background-color: #6c63ff; /* Purple scrollbar */
-    border-radius: 4px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: #574bfa;
-}
-/* Titles */
+/* Table Title */
 #best-category-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #ffffff; /* White for titles for better visibility */
+    color: #83603b;
+    font-size: 22px;
     margin-bottom: 15px;
-    border-bottom: 3px solid #6c63ff; /* Soft purple underline */
-    padding-bottom: 5px;
-    display: inline-block;
+    text-align: center;
+    font-weight: 600;
 }
 
-/* Table Styling */
+/* Best Products Table */
 .best-products-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
-    background-color: #232323; /* Dark background for the table */
-    border-radius: 10px;
-    overflow: hidden;
+    font-size: 14px;
+}
+
+.best-products-table th,
+.best-products-table td {
+    padding: 8px 12px;
+    text-align: left;
 }
 
 .best-products-table th {
-    background-color: #3498db; 
-    color: white;
-    padding: 12px;
-    font-size: 18px;
-    border-bottom: 2px solid #444; /* Slightly lighter border for contrast */
+    background-color: #f3f3f3;
+    font-weight: 600;
 }
 
 .best-products-table td {
-    padding: 12px;
-    font-size: 16px;
-    border-bottom: 1px solid #444; /* Lighter border */
-    color: #f5f5f5; /* Light text for table data */
+    border-top: 1px solid #e0d5c8;
 }
 
-/* Alternating Row Colors */
-.best-products-table tbody tr:nth-child(even) {
-    background-color: #333333; /* Darker rows for contrast */
-}
-
-/* Hover Effect */
-.best-products-table tbody tr:hover {
-    background-color: #3c3c3c; /* Lighter gray on hover for distinction */
-}
-
-/* Buttons */
+/* Action Button */
 .action-btn {
-    background: #3498db;
+    background-color: #c49a6c;
     color: white;
+    padding: 6px 12px;
     border: none;
-    padding: 8px 15px;
-    font-size: 16px;
     border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease;
 }
 
 .action-btn:hover {
-    background: #1f77b1; 
+    background-color: #d4af37;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(196, 154, 108, 0.3);
 }
 
+/* Form Adjustments */
+form {
+    display: inline;
+}
 
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .tables-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .table-wrapper {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #best-category-title {
+        font-size: 20px;
+    }
+
+    .best-products-table {
+        font-size: 12px;
+    }
+
+    .action-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .tables-container {
+        padding: 10px;
+    }
+
+    #best-category-title {
+        font-size: 18px;
+    }
+
+    .best-products-table {
+        font-size: 10px;
+    }
+
+    .action-btn {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+}

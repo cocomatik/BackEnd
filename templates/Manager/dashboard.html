@@ -5,55 +5,55 @@
 {% block content %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'Manager/dashboard/dashboard.css' %}">
+
 <h2 class="mb-4 text-center">
     <b>DASHBOARD</b>
 </h2>
 
-<div class="main-content">
-    <!-- Dashboard Stats -->
-    <div class="stats-container">
-        <div class="stat-card">
-            <div class="stat-icon products">
-                <i class="fas fa-box"></i>
-            </div>
-            <div class="stat-info">
-                <h3>{{ total_products }}</h3>
-                <p>Total Products</p>
-            </div>
+<!-- Dashboard Stats -->
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-icon products">
+            <i class="fas fa-box"></i>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon orders">
-                <i class="fas fa-shopping-cart"></i>
-            </div>
-            <div class="stat-info">
-                <h3>{{ total_orders }}</h3>
-                <p>Total Orders</p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon revenue">
-                <i class="fa fa-inr"></i>
-            </div>
-            <div class="stat-info">
-                <h3>₹ {{ value }}</h3>
-                <p>Total Revenue</p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon customers">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="stat-info">
-                <h3>{{ total_customers }}</h3>
-                <p>Total Customers</p>
-            </div>
+        <div class="stat-info">
+            <h3>{{ total_products }}</h3>
+            <p>Total Products</p>
         </div>
     </div>
-
+    <div class="stat-card">
+        <div class="stat-icon orders">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total_orders }}</h3>
+            <p>Total Orders</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon revenue">
+            <i class="fa fa-inr"></i>
+        </div>
+        <div class="stat-info">
+            <h3>₹ {{ value }}</h3>
+            <p>Total Revenue</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon customers">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total_customers }}</h3>
+            <p>Total Customers</p>
+        </div>
+    </div>
+</div>
 
 <!-- Graph Section -->
 <div class="graph-container">
     <h4>Sales</h4>
     <canvas id="salesChart"></canvas>
 </div>
+
 {% endblock %}

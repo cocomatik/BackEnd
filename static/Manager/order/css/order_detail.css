@@ -1,121 +1,128 @@
+/* General Styles */
 body {
-    background-color: #2a2a2a; /* Very dark background for the whole page */
-    font-family: Arial, sans-serif;
-    color: #f0f0f0; /* Light text color */
+    font-family: "Arial", sans-serif;
+    background-color: #f9f6f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 60px;
 }
 
+/* Container */
 .container {
-    width: 95%;
-    margin: auto;
-    background: #1f1f1f; /* Darker Background */
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Softer shadow */
-}
-
-h2 {
+    width: 90%;
+    max-width: 900px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: #e1e1e1; /* Light Text */
 }
 
-.order-info, .cart-items {
+/* Page Title */
+.page-title {
+    font-size: 26px;
+    color: #c49a6c;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 3px solid #d4af37;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    
+}
+
+/* Order Info */
+.order-info {
+    text-align: left;
+    background: #fdfbf8;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0d5c8;
     margin-bottom: 20px;
 }
 
-
-.order-info {
-    background: #2c3036; /* Dark background for info section */
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-}
-
-.order-info h3 {
-    margin-bottom: 15px;
-    color: #007bff; /* Blue color for headings */
-}
-
 .order-info p {
-    margin: 8px 0;
     font-size: 16px;
+    margin: 5px 0;
 }
 
-.order-info strong {
-    color: #f5f5f5;
-}
-
+/* Cart Items Table */
 .cart-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
 }
 
-.cart-table th, .cart-table td {
-    padding: 10px;
-    border-bottom: 1px solid #555; /* Darker Border */
+th, td {
+    padding: 12px;
     text-align: center;
-    color: #f0f0f0; /* Light Text */
+    border-bottom: 1px solid #e0d5c8;
 }
 
-.cart-table th {
-    background: #007bff; /* Blue for Header */
+th {
+    background-color: #c49a6c;
     color: white;
+    text-transform: uppercase;
 }
 
-.back-btn {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 15px;
-    background: #007bff; /* Blue */
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-.back-btn:hover {
-    background: #0056b3; /* Darker Blue */
-}
-
-.actions a {
-    text-decoration: none;
-    margin-right: 8px;
-    padding: 5px 10px;
-    border-radius: 4px;
+td {
+    background: #fdfbf8;
     font-size: 14px;
-    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Action Buttons */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
 }
 
 .delete {
-    background: #dc3545; /* Red */
+    background: #dc3545;
     color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s ease;
+    cursor: pointer;
 }
 
 .delete:hover {
-    background: #c82333; /* Darker Red */
+    background: #c82333;
 }
 
-.status {
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.ordered {
-    background: #28a745; /* Green for Ordered */
+/* Back Button */
+.back-btn {
+    display: inline-block;
+    background: #6c757d;
     color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-.ordered:hover {
-    background: #218838; /* Darker Green on Hover */
+.back-btn:hover {
+    background: #5a6268;
 }
 
-.pending {
-    background: #ffc107; /* Yellow for Pending */
-    color: black;
-}
+/* Responsive Design */
+@media (max-width: 900px) {
+    .cart-table {
+        display: block;
+        overflow-x: auto;
+    }
 
-.pending:hover {
-    background: #e0a800; /* Darker Yellow on Hover */
+    .delete {
+        width: 100%;
+    }
 }

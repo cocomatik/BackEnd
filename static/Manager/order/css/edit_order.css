@@ -1,77 +1,119 @@
+/* General Styles */
 body {
-    background-color: #2a2a2a; /* Very dark background for the whole page */
-    font-family: Arial, sans-serif;
-    color: #f0f0f0; /* Light text color */
+    font-family: "Arial", sans-serif;
+    background-color: #f9f6f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align to the top of the page */
+    padding-top: 60px; /* Ensure space for the navbar */
+    height: 100vh; /* Full height to use flexbox properly */
 }
 
+/* Container for the form */
 .form-container {
-    width: 50%;
-    margin: auto;
-    background: #1f1f1f; /* Darker background */
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Softer shadow */
-}
-
-h2 {
+    width: 100%; /* Make the form take up the full width */
+    max-width: 800px; /* Max width ensures the form doesn't stretch too wide */
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: #e1e1e1; /* Light text color */
+    margin: 0 auto; /* Center horizontally */
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
+/* Page Title */
+.page-title {
+    font-size: 26px;
+    color: #c49a6c;
     font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    color: #e1e1e1; /* Light text color for labels */
+    text-transform: uppercase;
+    border-bottom: 3px solid #d4af37;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    
 }
 
-input, select {
+/* Form Styles */
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: bold;
+}
+
+.form-group input, .form-group select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #555; /* Dark border for input fields */
-    border-radius: 4px;
-    background-color: #2d2d2d; /* Dark background for input fields */
-    color: #e1e1e1; /* Light text color inside inputs */
+    font-size: 14px;
+    border: 1px solid #e0d5c8;
+    border-radius: 8px;
+    background-color: #f9f6f2;
 }
 
-input:focus, select:focus {
-    border-color: #007bff; /* Blue border on focus */
-    outline: none;
+.form-group select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
+/* Button Group */
 .btn-group {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     margin-top: 20px;
 }
 
-.btn {
+.save-btn, .cancel-btn {
+    display: inline-block;
     padding: 10px 20px;
-    border: none;
-    cursor: pointer;
+    border-radius: 8px;
+    text-decoration: none;
     font-size: 16px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .save-btn {
-    background: #28a745;
+    background-color: #28a745;
     color: white;
+    border: none;
 }
 
 .save-btn:hover {
-    background: #218838; /* Darker green on hover */
+    background-color: #218838;
 }
 
 .cancel-btn {
-    background: #dc3545;
+    background-color: #6c757d;
     color: white;
-    margin-left: 10px;
+    border: none;
 }
 
 .cancel-btn:hover {
-    background: #c82333; /* Darker red on hover */
+    background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 15px;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .save-btn, .cancel-btn {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
 }

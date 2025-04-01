@@ -1,165 +1,229 @@
- body, html {
-    font-family: Arial, sans-serif;
+/* General Styles */
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #f9f6f2; /* Soft cream background */
     margin: 0;
     padding: 0;
-    background-color: #2a2a2a; /* Dark Background */
-    color: #f0f0f0; /* Light Text */
-    height: 100%;
-    overflow: hidden; /* Prevent body scroll */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    flex-direction: column;
+    padding-top: 60px; /* Space from the top */
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px; /* Space from the top */
 }
 
 /* Page Title */
 .page-title {
-    text-align: center;
-    font-size: 24px;
+    font-size: 26px;
+    color: #c49a6c;
     font-weight: bold;
-    color: #e1e1e1;
-    padding: 15px 0;
-    background-color: #1f1f1f; /* Darker Background */
-    border-bottom: 3px solid #3498db;
-}
-
-/* Container (Full Screen) */
-.container {
-    width: 95%;
-    margin: auto;
-    background: #1f1f1f;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    height: calc(100vh - 70px); /* Full height minus title */
-    display: flex;
-    flex-direction: column;
+    text-transform: uppercase;
+    border-bottom: 3px solid #d4af37;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 /* Filters */
 .filters {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 15px;
     gap: 10px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
+    width: 100%;
 }
 
-    .search {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #555; /* Darker Border */
-        border-radius: 4px;
-        font-size: 16px;
-        background: #444; /* Darker Input Background */
-        color: #e1e1e1; /* Light Text */
-        transition: border-color 0.3s ease;
-    }
-
-    .search:focus {
-        border-color: #3498db; /* Highlight Border on Focus */
-        outline: none;
-    }
-
-    .drpdn {
-        padding: 10px;
-        border: 1px solid #555;
-        border-radius: 4px;
-        background: #444;
-        font-size: 16px;
-        color: #e1e1e1;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .drpdn:hover {
-        background: #555; /* Darker on Hover */
-    }
-
-    .new-order {
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        color: white;
-        background-color: #28a745; /* Green */
-        transition: background-color 0.3s ease;
-    }
-
-    .new-order:hover {
-        background-color: #218838; /* Darker Green */
-    }
-
-    .table-wrapper {
-    flex-grow: 1;
-    overflow-y: auto; /* Enables scrolling */
+.search, .drpdn {
+    padding: 10px;
+    font-size: 16px;
     border-radius: 8px;
+    border: 2px solid #c49a6c;
+    background: #fdfbf8;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%; /* Ensure they take full width */
 }
 
-/* Scrollbar Customization */
-.table-wrapper::-webkit-scrollbar {
-    width: 8px;
+.search {
+    flex-grow: 2;
+    padding-left: 40px;
+    background-image: url('🔍');
+    background-repeat: no-repeat;
+    background-position: 10px center;
 }
 
-.table-wrapper::-webkit-scrollbar-thumb {
-    background-color: #3498db;
-    border-radius: 4px;
+.drpdn {
+    flex-grow: 1;
 }
 
-.table-wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: #2978b5;
+/* Table Wrapper */
+.table-wrapper {
+    overflow-x: auto;
+    max-height: 500px;
+    border-radius: 12px;
+    background: white;
+    margin-top: 20px;
 }
 
 /* Table */
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 700px;
+    border-radius: 12px;
 }
 
-/* Table Header (Fixed on Scroll) */
-thead {
-    position: sticky;
-    top: 0;
-    background: #007bff;
-    color: white;
-    z-index: 10;
-}
-
-/* Table Cells */
 th, td {
     padding: 12px;
     text-align: center;
-    border-bottom: 1px solid #555;
+    border-bottom: 1px solid #e0d5c8;
 }
 
 th {
+    background-color: #c49a6c;
+    color: white;
+    text-transform: uppercase;
+}
+
+td {
+    background: #fdfbf8;
+    font-size: 14px;
+}
+
+/* Order Status Styling with unique colors */
+.status {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.status.pending {
+    background: #f44336; /* Red for Pending */
+    color: white;
+}
+
+.status.processing {
+    background: #ff9800; /* Orange for Processing */
+    color: white;
+}
+
+.status.delivered {
+    background: #4caf50; /* Green for Delivered */
+    color: white;
+}
+
+.status.canceled {
+    background: #ff5722; /* Red-Orange for Canceled */
+    color: white;
+}
+
+.status.refunded {
+    background: #2196f3; /* Blue for Refunded */
+    color: white;
+}
+
+.status.shipped {
+    background: #ffeb3b; /* Yellow for Shipped */
+    color: black;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.actions a, .actions button {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: 0.3s ease;
+    cursor: pointer;
+    width: auto;
+    line-height: 1.4;
+    border: 2px solid transparent;
+    box-sizing: border-box;
+}
+
+.view {
     background: #007bff;
     color: white;
 }
 
-/* Alternating Row Colors */
-tbody tr:nth-child(even) {
-    background-color: #2b2b2b;
+.view:hover {
+    background: #0056b3;
 }
 
-tbody tr:hover {
-    background-color: #3c3c3c;
+.edit {
+    background: #17a2b8;
+    color: white;
 }
 
-/* Buttons */
-.actions a, .delete {
-    text-decoration: none;
-    margin-right: 5px;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 14px;
-    display: inline-block;
+.edit:hover {
+    background: #117a8b;
+}
+
+.delete {
+    background: #dc3545;
+    color: white;
     border: none;
-    transition: all 0.3s ease;
 }
 
-.view { background: #17a2b8; color: white; }
-.edit { background: #ffc107; color: black; }
-.delete { background: #dc3545; color: white; cursor: pointer; }
+.delete:hover {
+    background: #c82333;
+}
 
-.view:hover { background: #138496; }
-.edit:hover { background: #e0a800; }
-.delete:hover { background: #c82333; }
+/* Adjustments for buttons with borders */
+.actions a, .actions button {
+    border: 2px solid #c49a6c;
+    box-sizing: border-box;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search, .drpdn {
+        width: 100%;
+    }
+    
+    .actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .actions a, .actions button {
+        width: 100%;
+    }
+}
+
+/* Responsive Tables (on small screens) */
+@media (max-width: 600px) {
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 8px;
+    }
+}

@@ -1,92 +1,165 @@
-/* Background with Soft Gradient */
+/* General Styles */
 body {
-    background:#2a2a2a; /* Darker Gradient */
+    font-family: "Arial", sans-serif;
+    background-color: #f9f6f2;
+    color: #333;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
 }
 
-/* Container Styling with Balanced Dark-Tone */
+/* Add space for the navbar */
 .container {
-    max-width: 800px;
-    margin: 40px auto;
-    background: #3C3C3C; /* Dark Gray for container */
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* Darker Shadow for Depth */
-}
-
-/* Page Title */
-.page-title {
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    color: #E1E1E1; /* Light Gray for better contrast */
-    margin-bottom: 20px;
-}
-
-/* Form Group */
-.form-group {
-    margin-bottom: 15px;
-}
-
-/* Label Styling */
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #A1C4E7; /* Soft Blue for labels */
-}
-
-/* Input & Select Styling */
-.form-control,
-.form-select {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
     width: 100%;
-    padding: 10px;
-    border: 2px solid #5A6B7A; /* Soft Gray-Blue Border */
-    border-radius: 8px;
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(196, 154, 108, 0.2);
+    margin-top: 70px; /* Added margin to create space for the navbar */
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #c49a6c 0%, #d4af37 100%);
+}
+
+/* Title */
+h2.page-title {
+    color: #83603b;
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Form Group Styles */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
     font-size: 16px;
-    background: #4A4A4A; /* Darker Background for inputs */
-    color: #E1E1E1; /* Light Text */
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
 }
 
-/* Placeholder Color */
-.form-control::placeholder {
-    color: #A9B0B9;
+/* Input & Select Styles */
+input[type="text"],
+input[type="number"],
+select,
+textarea,
+input[type="file"] {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #e0d5c8;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: #fdfbf8;
+    margin-top: 5px;
 }
 
-/* Side-by-Side Layout */
+/* Focus States */
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #c49a6c;
+    box-shadow: 0 0 0 2px rgba(196, 154, 108, 0.2);
+}
+
+/* Flex Container */
 .flex-container {
     display: flex;
-    gap: 15px;
+    justify-content: space-between;
 }
 
-/* Ensure Equal Width for Inputs in Flex Layout */
 .flex-container .form-group {
-    flex: 1;
+    width: 48%;
 }
 
-/* File Input Styling */
-input[type="file"] {
-    padding: 8px;
-    background: #4A4A4A; /* Darker Background */
-    border: 2px solid #5A6B7A;
-    border-radius: 6px;
-    color: #E1E1E1;
-}
-
-/* Submit Button */
-.btn-submit {
+/* Button Styles */
+button.btn-submit {
     width: 100%;
-    padding: 12px;
-    background: #25a53c; /* Soft Blue-Green */
+    padding: 15px 20px;
+    background: linear-gradient(90deg, #c49a6c 0%, #d4af37 100%);
     color: white;
-    font-weight: bold;
     border: none;
-    border-radius: 8px;
+    border-radius: 30px;
     font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.3s ease-in-out;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
 }
 
-.btn-submit:hover {
-    background: #0b781f; /* Slightly Darker Blue-Green */
-    transform: scale(1.05);
+button.btn-submit:hover {
+    background: linear-gradient(90deg, #b38a5e 0%, #c19f32 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(196, 154, 108, 0.3);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h2.page-title {
+        font-size: 28px;
+    }
+
+    .flex-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .flex-container .form-group {
+        width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        padding: 15px;
+    }
+
+    h2.page-title {
+        font-size: 24px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea,
+    input[type="file"] {
+        font-size: 14px;
+    }
+
+    button.btn-submit {
+        font-size: 16px;
+    }
 }

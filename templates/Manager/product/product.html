@@ -73,7 +73,7 @@
 <table class="product-table">
     <thead>
         <tr>
-            <th>Image</th><th>Title</th><th>Description</th><th>Category</th>
+            <th>Image</th><th>Title</th><th>SKU</th><th>Description</th><th>Category</th>
             <th>Brand</th><th>MRP</th><th>Price</th><th>Discount</th>
             <th>Stock</th><th>Rating</th><th>Actions</th>
         </tr>
@@ -83,6 +83,7 @@
         <tr>
             <td><img src="{{ product.display_image.url }}" class="product-image"></td>
             <td>{{ product.title }}</td>
+            <td>{{product.sku}}</td>
             <td>{{ product.description|truncatewords:10 }}</td>
             <td>{{ product.category.name }}</td>
             <td>{{ product.brand|default:"N/A" }}</td>
@@ -103,7 +104,6 @@
 </table>
 {% endif %}
 
-<!-- Place JavaScript Here -->
 <script>
     function filterProducts() {
         let input = document.getElementById("searchBox").value.toLowerCase();

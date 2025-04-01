@@ -1,109 +1,171 @@
-/* General Styling */
+/* General Styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #2a2a2a; /* Darker background */
-    margin: 0;
+    font-family: "Arial", sans-serif;
+    background-color: #f9f6f2;
+    color: #333;
     padding: 0;
-    color: white; /* Adjust text color for contrast */
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align at the top */
+    height: 100vh;
 }
 
-/* Delete Card */
+/* Container for the delete card */
 .delete-card {
-    width: 50%;
-    margin: 80px auto;
-    background: #212529; /* Darker card background */
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-radius: 12px; /* Slightly smaller border radius */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px; /* Reduced padding */
+    width: 100%;
+    max-width: 700px; /* Reduced max width */
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(196, 154, 108, 0.2);
+    margin-top: 50px; /* Reduced margin from top */
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
 }
 
-/* Delete Title */
-h2 {
+/* Optional: Gradient Border on Top */
+.delete-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px; /* Slightly smaller height */
+    background: linear-gradient(90deg, #c49a6c 0%, #d4af37 100%);
+}
+
+/* Title Styles */
+h2.text-danger {
     color: #dc3545;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 15px;
+    font-size: 28px; /* Reduced title size */
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
-/* Delete Text */
+/* Delete Product Description */
 .delete-text {
-    font-size: 18px;
-    color: #ddd; /* Lighter text for readability */
+    font-size: 16px; /* Reduced font size */
+    color: #333;
     margin-bottom: 20px;
 }
 
-/* Product Card */
+/* Product Card Styling */
 .product-card {
-    display: flex;
-    background: #495057; /* Dark gray background */
-    padding: 15px;
-    border-radius: 8px;
-    align-items: center;
-    gap: 15px;
-    box-shadow: 0px 3px 10px rgba(255, 255, 255, 0.1);
+    background-color: #fdfbf8;
+    border: 1px solid #e0d5c8;
+    border-radius: 12px; /* Slightly smaller border radius */
+    padding: 15px; /* Reduced padding */
     margin-bottom: 20px;
 }
 
 .product-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
+    width: 100%;
+    max-width: 180px; /* Reduced max-width */
+    height: auto;
     border-radius: 8px;
-    border: 3px solid #dc3545;
+    margin-bottom: 15px;
 }
 
 .product-info {
     text-align: left;
+    font-size: 14px; /* Slightly smaller font size */
 }
 
 .product-info p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: #f8f9fa; /* Lighter text */
-}
-
-.product-info strong {
-    color: #ffffff;
+    margin: 6px 0; /* Reduced space between text */
 }
 
 /* Button Group */
 .button-group {
     display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 15px;
+    justify-content: space-between;
+    margin-top: 20px; /* Reduced space between buttons */
 }
 
-/* Delete Button */
-.btn-danger {
+button.btn-danger {
     background-color: #dc3545;
     color: white;
-    padding: 10px 20px;
+    padding: 12px 15px; /* Reduced padding */
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 16px; /* Reduced font size */
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    width: 45%; /* Adjusted width for a better fit */
 }
 
-.btn-danger:hover {
-    background-color: #b02a37;
+button.btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
 }
 
-/* Cancel Button */
-.btn-secondary {
+a.btn-secondary {
     background-color: #6c757d;
     color: white;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 12px 15px; /* Reduced padding */
+    border-radius: 8px;
     text-decoration: none;
-    font-size: 16px;
-    transition: 0.3s;
+    font-size: 16px; /* Reduced font size */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 45%; /* Adjusted width for a better fit */
 }
 
-.btn-secondary:hover {
+a.btn-secondary:hover {
     background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(106, 116, 120, 0.3);
 }
 
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .delete-card {
+        padding: 15px;
+    }
 
+    h2.text-danger {
+        font-size: 24px; /* Slightly smaller title size */
+    }
+
+    .delete-text {
+        font-size: 14px; /* Slightly smaller text */
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .button-group button,
+    .button-group a {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .delete-card {
+        padding: 10px;
+    }
+
+    h2.text-danger {
+        font-size: 20px; /* Reduced title size */
+    }
+
+    .delete-text {
+        font-size: 12px; /* Reduced text size */
+    }
+
+    button.btn-danger,
+    a.btn-secondary {
+        font-size: 14px; /* Reduced button font size */
+    }
+}

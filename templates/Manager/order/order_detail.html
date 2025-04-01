@@ -22,7 +22,7 @@
                 <th>Price</th>
                 <th>Total</th>
                 <th>Order Date</th>
-                <th>Order Status</th>
+                
                 <th>Action</th>
             </tr>
         </thead>
@@ -34,11 +34,7 @@
                 <td>₹{{ item.product.price }}</td>
                 <td>₹{{ item.item_price }}</td>
                 <td>{{ order.created_at|date:"M d, Y" }}</td>
-                <td>
-                    <span class="status {% if order.cart.status == 'ordered' %}ordered{% else %}pending{% endif %}">
-                        {{ order.status }}
-                    </span>
-                </td>
+                
                 <td class="actions">
                     <form method="POST" action="{% url 'delete_cart_item' item.id %}" onsubmit="return confirmDelete()">
                         {% csrf_token %}
