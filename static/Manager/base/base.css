@@ -116,16 +116,6 @@ body {
     transition: 0.3s;
 }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-    .sidebar {
-        width: 180px; /* Even smaller width for tablets */
-    }
-    
-    .main-content {
-        margin-left: 200px; /* Adjust margin for smaller sidebar width */
-    }
-}
 
 @media (max-width: 768px) {
     .navbar img {
@@ -140,5 +130,6 @@ body {
 
     .main-content {
         margin-left: 0;
+        
     }
 }
