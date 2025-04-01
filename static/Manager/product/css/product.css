@@ -26,7 +26,7 @@
 }
 
 .add-product-btn {
-    background-color: #28a745;
+    background-color: #c49a6c;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -54,6 +54,7 @@
 
 .product-table th {
     background-color: #f8f9fa;
+    text-align: center;
 }
 
 .product-table tr:hover {
@@ -66,13 +67,23 @@
     object-fit: cover;
 }
 
+.action-buttons {
+    justify-content: center;
+    gap: 5px; /* Adds spacing between buttons */
+}
+
 .action-buttons a {
-    margin: 0 5px;
-    padding: 5px 10px;
+    display: inline-block;
+    text-align: center;
+    margin: 5px 5px;
+    padding: 8px 12px; /* More padding for better appearance */
     text-decoration: none;
-    border-radius: 5px;
-    background-color: #007bff;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
     color: white;
+    min-width: 80px; /* Ensures both buttons have the same width */
+    transition: 0.3s ease;
 }
 
 .edit-btn {
@@ -84,7 +95,7 @@
 }
 
 .action-buttons a:hover {
-    opacity: 0.8;
+    opacity: 0.85;
 }
 
 /* No Products */

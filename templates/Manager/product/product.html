@@ -9,7 +9,7 @@
 <!-- Search & Filters -->
 <div class="filter-container">
     <form method="GET" action="{% url 'products' %}" class="filter-form">
-        <input type="text" id="searchBox" class="search-box" placeholder="Search products..." onkeyup="filterProducts()">
+        <input type="text" id="searchBox" class="search-box" placeholder=" Search products..." onkeyup="filterProducts()">
         <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Categories</option>
             {% for category in categories %}
