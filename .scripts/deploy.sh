@@ -63,7 +63,7 @@ echo "🔄 Gunicorn Status..."
 sudo systemctl status cocoengine.service
 
 
-echo "🔄 Reloading Gunicorn..."
+echo "🔄 Restarting Gunicorn..."
 sudo systemctl restart cocoengine.service
 echo "✅ Gunicorn Reloaded!"
 
