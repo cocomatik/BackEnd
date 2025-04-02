@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e  # Exit immediately on error
 
+LOG_FILE="deployment_$(date '+%Y-%m-%d_%H-%M-%S').log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
 echo "🚀 Deployment started ..."
 
 # Navigate to project directory
