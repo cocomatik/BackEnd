@@ -1,7 +1,13 @@
 #!/bin/bash
 set -e  # Exit immediately on error
+# Ensure logs directory exists
 
-LOG_FILE="deployment_$(date '+%Y-%m-%d_%H-%M-%S').log"
+mkdir -p logs
+
+# Define log file name with date and latest commit hash
+LOG_FILE="logs/deployment_$(date '+%Y-%m-%d_%H-%M')_$(git rev-parse --short HEAD).log"
+
+# Redirect output to both terminal and log file
 exec > >(tee -a "$LOG_FILE") 2>&1
 
 echo "🚀 Deployment started ..."
