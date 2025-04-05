@@ -14,43 +14,50 @@
             {% for pi in prd %}
             <li class="product-item">
                 <span class="product-title">{{ pi.title }}</span>
-                <span class="product-price">₹{{ pi.price }}</span>
-                <form action="{% url 'df_best_product' %}" method="POST" onsubmit="reloadAfterSubmit(event)">
-                    {% csrf_token %}
-                    <input type="hidden" name="sku" value="{{ pi.sku }}">
-                    <input type="hidden" name="type" value="{{ tp }}">
-                    <input type="hidden" name="name" value="{{ nm }}">
-                    <button type="submit" class="action-btn small-btn">Remove</button>
-                </form>
-                
+                <span class="product-price">₹{{ pi.price }}</span>                
             </li>
             {% endfor %}
         </ul>
 
         <a href="{% url 'best_of_products' %}" class="action-btn">Back</a>
-        <button class="action-btn" onclick="openPopup()">Add</button>
+        <button class="action-btn" onclick="openPopup()">Edit</button>
     </div>
 
-    <!-- Popup -->
     <div class="popup-overlay" id="popup-overlay">
         <div class="popup">
             <input type="text" id="searchBox" placeholder="Search products..." onkeyup="filterProducts()">
-
+    
             <div class="prod">
-                <form id="add-products-form" action="{% url 'ad_best_product' %}" method="POST">
+                <form id="product-action-form" action="{% url 'ad_best_product' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="type" value="{{ tp }}">
                     <input type="hidden" name="name" value="{{ nm }}">
-            
-                    <!-- Add Selected Button -->
-                    <button type="submit" class="action-btn" style="margin-bottom: 10px;">Add Selected</button>
-            
+    
+                    <!-- Two Submit Buttons with Different Names -->
+                    <button type="submit" name="action_type" value="add" class="action-btn" style="margin-bottom: 10px;">
+                        Add Selected
+                    </button>
+    
                     <table>
                         <tr>
                             <th>Select</th>
                             <th>Products</th>
                             <th>Product ID</th>
                         </tr>
+    
+                        <!-- Selected products from `prd` -->
+                        {% for pi in prd %}
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="selected_products" value="{{ pi.sku }}" checked>
+                            </td>
+                            <td class="txt">{{ pi.title }}</td>
+                            <td class="txt">{{ pi.sku }}</td>
+                        </tr>
+                        {% endfor %}
+
+    
+                        <!-- Unselected products from `qrd` -->
                         {% for qi in qrd %}
                         <tr>
                             <td>
@@ -63,11 +70,11 @@
                     </table>
                 </form>
             </div>
+    
             <button class="close-btn" onclick="closePopup()">Close</button>
-            
         </div>
     </div>
-
+    
     <script>
         function openPopup() {
     let popupOverlay = document.getElementById('popup-overlay');

@@ -9,6 +9,7 @@ from Accounts.decorators import session_auth_required
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
 
+from Orders.models import Order,CartItem,Address
 #BEST_OF_Cosmetics
 from POCOS.modelsxs import BestOfBodyCare,BestOfColorCosmetic,BestOfFragrance,BestOfHairCare,BestOfImportedProducts,BestOfSkinCare,BestSellers as BSC,FeatureProducts as FPC
 
@@ -389,47 +390,10 @@ def bop(request):
     "qrd":q
     }
     return render(request, "Manager/product/best.html", context)
+\
 
 @session_auth_required
-def dbop(request):
-        #sku=product id
-        sku = request.POST.get('sku')
-        #tpn = product type(" POCOS/POJOS as string") 
-        tpn = (request.POST.get('type'))
-        #tp = search particular variables by tpn
-        tp = globals().get(tpn)
-        #nmn = bestOfCategories as a string
-        nmn = (request.POST.get('name'))
-        if nmn == 'BestSellers'  :
-            if tp == POCOS:
-                nm=BSC
-            else:
-                nm=BSJ
-        elif nmn =='FeatureProducts' :
-            if tp == POCOS:
-                nm=FPC
-            else:
-                nm=FPJ
-        else :
-            nm=globals().get(nmn)
-        pm = nm.objects.get(id=1)
-        pn = tp.objects.get(sku=sku)
-        pm.objs.remove(pn)
-        p = pm.objs.all().order_by('title')
-        x = p.first().category if p.exists() else None
-        if nm =='BestSellers' or nm == 'FeatureProducts':
-            z=POCOS.objects.all()
-        else:
-            z = POCOS.objects.filter(category= f'{x}')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-        
-        
-        context = {'prd': p, 'tp': tpn, 'nm': nmn, 'qrd':q}
-        return render(request, 'Manager/product/best.html', context)
-
-
-@session_auth_required
-def abop(request):
+def mbop(request):
     lst = request.POST.getlist("selected_products")
     #tpn = product type(" POCOS/POJOS as string") 
     tpn = (request.POST.get('type'))
@@ -456,9 +420,13 @@ def abop(request):
     else :
         nm=globals().get(nmn)
     pm = nm.objects.get(id=1)
+    pm.objs.clear()
     for s in lst:
         pn = tp.objects.get(sku=s)
-        pm.objs.add(pn)
+        try:
+            pm.objs.add(pn)
+        except :
+            pass
     p = pm.objs.all().order_by('title')
     x = p.first().category if p.exists() else None
     if nm==BSC or nm==FPC:
@@ -468,16 +436,12 @@ def abop(request):
             
     q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title') 
     
-
-    
-    
     context = {'prd': p, 'tp': tpn, 'nm': nmn, 'qrd':q}
-    return render(request, 'Manager/product/best.html', context)
+    return redirect("best_of_products")
 
     
 
 
-from Orders.models import Order,CartItem,Address
 
 @session_auth_required
 def orders(request):
