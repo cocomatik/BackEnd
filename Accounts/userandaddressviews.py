@@ -6,19 +6,33 @@ from .models import UserAccount, Address
 from .serializers import UserSerializer,AddressSerializer
 from .decorators import token_auth_required
 import json
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import UserSerializer
 
-@api_view(["GET", "POST"])
+@api_view(["GET", "POST", "PUT"])
 @token_auth_required
 def user_profile_view(request):
     user = request.user
+
     if request.method == "GET":
         serializer = UserSerializer(user)
         return Response(serializer.data)
-    
+
     elif request.method == "POST":
-        data = request.data
-        data.pop("email", None)  # Ensure email is not updated
+        data = request.data.copy()
+        data.pop("email", None)  # Prevent email update
         serializer = UserSerializer(user, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "PUT":
+        data = request.data.copy()
+        data.pop("email", None)  # Prevent email update
+        serializer = UserSerializer(user, data=data)  # full update expected
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
