@@ -1,0 +1,142 @@
+/* General Styles */
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #f9f6f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align to the top of the page */
+    padding-top: 60px; /* Ensure space for the navbar */
+    height: 100vh; /* Full height to use flexbox properly */
+}
+
+/* Container for the customer management page */
+.container {
+    width: 100%;
+    max-width: 1000px; /* Max width to prevent the container from being too wide */
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; /* Center horizontally */
+    text-align: center;
+}
+
+/* Page Title */
+.page-title {
+    font-size: 26px;
+    color: #c49a6c;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 3px solid #d4af37;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    
+}
+
+/* Search Box */
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    width: 100%;
+    max-width: 300px; /* Limit the width of the search box */
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #e0d5c8;
+    border-radius: 8px;
+    background-color: #f9f6f2;
+    margin: 0 auto; /* Center the search box horizontally */
+    display: block;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #e0d5c8;
+}
+
+table th {
+    background-color: #f0f0f0;
+    color: #333;
+    font-weight: bold;
+}
+
+table td {
+    color: #555;
+}
+
+/* Actions - Buttons */
+a.view-btn, a.delete-btn {
+    display: inline-block;
+    padding: 8px 15px; /* Slightly smaller padding */
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12px; /* Smaller font size */
+    font-weight: 600;
+    margin: 5px; /* Adds a small margin between the buttons */
+    transition: all 0.3s ease;
+    width: auto; /* Auto width to adjust according to text */
+    text-align: center; /* Center the text in the button */
+}
+
+/* Center the button group */
+td {
+    text-align: center;
+}
+
+.view-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.view-btn:hover {
+    background-color: #0056b3;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* No Results Message */
+#noResults {
+    display: none;
+    text-align: center;
+    font-size: 18px;
+    color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .search-box input {
+        max-width: 250px;
+        font-size: 12px;
+    }
+
+    table th, table td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

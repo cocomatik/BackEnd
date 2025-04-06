@@ -6,12 +6,22 @@ from pathlib import Path
 import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+CDN_URL =os.getenv('CDN_URL')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('true', '1')
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
+
+ALLOWED_HOSTS = [
+    'engine.cocomatik.com', 
+    'admin.cocomatik.com', 
+    '178.16.138.130',  # Add your server's IP
+    '127.0.0.1' 
+]
+
+SESSION_COOKIE_SECURE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 
 
@@ -33,6 +43,7 @@ INSTALLED_APPS = [
     'Api.apps.ApiConfig',
 
     'django_extensions',
+    "cloudinary",
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -42,7 +53,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Should be first
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,23 +61,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'Manager.middleware.SessionAuthOnlyMiddleware',
-
-    
-    
 ]
 
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.getenv("CORS_ALLOWED_ORIGINS") else [
-    "https://cocomatik.com",
-    "http://127.0.0.1:5500",  
-]
-
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
 CORS_ALLOW_ALL_ORIGINS = False  
 
 
-SHIPROCKET_EMAIL = os.getenv("SHIPROCKET_EMAIL", default="")
-SHIPROCKET_PASSWORD = os.getenv("SHIPROCKET_PASSWORD", default="")
+SHIPROCKET_EMAIL = os.getenv("SHIPROCKET_EMAIL")
+SHIPROCKET_PASSWORD = os.getenv("SHIPROCKET_PASSWORD")
 
 
 ROOT_URLCONF = 'COCO.urls'
@@ -132,8 +135,6 @@ cloudinary.config(
 )
 
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-
 
 AUTH_USER_MODEL = "Accounts.UserAccount"
 
@@ -163,12 +164,13 @@ USE_I18N = True
 USE_TZ = True 
 
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = f"{CDN_URL}/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"] 
+STATIC_ROOT = BASE_DIR / "staticfiles"   
 
+MEDIA_URL = f"{CDN_URL}/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" 
-
-
+# WhiteNoise for Static File Serving
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

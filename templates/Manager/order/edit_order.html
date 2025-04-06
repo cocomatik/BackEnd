@@ -2,88 +2,9 @@
 {% block content %}
 {% load static %}
 
+<link rel="stylesheet" href="{% static 'Manager/order/css/edit_order.css' %}">
+
 <h2 class="page-title"><b>Edit Order</b></h2>
-
-<style>
-    body {
-        background-color: #121212; /* Very dark background for the whole page */
-        font-family: Arial, sans-serif;
-        color: #f0f0f0; /* Light text color */
-    }
-
-    .form-container {
-        width: 50%;
-        margin: auto;
-        background: #1f1f1f; /* Darker background */
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Softer shadow */
-    }
-
-    h2 {
-        text-align: center;
-        color: #e1e1e1; /* Light text color */
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-        color: #e1e1e1; /* Light text color for labels */
-    }
-
-    input, select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #555; /* Dark border for input fields */
-        border-radius: 4px;
-        background-color: #2d2d2d; /* Dark background for input fields */
-        color: #e1e1e1; /* Light text color inside inputs */
-    }
-
-    input:focus, select:focus {
-        border-color: #007bff; /* Blue border on focus */
-        outline: none;
-    }
-
-    .btn-group {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-    }
-
-    .save-btn {
-        background: #28a745;
-        color: white;
-    }
-
-    .save-btn:hover {
-        background: #218838; /* Darker green on hover */
-    }
-
-    .cancel-btn {
-        background: #dc3545;
-        color: white;
-        margin-left: 10px;
-    }
-
-    .cancel-btn:hover {
-        background: #c82333; /* Darker red on hover */
-    }
-
-</style>
 
 <div class="form-container">
     <form method="POST" action="{% url 'edit_order' order.id %}">

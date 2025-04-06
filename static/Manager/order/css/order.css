@@ -1,0 +1,229 @@
+/* General Styles */
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #f9f6f2; /* Soft cream background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    flex-direction: column;
+    padding-top: 60px; /* Space from the top */
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px; /* Space from the top */
+}
+
+/* Page Title */
+.page-title {
+    font-size: 26px;
+    color: #c49a6c;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 3px solid #d4af37;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+    width: 100%;
+}
+
+.search, .drpdn {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid #c49a6c;
+    background: #fdfbf8;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%; /* Ensure they take full width */
+}
+
+.search {
+    flex-grow: 2;
+    padding-left: 40px;
+    background-image: url('🔍');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+
+.drpdn {
+    flex-grow: 1;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+    overflow-x: auto;
+    max-height: 500px;
+    border-radius: 12px;
+    background: white;
+    margin-top: 20px;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #e0d5c8;
+}
+
+th {
+    background-color: #c49a6c;
+    color: white;
+    text-transform: uppercase;
+}
+
+td {
+    background: #fdfbf8;
+    font-size: 14px;
+}
+
+/* Order Status Styling with unique colors */
+.status {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.status.pending {
+    background: #f44336; /* Red for Pending */
+    color: white;
+}
+
+.status.processing {
+    background: #ff9800; /* Orange for Processing */
+    color: white;
+}
+
+.status.delivered {
+    background: #4caf50; /* Green for Delivered */
+    color: white;
+}
+
+.status.canceled {
+    background: #ff5722; /* Red-Orange for Canceled */
+    color: white;
+}
+
+.status.refunded {
+    background: #2196f3; /* Blue for Refunded */
+    color: white;
+}
+
+.status.shipped {
+    background: #ffeb3b; /* Yellow for Shipped */
+    color: black;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.actions a, .actions button {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: 0.3s ease;
+    cursor: pointer;
+    width: auto;
+    line-height: 1.4;
+    border: 2px solid transparent;
+    box-sizing: border-box;
+}
+
+.view {
+    background: #007bff;
+    color: white;
+}
+
+.view:hover {
+    background: #0056b3;
+}
+
+.edit {
+    background: #17a2b8;
+    color: white;
+}
+
+.edit:hover {
+    background: #117a8b;
+}
+
+.delete {
+    background: #dc3545;
+    color: white;
+    border: none;
+}
+
+.delete:hover {
+    background: #c82333;
+}
+
+/* Adjustments for buttons with borders */
+.actions a, .actions button {
+    border: 2px solid #c49a6c;
+    box-sizing: border-box;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search, .drpdn {
+        width: 100%;
+    }
+    
+    .actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .actions a, .actions button {
+        width: 100%;
+    }
+}
+
+/* Responsive Tables (on small screens) */
+@media (max-width: 600px) {
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 8px;
+    }
+}

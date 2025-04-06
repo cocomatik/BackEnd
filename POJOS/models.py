@@ -25,6 +25,7 @@ class POJOS(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    
     @property
     def discount(self):
         """Calculate discount percentage ((MRP - Price) / MRP) * 100"""
