@@ -1,23 +1,28 @@
 import os,socket
 from dotenv import load_dotenv
-load_dotenv()
 import dj_database_url
 from pathlib import Path
 import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(dotenv_path=BASE_DIR / ".env")
 CDN_URL =os.getenv('CDN_URL')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
+
+
+
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
-
-ALLOWED_HOSTS = [
-    'engine.cocomatik.com', 
-    'admin.cocomatik.com', 
-    '178.16.138.130',  # Add your server's IP
-    '127.0.0.1' 
-]
+if DEBUG:
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+else:
+    ALLOWED_HOSTS = [
+        'engine.cocomatik.com', 
+        'admin.cocomatik.com', 
+        '178.16.138.130',  # Add your server's IP
+        '127.0.0.1' 
+    ]
 
 SESSION_COOKIE_SECURE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -63,9 +68,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+from decouple import config, Csv
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
 CORS_ALLOW_ALL_ORIGINS = False  
+print("CORS_ALLOWED_ORIGINS =", CORS_ALLOWED_ORIGINS)
 
 
 SHIPROCKET_EMAIL = os.getenv("SHIPROCKET_EMAIL")
