@@ -1,59 +1,104 @@
-{% extends 'Manager/base.html' %}
-
-{% block title %}Dashboard{% endblock %}
-
-{% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'Manager/dashboard/dashboard.css' %}">
+<!DOCTYPE html>
+<html lang="en">
 
-<h2 class="mb-4 text-center">
-    <b>DASHBOARD</b>
-</h2>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
 
-<!-- Dashboard Stats -->
-<div class="stats-container">
-    <div class="stat-card">
-        <div class="stat-icon products">
-            <i class="fas fa-box"></i>
-        </div>
-        <div class="stat-info">
-            <h3>{{ total_products }}</h3>
-            <p>Total Products</p>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'Manager/base/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'Manager/dashboard/dashboard.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+    <div class="main">
+        <nav class="navbar">
+            <a class="logo" href="{% url 'dashboard' %}">
+                <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+            </a>
+
+
+            <ul class="nav-links">
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#">Products <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+                        <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
+                <li><a href="{% url 'order_list' %}">Orders</a></li>
+                <li><a href="{% url 'customer_list' %}">Customers</a></li>
+            </ul>
+        </nav>
+
+
+
+        <!-- Main Content -->
+        <div class="container mt-4">
+            <h2 class="mb-4 text-center"><b>DASHBOARD</b></h2>
+
+            <!-- Dashboard Stats -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon products">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{ total_products }}</h3>
+                        <p>Total Products</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orders">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{ total_orders }}</h3>
+                        <p>Total Orders</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon revenue">
+                        <i class="fa fa-inr"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>₹ {{ value }}</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon customers">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{ total_customers }}</h3>
+                        <p>Total Customers</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional Chart Area (empty canvas if needed) -->
+            <div class="graph-container mt-5">
+                <h4>Sales</h4>
+                <canvas id="salesChart"></canvas>
+            </div>
         </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon orders">
-            <i class="fas fa-shopping-cart"></i>
-        </div>
-        <div class="stat-info">
-            <h3>{{ total_orders }}</h3>
-            <p>Total Orders</p>
-        </div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon revenue">
-            <i class="fa fa-inr"></i>
-        </div>
-        <div class="stat-info">
-            <h3>₹ {{ value }}</h3>
-            <p>Total Revenue</p>
-        </div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon customers">
-            <i class="fas fa-users"></i>
-        </div>
-        <div class="stat-info">
-            <h3>{{ total_customers }}</h3>
-            <p>Total Customers</p>
-        </div>
-    </div>
-</div>
 
-<!-- Graph Section -->
-<div class="graph-container">
-    <h4>Sales</h4>
-    <canvas id="salesChart"></canvas>
-</div>
+        <!-- Mobile Restriction Message -->
+        <div class="message-container mt-5">
+            <div class="icon">🚫</div>
+            <h1>Access Restricted</h1>
+            <p>
+                This page is only accessible on a desktop. Please visit from a PC.
+            </p>
+        </div>
+    
+</body>
 
-{% endblock %}
+</html>

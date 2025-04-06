@@ -1,71 +1,114 @@
-{% extends 'Manager/base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Edit Product{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <link rel="stylesheet" href="{% static 'Manager/product/css/edit_product.css' %}">
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-{% block content %}
-<link rel="stylesheet" href="{% static 'Manager/product/css/edit_product.css' %}">
+</head>
 
-<div class="form-container">
-    <h2 class="form-title"><b>EDIT PRODUCT</b></h2>
+<body>
+    <div class="main">
+        <!-- === Navbar === -->
+        <nav class="navbar">
+            <a class="logo" href="{% url 'dashboard' %}">
+                <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#">Products <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+                        <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
+                <li><a href="{% url 'order_list' %}">Orders</a></li>
+                <li><a href="{% url 'customer_list' %}">Customers</a></li>
+            </ul>
+        </nav>
+
+        <!-- === Main Section === -->
+        <div class="main">
+
+            <div class="form-container">
+                <h2 class="form-title"><b>EDIT PRODUCT</b></h2>
+
+                <form action="" method="POST" enctype="multipart/form-data" class="product-form">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" name="title" class="form-input" value="{{ product.title }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Brand</label>
+                        <input type="text" name="brand" class="form-input" value="{{ product.brand }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category" class="form-input">
+                            {% for category in categories %}
+                                <option value="{{ category.name }}" {% if product.category.name == category.name %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" class="form-input" rows="4" required>{{ product.description }}</textarea>
+                    </div>
+
+                    <div class="flex-container">
+                        <div class="form-group">
+                            <label>MRP</label>
+                            <input type="number" name="mrp" class="form-input" value="{{ product.mrp }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="number" name="price" class="form-input" value="{{ product.price }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" name="stock" class="form-input" value="{{ product.stock }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Product Image</label>
+                        <input type="file" name="product_image" class="form-input">
+                        {% if product.display_image %}
+                            <div class="image-preview">
+                                <img src="{{ product.display_image.url }}" alt="Product Image" class="product-preview">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="submit-btn">Update Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+        <!-- === Mobile Message === -->
+        <div class="message-container">
+            <div class="icon">🚫</div>
+            <h1>Access Restricted</h1>
+            <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+        </div>
     
-    <form action="" method="POST" enctype="multipart/form-data" class="product-form">
-        {% csrf_token %}
+</body>
 
-        <div class="form-group">
-            <label>Product Name</label>
-            <input type="text" name="title" class="form-input" value="{{ product.title }}" required>
-        </div>
-
-        <div class="form-group">
-            <label>Brand</label>
-            <input type="text" name="brand" class="form-input" value="{{ product.brand }}">
-        </div>
-
-        <div class="form-group">
-            <label>Category</label>
-            <select name="category" class="form-input">
-                {% for category in categories %}
-                    <option value="{{ category.name }}" {% if product.category.name == category.name %}selected{% endif %}>
-                        {{ category.name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Description</label>
-            <textarea name="description" class="form-input" rows="4" required>{{ product.description }}</textarea>
-        </div>
-
-        <div class="flex-container">
-            <div class="form-group">
-                <label>MRP</label>
-                <input type="number" name="mrp" class="form-input" value="{{ product.mrp }}" required>
-            </div>
-
-            <div class="form-group">
-                <label>Price</label>
-                <input type="number" name="price" class="form-input" value="{{ product.price }}" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Stock</label>
-            <input type="number" name="stock" class="form-input" value="{{ product.stock }}" required>
-        </div>
-
-        <div class="form-group">
-            <label>Product Image</label>
-            <input type="file" name="product_image" class="form-input">
-            {% if product.display_image %}
-                <div class="image-preview">
-                    <img src="{{ product.display_image.url }}" alt="Product Image" class="product-preview">
-                </div>
-            {% endif %}
-        </div>
-
-        <button type="submit" class="submit-btn">Update Product</button>
-    </form>
-</div>
-{% endblock %}
+</html>

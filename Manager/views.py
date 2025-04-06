@@ -390,7 +390,7 @@ def bop(request):
     "qrd":q
     }
     return render(request, "Manager/product/best.html", context)
-\
+
 
 @session_auth_required
 def mbop(request):

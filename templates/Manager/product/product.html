@@ -1,128 +1,192 @@
-{% extends 'Manager/base.html' %}
-{% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'Manager/product/css/product.css' %}">
-<script src="https://unpkg.com/htmx.org@2.0.4"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<h2 class="page-title"><b>PRODUCT MANAGEMENT</b></h2>
+<head>
+  <meta charset="UTF-8">
+  <title>Product Management</title>
+  <link rel="stylesheet" href="{% static 'Manager/product/css/product.css' %}">
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-<!-- Search & Filters -->
-<div class="filter-container">
-    <form method="GET" action="{% url 'products' %}" class="filter-form">
-        <input type="text" id="searchBox" class="search-box" placeholder=" Search products..." onkeyup="filterProducts()">
-        <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
+</head>
+
+<body>
+  <div class="main">
+    <nav class="navbar">
+      <a class="logo" href="{% url 'dashboard' %}">
+        <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="dropdown">
+          <a href="#">Products <i class="fas fa-caret-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+            <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+          </ul>
+        </li>
+        <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
+        <li><a href="{% url 'order_list' %}">Orders</a></li>
+        <li><a href="{% url 'customer_list' %}">Customers</a></li>
+      </ul>
+    </nav>
+
+    <div class="all-main">
+      <h2 class="page-title"><b>PRODUCT MANAGEMENT</b></h2>
+
+      <!-- Search & Filters -->
+      <div class="filter-container">
+        <form method="GET" action="{% url 'products' %}" class="filter-form">
+          <input type="text" id="searchBox" class="search-box" placeholder="Search products..." onkeyup="filterProducts()">
+
+          <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Categories</option>
             {% for category in categories %}
-                <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
-                    {{ category.name }}
-                </option>
+              <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
+                {{ category.name }}
+              </option>
             {% endfor %}
-        </select>
-        <select name="stock" id="stockFilter" class="filter-dropdown" onchange="this.form.submit()">
+          </select>
+
+          <select name="stock" id="stockFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Stock Status</option>
             <option value="in-stock" {% if selected_stock == "in-stock" %}selected{% endif %}>In Stock</option>
             <option value="out-of-stock" {% if selected_stock == "out-of-stock" %}selected{% endif %}>Out of Stock</option>
             <option value="low-stock-50" {% if selected_stock == "low-stock-50" %}selected{% endif %}>Stock < 50</option>
             <option value="low-stock-10" {% if selected_stock == "low-stock-10" %}selected{% endif %}>Stock < 10</option>
-        </select>
-        <input type="hidden" name="type" value="{{ product_type }}">
-    </form>
-    <a href="{% url 'add_product' %}" class="add-product-link">
-        <button type="button" class="add-product-btn">➕ Add New Product</button>
-    </a>
-</div>
+          </select>
 
-{% if product_type == "cosmetic" %}
-<h3 class="section-title">Cosmetic Products</h3>
-<table class="product-table">
-    <thead>
-        <tr>
-            <th>Image</th><th>Title</th><th>SKU</th><th>Description</th><th>Category</th>
-            <th>Brand</th><th>MRP</th><th>Price</th><th>Discount</th>
-            <th>Stock</th><th>Rating</th><th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for product in cosmetic_products %}
-        <tr>
-            <td><img src="{{ product.display_image.url }}" class="product-image"></td>
-            <td>{{ product.title }}</td>
-            <td>{{product.sku}}</td>
-            <td>{{ product.description|truncatewords:10 }}</td>
-            <td>{{ product.category.name }}</td>
-            <td>{{ product.brand|default:"N/A" }}</td>
-            <td>₹ {{ product.mrp }}</td>
-            <td>₹ {{ product.price }}</td>
-            <td>{{ product.discount }}%</td>
-            <td>{{ product.stock }}</td>
-            <td>{{ product.rating }} ⭐</td>
-            <td class="action-buttons">
-                <a href="{% url 'edit_product' product.sku %}" class="edit-btn">Edit</a>
-                <a href="{% url 'delete_product' product.sku %}" class="delete-btn">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="11" class="no-products">No cosmetic products available</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
+          <input type="hidden" name="type" value="{{ product_type }}">
+        </form>
 
-{% if product_type == "jewellery" %}
-<h3 class="section-title">Jewellery Products</h3>
-<table class="product-table">
-    <thead>
-        <tr>
-            <th>Image</th><th>Title</th><th>SKU</th><th>Description</th><th>Category</th>
-            <th>Brand</th><th>MRP</th><th>Price</th><th>Discount</th>
-            <th>Stock</th><th>Rating</th><th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for product in jewellery_products %}
-        <tr>
-            <td><img src="{{ product.display_image.url }}" class="product-image"></td>
-            <td>{{ product.title }}</td>
-            <td>{{product.sku}}</td>
-            <td>{{ product.description|truncatewords:10 }}</td>
-            <td>{{ product.category.name }}</td>
-            <td>{{ product.brand|default:"N/A" }}</td>
-            <td>₹ {{ product.mrp }}</td>
-            <td>₹ {{ product.price }}</td>
-            <td>{{ product.discount }}%</td>
-            <td>{{ product.stock }}</td>
-            <td>{{ product.rating }} ⭐</td>
-            <td class="action-buttons">
-                <a href="{% url 'edit_product' product.sku %}" class="edit-btn">Edit</a>
-                <a href="{% url 'delete_product' product.sku %}" class="delete-btn">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="11" class="no-products">No jewellery products available</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
+        <a href="{% url 'add_product' %}" class="add-product-link">
+          <button type="button" class="add-product-btn">➕ Add New Product</button>
+        </a>
+      </div>
 
-<script>
+      <!-- Cosmetic Products Table -->
+      {% if product_type == "cosmetic" %}
+        <h3 class="section-title">Cosmetic Products</h3>
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>SKU</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>MRP</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Stock</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in cosmetic_products %}
+              <tr>
+                <td><img src="{{ product.display_image.url }}" class="product-image"></td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.sku }}</td>
+                <td>{{ product.description|truncatewords:10 }}</td>
+                <td>{{ product.category.name }}</td>
+                <td>{{ product.brand|default:"N/A" }}</td>
+                <td>₹ {{ product.mrp }}</td>
+                <td>₹ {{ product.price }}</td>
+                <td>{{ product.discount }}%</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.rating }} ⭐</td>
+                <td class="action-buttons">
+                  <a href="{% url 'edit_product' product.sku %}" class="edit-btn">Edit</a>
+                  <a href="{% url 'delete_product' product.sku %}" class="delete-btn">Delete</a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="12" class="no-products">No cosmetic products available</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+
+      <!-- Jewellery Products Table -->
+      {% if product_type == "jewellery" %}
+        <h3 class="section-title">Jewellery Products</h3>
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>SKU</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>MRP</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Stock</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in jewellery_products %}
+              <tr>
+                <td><img src="{{ product.display_image.url }}" class="product-image"></td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.sku }}</td>
+                <td>{{ product.description|truncatewords:10 }}</td>
+                <td>{{ product.category.name }}</td>
+                <td>{{ product.brand|default:"N/A" }}</td>
+                <td>₹ {{ product.mrp }}</td>
+                <td>₹ {{ product.price }}</td>
+                <td>{{ product.discount }}%</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.rating }} ⭐</td>
+                <td class="action-buttons">
+                  <a href="{% url 'edit_product' product.sku %}" class="edit-btn">Edit</a>
+                  <a href="{% url 'delete_product' product.sku %}" class="delete-btn">Delete</a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="12" class="no-products">No jewellery products available</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Mobile Message -->
+  <div class="message-container">
+    <div class="icon">🚫</div>
+    <h1>Access Restricted</h1>
+    <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+  </div>
+
+  <script>
     function filterProducts() {
-        let input = document.getElementById("searchBox").value.toLowerCase();
-        let table = document.querySelector(".product-table tbody");
-        let rows = table.getElementsByTagName("tr");
+      let input = document.getElementById("searchBox").value.toLowerCase();
+      let table = document.querySelector(".product-table tbody");
+      let rows = table.getElementsByTagName("tr");
 
-        for (let i = 0; i < rows.length; i++) {
-            let productTitle = rows[i].getElementsByTagName("td")[1]; // Target title column
-
-            if (productTitle) {
-                let txtValue = productTitle.textContent || productTitle.innerText;
-                if (txtValue.toLowerCase().indexOf(input) > -1) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
+      for (let i = 0; i < rows.length; i++) {
+        let productTitle = rows[i].getElementsByTagName("td")[1];
+        if (productTitle) {
+          let txtValue = productTitle.textContent || productTitle.innerText;
+          rows[i].style.display = txtValue.toLowerCase().includes(input) ? "" : "none";
         }
+      }
     }
-</script>
+  </script>
 
-{% endblock %}
+</body>
+
+</html>

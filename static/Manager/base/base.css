@@ -1,13 +1,13 @@
+/* 
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4ede4;
     color: #333;
     margin: 0;
     padding: 0;
-    padding-top: 60px; /* Account for fixed navbar */
+    padding-top: 60px; 
 }
 
-/* Navbar Styles */
 .navbar {
     background-color: #83603b;
     padding: 8px;
@@ -27,9 +27,8 @@ body {
     height: 50px;
 }
 
-/* Sidebar Styles */
 .sidebar {
-    width: 200px; /* Reduced width */
+    width: 200px; 
     height: 100vh;
     background: #d4af37;
     color: white;
@@ -54,7 +53,6 @@ body {
     border: none;
 }
 
-/* Improve the dropdown button style */
 .dropbtn {
     background-color: #d4af37;
     border-radius: 5px;
@@ -70,7 +68,6 @@ body {
     background-color: #c49a6c;
 }
 
-/* Sidebar Link and Dropdown Content Hover Effect */
 .sidebar a:hover, .dropbtn:hover {
     background-color: #c49a6c;
 }
@@ -108,18 +105,17 @@ body {
     background-color: #8c6239;
 }
 
-/* Main Content */
 .main-content {
-    margin-left: 220px; /* Adjust margin for smaller sidebar width */
+    margin-left: 220px; 
     padding: 20px;
-    width: calc(100% - 220px); /* Adjusted width to account for smaller sidebar */
+    width: calc(100% - 220px); 
     transition: 0.3s;
 }
 
 
 @media (max-width: 768px) {
     .navbar img {
-        height: 40px; /* Adjust logo size for small screens */
+        height: 40px;
     }
     
     .sidebar {
@@ -132,4 +128,4 @@ body {
         margin-left: 0;
         
     }
-}
+} */
