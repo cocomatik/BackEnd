@@ -22,17 +22,17 @@ def cart_view(request):
     serializer = CartSerializer(cart)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-
 @api_view(["POST"])
 @token_auth_required
 def add_to_cart(request):
     """
     Add multiple products to the cart in a single request.
+    Determines product type based on SKU prefix.
     """
     user = request.user
     cart, _ = Cart.objects.get_or_create(user=user, status="pending")
 
-    products = request.data.get("products")  # Expecting a list of {product_type, sku, quantity}
+    products = request.data.get("products")  # Expecting a list of {sku, quantity}
 
     if not products or not isinstance(products, list):
         return Response({"error": "Invalid or missing 'products' list."}, status=status.HTTP_400_BAD_REQUEST)
@@ -40,20 +40,23 @@ def add_to_cart(request):
     added_items = []
 
     for product_data in products:
-        product_type = product_data.get("product_type")
         sku = product_data.get("sku")
         quantity = int(product_data.get("quantity", 1))
 
-        if not product_type or not sku:
-            return Response({"error": "Each product must have 'product_type' and 'sku'."}, status=status.HTTP_400_BAD_REQUEST)
+        if not sku:
+            return Response({"error": "Each product must have 'sku'."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Identify the correct product model
-        if product_type == "pocos":
+        sku_prefix = sku.split("-")[0].upper()
+
+        # Determine product model based on SKU prefix
+        if sku_prefix == "POCO":
             product_model = POCOS
-        elif product_type == "pojos":
+            product_type = "pocos"
+        elif sku_prefix == "POJO":
             product_model = POJOS
+            product_type = "pojos"
         else:
-            return Response({"error": f"Invalid product_type '{product_type}'. Use 'pocos' or 'pojos'."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": f"Unknown SKU prefix '{sku_prefix}' in '{sku}'."}, status=status.HTTP_400_BAD_REQUEST)
 
         product = get_object_or_404(product_model, sku=sku)
         content_type = ContentType.objects.get_for_model(product_model)
@@ -77,7 +80,6 @@ def add_to_cart(request):
         })
 
     return Response({"message": "Products added to cart successfully.", "items": added_items}, status=status.HTTP_201_CREATED)
-
 
 @api_view(["PUT"])
 @token_auth_required
