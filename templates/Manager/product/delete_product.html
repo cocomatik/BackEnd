@@ -1,11 +1,17 @@
-{% extends 'Manager/base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Delete Product{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <link rel="stylesheet" href="{% static 'Manager/product/css/delete_product.css' %}">
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-{% block content %}
-<link rel="stylesheet" href="{% static 'Manager/product/css/delete_product.css' %}">
-
+<body>
+    <div class="main">
 <div class="delete-card">
     <h2 class="text-danger">Delete Product</h2>
     <p class="delete-text">Are you sure you want to delete <strong>{{ product.title }}</strong>?</p>
@@ -34,4 +40,15 @@
         </div>
     </form>
 </div>
-{% endblock %}
+</div>
+
+<!-- === Mobile Message === -->
+<div class="message-container">
+    <div class="icon">🚫</div>
+    <h1>Access Restricted</h1>
+    <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+</div>
+
+</body>
+
+</html>

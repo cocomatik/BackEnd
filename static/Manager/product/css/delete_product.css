@@ -125,47 +125,42 @@ a.btn-secondary:hover {
     box-shadow: 0 6px 12px rgba(106, 116, 120, 0.3);
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .delete-card {
-        padding: 15px;
+ /* === Mobile Restriction Message === */
+ .message-container {
+    display: none;
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  .message-container h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .message-container p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .message-container .icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+  }
+  
+  /* === Mobile View === */
+  @media (max-width: 768px) {
+    .message-container {
+      display: block;
     }
-
-    h2.text-danger {
-        font-size: 24px; /* Slightly smaller title size */
+  
+    .main {
+      display: none;
     }
-
-    .delete-text {
-        font-size: 14px; /* Slightly smaller text */
-    }
-
-    .button-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .button-group button,
-    .button-group a {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-}
-
-@media (max-width: 500px) {
-    .delete-card {
-        padding: 10px;
-    }
-
-    h2.text-danger {
-        font-size: 20px; /* Reduced title size */
-    }
-
-    .delete-text {
-        font-size: 12px; /* Reduced text size */
-    }
-
-    button.btn-danger,
-    a.btn-secondary {
-        font-size: 14px; /* Reduced button font size */
-    }
-}
+  }
