@@ -45,7 +45,6 @@ jobs:
             SHIPROCKET_EMAIL=${{ secrets.SHIPROCKET_EMAIL }}
             SHIPROCKET_PASSWORD=${{ secrets.SHIPROCKET_PASSWORD }}
             CDN_URL=${{ secrets.CDN_URL }}
-            meow=${{secrets.MEOW}}
             EOF
             echo "✅ Environment variables set!"
 
