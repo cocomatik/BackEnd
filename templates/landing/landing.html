@@ -9,28 +9,36 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
     <style>
+      :root {
+        --accent: #d89ca4;
+        --primary: #e5b7be;
+        --button-dark: #c07284;
+        --button-hover: #a6596c;
+        --bg-body: #fdf5f7;
+        --text-dark: #3d2c2e;
+        --text-light: #7a5c5f;
+        --container-bg: #fff;
+        --gradient-bg: linear-gradient(135deg, rgba(253, 245, 247, 0.9), rgba(245, 225, 229, 0.9));
+      }
+    
       body {
         font-family: "Arial", sans-serif;
-        background-color: #f9f6f2;
-        color: #333;
+        background: var(--gradient-bg);
+        color: var(--text-dark);
         margin: 0;
         padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         min-height: 100vh;
-        background-image: linear-gradient(
-          135deg,
-          rgba(249, 246, 242, 0.9) 0%,
-          rgba(237, 227, 219, 0.9) 100%
-        );
       }
+    
       .container {
         text-align: center;
-        background: #fff;
+        background: var(--container-bg);
         padding: 40px;
         border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         width: 90%;
         max-width: 600px;
         display: flex;
@@ -39,8 +47,9 @@
         justify-content: center;
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(196, 154, 108, 0.2);
+        border: 1px solid rgba(216, 156, 164, 0.2);
       }
+    
       .container::before {
         content: "";
         position: absolute;
@@ -48,69 +57,84 @@
         left: 0;
         width: 100%;
         height: 5px;
-        background: linear-gradient(90deg, #c49a6c 0%, #d4af37 100%);
+        background: linear-gradient(90deg, var(--accent), var(--primary));
       }
+    
       .logo-container {
         margin-bottom: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
       }
+    
       .logo-icon {
         font-size: 32px;
         margin: 0 10px;
       }
+    
       .cosmetic-icon {
-        color: #c49a6c;
+        color: var(--accent);
       }
+    
       .jewelry-icon {
-        color: #d4af37;
+        color: var(--primary);
       }
+    
       h1 {
-        color: #83603b;
+        color: var(--button-dark);
         font-size: 32px;
         margin-bottom: 10px;
         font-weight: 600;
         letter-spacing: 1px;
       }
+    
       .subtitle {
-        color: #d4af37;
+        color: var(--primary);
         font-size: 18px;
         margin-top: 0;
         margin-bottom: 15px;
         font-weight: 400;
         letter-spacing: 0.5px;
       }
+    
       p {
         font-size: 16px;
         margin-bottom: 30px;
         line-height: 1.6;
-        color: #666;
+        color: var(--text-light);
       }
+    
       .features {
         display: flex;
         justify-content: space-around;
         width: 100%;
         margin-bottom: 30px;
+        gap: 20px;
       }
+    
       .feature {
         text-align: center;
         padding: 15px;
         width: 45%;
       }
+    
       .feature-icon {
         font-size: 28px;
         margin-bottom: 10px;
+        color: var(--accent);
       }
+    
       .feature-title {
         font-size: 16px;
         font-weight: 600;
         margin-bottom: 5px;
       }
+    
       .feature-desc {
         font-size: 14px;
-        color: #777;
+        color: #946c70;
       }
+    
       .buttons {
         display: flex;
         flex-direction: column;
@@ -118,32 +142,12 @@
         width: 100%;
         max-width: 250px;
       }
-      .admin-button {
-        display: block;
-        padding: 12px 24px;
-        font-size: 16px;
-        background-color: #83603b;
-        color: white;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        width: 100%;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        box-shadow: 0 4px 8px rgba(131, 96, 59, 0.2);
-      }
-      .admin-button:hover {
-        background-color: #6e5032;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(131, 96, 59, 0.3);
-      }
+    
+      .admin-button,
       .main-button {
         display: block;
         padding: 12px 24px;
         font-size: 16px;
-        background-color: #d4af37;
         color: white;
         border: none;
         border-radius: 30px;
@@ -153,20 +157,37 @@
         width: 100%;
         font-weight: 500;
         letter-spacing: 0.5px;
-        box-shadow: 0 4px 8px rgba(212, 175, 55, 0.2);
       }
-      .main-button:hover {
-        background-color: #b8972f;
+    
+      .admin-button {
+        background-color: var(--button-dark);
+        box-shadow: 0 4px 8px rgba(192, 114, 132, 0.2);
+      }
+    
+      .admin-button:hover {
+        background-color: var(--button-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+        box-shadow: 0 6px 12px rgba(192, 114, 132, 0.3);
       }
+    
+      .main-button {
+        background-color: var(--primary);
+        box-shadow: 0 4px 8px rgba(229, 183, 190, 0.2);
+      }
+    
+      .main-button:hover {
+        background-color: #cc9fa9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(229, 183, 190, 0.3);
+      }
+    
       .divider {
         width: 50px;
         height: 2px;
-        background: linear-gradient(90deg, #c49a6c 0%, #d4af37 100%);
+        background: linear-gradient(90deg, var(--accent), var(--primary));
         margin: 20px auto;
       }
-
+    
       .message-container {
         display: none;
         max-width: 500px;
@@ -176,32 +197,25 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         backdrop-filter: blur(10px);
         border: 2px solid rgba(255, 255, 255, 0.3);
+        text-align: center;
       }
-
-      h1 {
-        font-size: 28px;
-        margin-bottom: 10px;
-      }
-
-      p {
-        font-size: 18px;
-        margin-bottom: 20px;
-      }
-
-      .icon {
+    
+      .message-container .icon {
         font-size: 50px;
         margin-bottom: 10px;
       }
-
+    
       @media (max-width: 768px) {
         .message-container {
           display: block;
         }
+    
         .main {
           display: none;
         }
       }
     </style>
+    
 
     <script>
       function redirectToAdmin() {
