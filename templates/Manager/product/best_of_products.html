@@ -89,7 +89,7 @@
                                 <form method="POST" action="{% url 'handle_best_product' %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="type" value="POCOS">
-                                    <input type="hidden" name="name" value="BestOfImportedProducts">
+                                    <input type="hidden" name="name" value="BestOfColorCosmetic">
                                     <button type="submit" class="action-btn">View</button>
                                 </form>
                             </td>
@@ -117,12 +117,22 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Best of Imported Products</td>
+                            <td>Best of Color Cosmetic</td>
                             <td>
                                 <form method="POST" action="{% url 'handle_best_product' %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="type" value="POCOS">
                                     <input type="hidden" name="name" value="BestOfColorCosmetic">
+                                    <button type="submit" class="action-btn">View</button>
+                                </form>
+                            </td>
+                        </tr>
+                            <td>Best of Imported Products</td>
+                            <td>
+                                <form method="POST" action="{% url 'handle_best_product' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="type" value="POCOS">
+                                    <input type="hidden" name="name" value="BestOfImportedProducts">
                                     <button type="submit" class="action-btn">View</button>
                                 </form>
                             </td>

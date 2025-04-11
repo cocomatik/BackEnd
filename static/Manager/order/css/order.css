@@ -219,6 +219,7 @@ td {
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 10px;
+  flex-direction: column;
 }
 
 .actions a,
