@@ -7,7 +7,7 @@ from Accounts.decorators import token_auth_required
 from Accounts.models import Address
 from POCOS.models import POCOS
 from POJOS.models import POJOS
-from .models import Cart, CartItem, Order
+from .models import Cart, CartItem, Order, OrderedCart, OrderedCartItem
 from .serializers import CartSerializer, CartItemSerializer, OrderSerializer
 
 
@@ -16,9 +16,14 @@ from .serializers import CartSerializer, CartItemSerializer, OrderSerializer
 def cart_view(request):
     """
     Fetch the user's cart with all items, total item count, and total cart value.
+    Handles empty cart scenario.
     """
     user = request.user
     cart, _ = Cart.objects.get_or_create(user=user, status="pending")
+
+    if not cart.cart_items.exists():
+        return Response({"message": "Your cart is empty."}, status=status.HTTP_200_OK)
+
     serializer = CartSerializer(cart)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -82,11 +87,13 @@ def add_to_cart(request):
 
     return Response({"message": "Products added to cart successfully.", "items": added_items}, status=status.HTTP_201_CREATED)
 
+
 @api_view(["PUT"])
 @token_auth_required
 def update_cart_item(request):
     """
     Update quantity of an item in the cart.
+    Handles invalid cart item and quantity.
     """
     user = request.user
     cart = get_object_or_404(Cart, user=user, status="pending")
@@ -109,6 +116,7 @@ def update_cart_item(request):
 def delete_cart_item(request):
     """
     Remove an item from the cart.
+    Handles cart item removal errors.
     """
     user = request.user
     cart = get_object_or_404(Cart, user=user, status="pending")
@@ -129,8 +137,13 @@ def delete_cart_item(request):
 def get_orders(request):
     """
     Fetch all orders placed by the user.
+    Handles empty order history.
     """
     orders = Order.objects.filter(user=request.user)
+
+    if not orders.exists():
+        return Response({"message": "You have not placed any orders yet."}, status=status.HTTP_200_OK)
+
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -140,9 +153,11 @@ def get_orders(request):
 def get_order_details(request, order_id):
     """
     Fetch details of a specific order by its ID.
+    Handles invalid or non-existing order.
     """
     user = request.user
     order = get_object_or_404(Order, id=order_id, user=user)
 
     serializer = OrderSerializer(order)
     return Response(serializer.data, status=status.HTTP_200_OK)
+

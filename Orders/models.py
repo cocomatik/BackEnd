@@ -70,3 +70,17 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.order_number} - {self.user} ({self.payment_mode})"
+
+
+class OrderedCart(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name="ordered_cart")
+    total_value = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class OrderedCartItem(models.Model):
+    ordered_cart = models.ForeignKey(OrderedCart, on_delete=models.CASCADE, related_name="ordered_items")
+    sku = models.CharField(max_length=20, db_index=True)
+    product_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    product = GenericForeignKey("product_type", "sku")
+    quantity = models.PositiveIntegerField()
+    price_at_purchase = models.DecimalField(max_digits=10, decimal_places=2)
