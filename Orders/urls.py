@@ -10,3 +10,4 @@ urlpatterns = [
     path("cart/delete/", delete_cart_item, name="delete_cart"),
     path("place/", place_order, name="checkout_cart"),
 ]
+
