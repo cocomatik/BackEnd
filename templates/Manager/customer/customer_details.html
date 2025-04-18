@@ -1,70 +1,112 @@
-{% extends 'Manager/base.html' %}
-{% block content %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="{% static 'Manager/customer/customer_detail.css' %}">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'Manager/customer/customer_detail.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
 
-<!-- Updated Page Title Style -->
-<h2 class="page-title"><b>Customer Details</b></h2>
+<body>
+    <div class="main">
 
-<div class="container">
-    <!-- Customer Details Section -->
-    <div class="customer-info">
-        <h3>Customer Information</h3>
-    
-        <p><strong>Name:</strong> {{ customer.name|default:"N/A" }}</p>
-        <p><strong>Email:</strong> {{ customer.email|default:"N/A" }}</p>
-        <p><strong>Phone:</strong> {{ customer.phone|default:"N/A" }}</p>
-    
-        <p><strong>Address:</strong> 
-            {% if address %}
-                {{ address.house_no }}, {{ address.street }}, {{ address.locality }}, 
-                {{ address.city }}, {{ address.state }} - {{ address.pincode }}
-            {% else %}
-                N/A
-            {% endif %}
-        </p>
-    
-        <p><strong>Joined On:</strong> {{ customer.date_joined|date:"d M Y" }}</p>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <a class="logo" href="{% url 'dashboard' %}">
+                <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#">Products <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+                        <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
+                <li><a href="{% url 'order_list' %}">Orders</a></li>
+                <li><a href="{% url 'customer_list' %}">Customers</a></li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div class="container">
+            <h2 class="page-title">Customer Detail</h2>
+
+            <!-- Customer Info -->
+            <div class="customer-info">
+                <h3>Customer Information</h3>
+                <p><strong>Name:</strong> {{ customer.name|default:"N/A" }}</p>
+                <p><strong>Email:</strong> {{ customer.email|default:"N/A" }}</p>
+                <p><strong>Phone:</strong> {{ customer.phone|default:"N/A" }}</p>
+                <p><strong>Address:</strong>
+                    {% if address %}
+                        {{ address.house_no }}, {{ address.street }}, {{ address.locality }},
+                        {{ address.city }}, {{ address.state }} - {{ address.pincode }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+                <p><strong>Joined On:</strong> {{ customer.date_joined|date:"d M Y" }}</p>
+            </div>
+
+            <!-- Orders Table -->
+            <h3>Ordered Products</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Status</th>
+                        <th>Price</th>
+                        <th>Payment Mode</th>
+                        <th>Address</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if orders %}
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.order_number }}</td>
+                            <td style="text-align: center;">{{ order.status }}</td>
+                            <td>₹{{ order.cart.value }}</td>
+                            <td>{{ order.payment_mode }}</td>
+                            <td>
+                                {{ order.address.house_no }}, {{ order.address.street }}, {{ order.address.locality }},
+                                {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}
+                            </td>
+                            <td>{{ order.created_at|date:"d M, Y" }}</td>
+                            <td>{{ order.updated_at|date:"d M, Y" }}</td>
+                            <td>
+                                <a href="{% url 'order_detail' order.id %}">
+                                    <button class="view-btn">View</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="8" style="text-align: center;">No orders found.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    
-    <!-- Ordered Products Section -->
-    <h3>Ordered Products</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Order Id</th>
-                <th>Status</th>
-                <th>Price</th>
-                <th>Payment Mode</th>
-                <th>Address</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if orders %}
-                {% for order in orders %}
-                <tr>
-                    <td>{{ order.order_number }}</td>
-                    <td style="text-align: center;">{{ order.status }}</td>
-                    <td>₹{{ order.cart.value }}</td>
-                    <td>{{ order.payment_mode }}</td>
-                    <td>{{ order.address.house_no }}, {{ order.address.street }}, {{ order.address.locality }}, 
-                        {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}</td>
-                    <td>{{ order.created_at|date:"d M, Y" }}</td>
-                    <td>{{ order.updated_at|date:"d M, Y" }}</td>
-                    <td><a href="{% url 'order_detail' order.id %}" class="view">View</a></td>
-                </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="8" style="text-align: center;">No orders found.</td>
-                </tr>
-            {% endif %}
-        </tbody>
-    </table>
-</div>
 
-{% endblock %}
+    <!-- Mobile Restriction Message -->
+    <div class="message-container">
+        <div class="icon">🚫</div>
+        <h1>Access Restricted</h1>
+        <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+    </div>
+</body>
+</html>

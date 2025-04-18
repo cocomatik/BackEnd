@@ -1,110 +1,105 @@
 {% load static %}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <title>Best Sellers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <link rel="stylesheet" href="{% static 'Manager/product/css/best.css' %}">
-
-    
+</head>
 
 <body>
+    <!-- Desktop Content -->
+    <div class="main">
+        <div class="container">
+            <h2>{{ nm }}</h2>
+            <ul class="product-list">
+                {% for pi in prd %}
+                <li class="product-item">
+                    <span class="product-title">{{ pi.title }}</span>
+                    <span class="product-price">₹{{ pi.price }}</span>                
+                </li>
+                {% endfor %}
+            </ul>
 
-    <div class="container">
-        <h2>{{ nm }}</h2>
-        <ul class="product-list">
-            {% for pi in prd %}
-            <li class="product-item">
-                <span class="product-title">{{ pi.title }}</span>
-                <span class="product-price">₹{{ pi.price }}</span>                
-            </li>
-            {% endfor %}
-        </ul>
+            <a href="{% url 'best_of_products' %}" class="action-btn">Back</a>
+            <button class="action-btn" onclick="openPopup()">Edit</button>
+        </div>
 
-        <a href="{% url 'best_of_products' %}" class="action-btn">Back</a>
-        <button class="action-btn" onclick="openPopup()">Edit</button>
-    </div>
+        <!-- Popup -->
+        <div class="popup-overlay" id="popup-overlay">
+            <div class="popup">
+                <input type="text" id="searchBox" placeholder="Search products..." onkeyup="filterProducts()">
+                <div class="prod">
+                    <form id="product-action-form" action="{% url 'ad_best_product' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="{{ tp }}">
+                        <input type="hidden" name="name" value="{{ nm }}">
 
-    <div class="popup-overlay" id="popup-overlay">
-        <div class="popup">
-            <input type="text" id="searchBox" placeholder="Search products..." onkeyup="filterProducts()">
-    
-            <div class="prod">
-                <form id="product-action-form" action="{% url 'ad_best_product' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="type" value="{{ tp }}">
-                    <input type="hidden" name="name" value="{{ nm }}">
-    
-                    <!-- Two Submit Buttons with Different Names -->
-                    <button type="submit" name="action_type" value="add" class="action-btn" style="margin-bottom: 10px;">
-                        Add Selected
-                    </button>
-    
-                    <table>
-                        <tr>
-                            <th>Select</th>
-                            <th>Products</th>
-                            <th>Product ID</th>
-                        </tr>
-    
-                        <!-- Selected products from `prd` -->
-                        {% for pi in prd %}
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="selected_products" value="{{ pi.sku }}" checked>
-                            </td>
-                            <td class="txt">{{ pi.title }}</td>
-                            <td class="txt">{{ pi.sku }}</td>
-                        </tr>
-                        {% endfor %}
+                        <button type="submit" name="action_type" value="add" class="action-btn" style="margin-bottom: 10px;">
+                            Add Selected
+                        </button>
 
-    
-                        <!-- Unselected products from `qrd` -->
-                        {% for qi in qrd %}
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="selected_products" value="{{ qi.sku }}">
-                            </td>
-                            <td class="txt">{{ qi.title }}</td>
-                            <td class="txt">{{ qi.sku }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </form>
+                        <table>
+                            <tr>
+                                <th>Select</th>
+                                <th>Products</th>
+                                <th>Product ID</th>
+                            </tr>
+
+                            {% for pi in prd %}
+                            <tr>
+                                <td><input type="checkbox" name="selected_products" value="{{ pi.sku }}" checked></td>
+                                <td class="txt">{{ pi.title }}</td>
+                                <td class="txt">{{ pi.sku }}</td>
+                            </tr>
+                            {% endfor %}
+
+                            {% for qi in qrd %}
+                            <tr>
+                                <td><input type="checkbox" name="selected_products" value="{{ qi.sku }}"></td>
+                                <td class="txt">{{ qi.title }}</td>
+                                <td class="txt">{{ qi.sku }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </form>
+                </div>
+                <button class="close-btn" onclick="closePopup()">Close</button>
             </div>
-    
-            <button class="close-btn" onclick="closePopup()">Close</button>
         </div>
     </div>
-    
+
+    <!-- Mobile Restriction Message -->
+    <div class="message-container">
+        <div class="icon">🚫</div>
+        <h1>Access Restricted</h1>
+        <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+    </div>
+
+    <!-- Scripts -->
     <script>
         function openPopup() {
-    let popupOverlay = document.getElementById('popup-overlay');
-    popupOverlay.classList.add('active'); // Add active class to show popup
-}
+            document.getElementById('popup-overlay').classList.add('active');
+        }
 
-function closePopup() {
-    let popupOverlay = document.getElementById('popup-overlay');
-    popupOverlay.classList.remove('active'); // Remove active class to hide popup
-}
-function filterProducts() {
-    let input = document.getElementById("searchBox").value.toLowerCase();
-    let table = document.querySelector(".prod table");
-    let rows = table.getElementsByTagName("tr");
+        function closePopup() {
+            document.getElementById('popup-overlay').classList.remove('active');
+        }
 
-    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header
-        let productTitle = rows[i].getElementsByTagName("td")[1]; // Get product title column
+        function filterProducts() {
+            let input = document.getElementById("searchBox").value.toLowerCase();
+            let rows = document.querySelectorAll(".prod table tr");
 
-        if (productTitle) {
-            let txtValue = productTitle.textContent || productTitle.innerText;
-            if (txtValue.toLowerCase().indexOf(input) > -1) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
+            for (let i = 1; i < rows.length; i++) {
+                let productTitle = rows[i].getElementsByTagName("td")[1];
+                if (productTitle) {
+                    let txtValue = productTitle.textContent || productTitle.innerText;
+                    rows[i].style.display = txtValue.toLowerCase().includes(input) ? "" : "none";
+                }
             }
         }
-    }
-}
-        
     </script>
-
 </body>
 </html>

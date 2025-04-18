@@ -199,6 +199,7 @@ def edit_product(request, product_id):
         product.title = request.POST.get("title", "").strip()
         product.brand = request.POST.get("brand", "").strip()
         product.description = request.POST.get("description", "").strip()
+        product.mrp = request.POST.get("mrp", 0)
         product.price = request.POST.get("price", 0)
         product.stock = request.POST.get("stock", 0)
 
