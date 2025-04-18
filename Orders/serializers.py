@@ -24,7 +24,8 @@ class CartItemSerializer(serializers.ModelSerializer):
                 return {
                     "sku": obj.sku,
                     "name": product.title,
-                    "price": product.price
+                    "price": product.price,
+                    "display_image": product.display_image
                 }
         return {"error": "Product not found"}
 
