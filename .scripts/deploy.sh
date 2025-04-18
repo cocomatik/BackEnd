@@ -1,16 +1,8 @@
 #!/bin/bash
 set -e  # Exit immediately on error
+
 # Ensure logs directory exists
-
 mkdir -p logs
-
-# Define log file name with date and latest commit hash
-LOG_FILE="logs/deployment_$(date '+%Y-%m-%d_%H-%M')_$(git rev-parse --short HEAD).log"
-
-# Redirect output to both terminal and log file
-exec > >(tee -a "$LOG_FILE") 2>&1
-
-echo "🚀 Deployment started ..."
 
 # Navigate to project directory
 cd ~/COCOMATIK/BackEnd || { echo "❌ Failed to navigate to BackEnd directory"; exit 1; }
@@ -20,6 +12,16 @@ echo "📦 Pulling latest changes..."
 git reset --hard HEAD
 git pull origin master --rebase
 echo "✅ New changes copied to server!"
+
+# Get current timestamp (IST) and latest commit hash
+TIMESTAMP=$(TZ='Asia/Kolkata' date '+%Y-%m-%d_%H-%M-%S')
+COMMIT_HASH=$(git rev-parse --short HEAD)
+LOG_FILE="logs/deployment_${TIMESTAMP}_${COMMIT_HASH}.log"
+
+# Redirect output to both terminal and log file
+exec > >(tee -a "$LOG_FILE") 2>&1
+
+echo "🚀 Deployment started at $TIMESTAMP (commit $COMMIT_HASH)"
 
 # Ensure Virtual Environment Exists
 if [ ! -d "zenv" ]; then
@@ -58,10 +60,9 @@ python manage.py migrate --noinput
 deactivate
 echo "✅ Virtual env 'zenv' Deactivated!"
 
-
+# Gunicorn Status and Restart
 echo "🔄 Gunicorn Status..."
 sudo systemctl status cocoengine.service
-
 
 echo "🔄 Restarting Gunicorn..."
 sudo systemctl restart cocoengine.service
@@ -72,4 +73,4 @@ echo "🔄 Reloading Nginx..."
 sudo systemctl reload nginx
 echo "✅ Nginx Reloaded!"
 
-echo "✅ Deployment Finished!"
+echo "✅ Deployment Finished Successfully!"
