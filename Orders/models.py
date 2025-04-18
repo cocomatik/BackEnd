@@ -10,6 +10,7 @@ User = get_user_model()
 class CartStatus(models.TextChoices):  
     ORDERED = "ORDERED", "ORDERED"
     PENDING = "PENDING", "PENDING"
+    
 class OrderStatus(models.TextChoices):  
     PENDING = "PENDING", "PENDING"
     PROCESSING = "PROCESSING", "PROCESSING"
