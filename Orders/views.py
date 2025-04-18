@@ -22,6 +22,7 @@ def cart_view(request):
     serializer = CartSerializer(cart)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @api_view(["POST"])
 @token_auth_required
 def add_to_cart(request):
