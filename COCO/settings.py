@@ -15,7 +15,7 @@ DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = [
     'engine.cocomatik.com', 
     'admin.cocomatik.com', 
-    '178.16.138.130',  # Add your server's IP
+    '178.16.138.130', 
     '127.0.0.1' 
 ]
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Orders.apps.OrdersConfig',
     'Manager.apps.ManagerConfig',
     'Api.apps.ApiConfig',
+    'Delivery.apps.DeliveryConfig',
 
     'django_extensions',
     "cloudinary",
@@ -178,11 +179,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGGING = {
     'version': 1,
+    'disable_existing_loggers': False,
     'handlers': {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'debug.log',
+            'filename': BASE_DIR / 'logs/django.log',  # 👈 This is your log file
         },
     },
     'loggers': {

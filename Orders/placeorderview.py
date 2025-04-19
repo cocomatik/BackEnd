@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.db import transaction
 from rest_framework import status
 import logging
-from .utils.shiprocket import ShiprocketAPI
+from Delivery.shiprocket import ShiprocketAPI
 from Accounts.decorators import token_auth_required
 from Accounts.models import Address
 from .models import Cart, CartItem, Order
@@ -46,6 +46,7 @@ def place_order(request):
 
     address_id = request.data.get("address_id")
     payment_mode = request.data.get("payment_mode")
+    payment_value = request.data.get("payment_value")
 
     if not address_id or not payment_mode:
         return Response({"error": "Address ID and payment mode are required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -62,6 +63,7 @@ def place_order(request):
                 user=user,
                 address=address,
                 payment_mode=payment_mode,
+                total_price=payment_value
             )
 
             # Default snapshot with FAIL first
