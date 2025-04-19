@@ -184,7 +184,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs/django.log',  # 👈 This is your log file
+            'filename': BASE_DIR / 'logs/runtime/django.log',  
         },
     },
     'loggers': {
