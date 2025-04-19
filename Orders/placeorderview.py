@@ -13,14 +13,12 @@ from .models import OrderedCart, OrderedCartItem
 # Initialize logger
 logger = logging.getLogger(__name__)
 
-def snapshot_cart_to_ordered(order):
-    """
-    Snapshot cart to ordered cart items after placing the order.
-    """
-    cart = order.cart
+def snapshot_cart_to_ordered(cart, order, status="FAIL", remark=""):
     ordered_cart = OrderedCart.objects.create(
         order=order,
-        total_value=cart.value
+        total_value=cart.value,
+        status=status,
+        remark=remark
     )
 
     for item in cart.cart_items.all():
@@ -35,75 +33,79 @@ def snapshot_cart_to_ordered(order):
             price_at_purchase=product.price if product else 0
         )
 
+    return ordered_cart
 
 @api_view(["POST"])
 @token_auth_required
 def place_order(request):
-    """
-    Place an order and integrate with Shiprocket for shipping.
-    """
     user = request.user
     cart = get_object_or_404(Cart, user=user, status="pending")
 
-    # Check if the cart has items
     if not cart.cart_items.exists():
         return Response({"error": "Cart is empty. Add items before placing an order."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Get address and payment mode
     address_id = request.data.get("address_id")
     payment_mode = request.data.get("payment_mode")
 
-    # Validate address and payment mode
     if not address_id or not payment_mode:
         return Response({"error": "Address ID and payment mode are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-    address = get_object_or_404(Address, id=address_id, user=user)
-
-    if payment_mode not in ["paymentgateway", "cashondelivery"]:
+    if payment_mode not in ["PG", "COD"]:
         return Response({"error": "Invalid payment mode."}, status=status.HTTP_400_BAD_REQUEST)
 
+    address = get_object_or_404(Address, id=address_id, user=user)
+
     try:
-        # 🚀 Integrate with Shiprocket first before creating order
+        with transaction.atomic():
+            order, created = Order.objects.get_or_create(
+                cart=cart,
+                user=user,
+                address=address,
+                payment_mode=payment_mode,
+            )
+
+            # Default snapshot with FAIL first
+            ordered_cart = snapshot_cart_to_ordered(cart, order)
+
         shiprocket = ShiprocketAPI()
-        shiprocket_response = shiprocket.create_order(cart)
+        shiprocket_response = shiprocket.create_order(order=order)
 
-        # Log Shiprocket response
-        logger.info(f"Shiprocket Response for Cart {cart.id}: {shiprocket_response}")
+        logger.info(f"Shiprocket Response for Order {order.order_number}: {shiprocket_response}")
 
-        # Handle failure in Shiprocket integration
         if "error" in shiprocket_response:
+            ordered_cart.status = "FAIL"
+            ordered_cart.remark = str(shiprocket_response.get("message", "Shiprocket error"))
+            ordered_cart.save()
             return Response({
-                "message": "Order placement failed, failed to integrate with Shiprocket.",
+                "message": "Order created, but failed to integrate with Shiprocket.",
+                "order_id": order.order_number,
                 "shiprocket_error": shiprocket_response
             }, status=status.HTTP_206_PARTIAL_CONTENT)
 
-        # If Shiprocket integration is successful, proceed with order creation
-        with transaction.atomic():
-            # Create order
-            order = Order.objects.create(
-                cart=cart, 
-                user=user, 
-                address=address, 
-                payment_mode=payment_mode
-            )
+        # Success flow
+        cart.status = "ORDERED"
+        cart.save()
 
-            # Snapshot the cart to ordered cart
-            snapshot_cart_to_ordered(order)
+        order.status = "PROCESSING"
+        order.save()
 
-            # Update cart status to 'ordered'
-            cart.status = "ordered"
-            cart.save()
+        ordered_cart.status = "SUCCESS"
+        ordered_cart.shiprocket_order_id = shiprocket_response.get("order_id", "")
+        ordered_cart.remark = "Shiprocket order placed successfully"
+        ordered_cart.save()
 
-            # Create a new pending cart for the user
-            Cart.objects.create(user=user, status="pending")
+        # New cart for the user
+        Cart.objects.create(user=user, status="pending")
 
     except Exception as e:
-        logger.error(f"Order placement failed: {str(e)}")
-        return Response({"error": "An error occurred while placing the order."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.error(f"Order or Shiprocket integration failed: {str(e)}")
+        return Response({
+            "error": "Something went wrong during order placement.",
+            "details": str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    # Successful order placement
     return Response({
-        "message": "Order placed successfully.",
-        "order_id": order.id,
+        "message": "Order placed successfully and integrated with Shiprocket.",
+        "order_id": order.order_number,
         "shiprocket_response": shiprocket_response
     }, status=status.HTTP_201_CREATED)

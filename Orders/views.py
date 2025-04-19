@@ -72,6 +72,7 @@ def add_to_cart(request):
             cart=cart,
             product_type=content_type,
             sku=sku,
+            title=product.title,
             defaults={"quantity": quantity}
         )
 
