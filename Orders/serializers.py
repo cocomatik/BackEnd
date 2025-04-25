@@ -23,6 +23,8 @@ class CartItemSerializer(serializers.ModelSerializer):
                     "sku": obj.sku,
                     "name": product.title,
                     "price": product.price,
+                    "mrp": product.mrp,
+                    "description": product.description,
                     "display_image": str(product.display_image),
                 }
             else:
