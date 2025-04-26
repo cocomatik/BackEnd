@@ -211,12 +211,27 @@ def place_order(request):
 
 @api_view(["GET"])
 @token_auth_required
-def get_orders(request):
+def get_pending_orders(request):
     """
     Fetch all orders placed by the user.
     Handles empty order history.
     """
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user,status="ORDERED")
+
+    if not orders.exists():
+        return Response({"message": "You have not placed any orders yet."}, status=status.HTTP_200_OK)
+
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@token_auth_required
+def processed_orders(request):
+    """
+    Fetch all orders placed by the user.
+    Handles empty order history.
+    """
+    orders = OrderHistory.objects.filter(user=request.user)
 
     if not orders.exists():
         return Response({"message": "You have not placed any orders yet."}, status=status.HTTP_200_OK)

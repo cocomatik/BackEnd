@@ -76,7 +76,6 @@ class OrderSerializer(serializers.ModelSerializer):
             "status",
             "created_at",
             "updated_at",
-            "ordered_cart",
             "address",
             "user",
         ]
