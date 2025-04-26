@@ -26,7 +26,7 @@ class ShiprocketAPI:
             logger.error(f"[Shiprocket Auth Error] {str(e)}")
             return None
 
-    def create_order(self, order):
+    def create_order(self,order,length,breadth,height,weight,comment,reseller_name,company_name):
         if not self.token:
             return {"error": "Authentication failed. No token received."}
 
@@ -44,48 +44,16 @@ class ShiprocketAPI:
                 "discount": 0,
                 "tax": 0,
             })
-        # if order :
-        #     line_items.append({
-        #         "name": "Delivery Charges",
-        #         "sku": "DELIVERY-FEE",
-        #         "units": 1,
-        #         "selling_price": float(611),
-        #         "discount": 0,
-        #         "tax": 0
-        #     })
-
-        # if order:
-        #     line_items.append({
-        #         "name": "Service Fee",
-        #         "sku": "SERVICE-FEE",
-        #         # "units": "",
-        #         "selling_price": float(500),
-        #         "discount": 0,
-        #         "tax": 0
-        #     })
-
-        # if order:
-        #     line_items.append({
-        #         "name": "Extra Fee",
-        #         "sku": "EXTRA-FEE",
-        #         # "units": "",
-        #         "selling_price": float(500),
-        #         "discount": 0,
-        #         "tax": 0
-        #     })
-
-        # Fallbacks for missing data
-        length =  "10"
-        breadth = "10"
-        height =  "5"
-        weight =  "0.5"
+        
 
         payload = {
             "order_id": str(order.order_number),
             "order_date": str(order.created_at.date()),
             "pickup_location": "Home",
             # "channel_id": "",  # optional
-            # "comment": "",
+            "comment": str(comment),
+            "reseller_name":str(reseller_name),
+            "company_name" :str(company_name),
             "billing_customer_name": address.name,
             "billing_last_name": getattr(address, "last_name", ""),
             "billing_address": address.street,
@@ -100,10 +68,10 @@ class ShiprocketAPI:
             "order_items": line_items,
             "payment_method": "COD" if order.payment_mode == "COD" else "Prepaid",
             "sub_total": float(order.total_price),
-            "length": length,
-            "breadth": breadth,
-            "height": height,
-            "weight": weight,
+            "length": str(length),
+            "breadth":str(breadth),
+            "height": str(height),
+            "weight": str(weight),
             }
 
         headers = {

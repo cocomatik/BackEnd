@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import cart_view, add_to_cart,get_orders,get_order_details,update_cart_item,delete_cart_item
-from .placeorderview import place_order
+from .views import cart_view, add_to_cart,get_orders,get_order_details,update_cart_item,delete_cart_item,place_order
 urlpatterns = [
     path("", get_orders, name="api-orders"),
     path("o/<int:order_id>/", get_order_details, name="api-order-details"),

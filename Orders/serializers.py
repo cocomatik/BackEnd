@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Order, Cart, CartItem, OrderedCart, OrderedCartItem
+from .models import Order, Cart, CartItem
 from Accounts.models import Address, UserAccount
 from Accounts.serializers import AddressSerializer, UserSerializer
 from django.contrib.contenttypes.models import ContentType
@@ -61,37 +61,9 @@ class CartSerializer(serializers.ModelSerializer):
         return total
 
 
-class OrderedCartItemSerializer(serializers.ModelSerializer):
-    product_details = serializers.SerializerMethodField()
-
-    class Meta:
-        model = OrderedCartItem
-        fields = ["sku", "quantity", "price_at_purchase", "product_details"]
-
-    def get_product_details(self, obj):
-        product_model = obj.product_type.model_class() if obj.product_type else None
-        product = product_model.objects.filter(sku=obj.sku).first() if product_model else None
-        if product:
-            return {
-                "name": product.title,
-                "display_image": str(product.display_image) if product.display_image else None,
-            }
-        return {
-            "name": None,
-            "display_image": None,
-        }
-
-
-class OrderedCartSerializer(serializers.ModelSerializer):
-    ordered_items = OrderedCartItemSerializer(many=True)
-
-    class Meta:
-        model = OrderedCart
-        fields = ["total_value", "created_at", "ordered_items"]
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    ordered_cart = OrderedCartSerializer()
     address = AddressSerializer()
     user = UserSerializer()
 

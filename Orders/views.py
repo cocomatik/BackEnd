@@ -7,8 +7,15 @@ from Accounts.decorators import token_auth_required
 from Accounts.models import Address
 from POCOS.models import POCOS
 from POJOS.models import POJOS
-from .models import Cart, CartItem, Order, OrderedCart, OrderedCartItem
+from .models import Cart, CartItem, Order
 from .serializers import CartSerializer, CartItemSerializer, OrderSerializer
+from django.db import transaction
+from rest_framework import status
+import logging
+
+
+# Initialize logger
+logger = logging.getLogger(__name__)
 
 
 @api_view(["GET"])
@@ -131,6 +138,58 @@ def delete_cart_item(request):
     cart_item.delete()
 
     return Response({"message": "Cart item removed successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+@api_view(["POST"])
+@token_auth_required
+def place_order(request):
+    pass
+    user = request.user
+    cart = get_object_or_404(Cart, user=user, status="pending")
+
+    if not cart.cart_items.exists():
+        return Response({"error": "Cart is empty. Add items before placing an order."}, status=status.HTTP_400_BAD_REQUEST)
+
+    address_id = request.data.get("address_id")
+    payment_mode = request.data.get("payment_mode")
+    payment_value = request.data.get("payment_value")
+
+    if not address_id or not payment_mode:
+        return Response({"error": "Address ID and payment mode are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if payment_mode not in ["PG", "COD"]:
+        return Response({"error": "Invalid payment mode."}, status=status.HTTP_400_BAD_REQUEST)
+
+    address = get_object_or_404(Address, id=address_id, user=user)
+
+    try:
+        with transaction.atomic():
+            order = Order.objects.create(
+                cart=cart,
+                user=user,
+                address=address,
+                payment_mode=payment_mode,
+                total_price=payment_value
+            )
+        
+        cart.status = "ORDERED"
+        cart.save()
+
+        order.status = "PROCESSING"
+        order.save()
+        
+        return Response({
+            "message": "Order placed successfully and integrated with Shiprocket.",
+            "order_id": order.order_number,
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        logger.error(f"Order  integration failed: {str(e)}")
+        return Response({
+            "error": "Something went wrong during order placement.",
+            "details": str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["GET"])
