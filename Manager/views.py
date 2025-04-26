@@ -501,8 +501,26 @@ def edit_order(request, order_id):
     return render(request, "Manager/order/edit_order.html", {"order": order, "addresses": addresses})
 
 
-from Accounts.models import UserAccount
 
+
+# @session_auth_required
+def shipment_form(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    if request.method == 'POST':
+        length = request.POST.get('length')
+        breadth = request.POST.get('breadth')
+        height = request.POST.get('height')
+        weight = request.POST.get('weight')
+        channel_id = request.POST.get('channel_id')
+        comment = request.POST.get('comment')
+        reseller_name = request.POST.get('reseller_name')
+        company_name = request.POST.get('company_name')
+
+    return render(request, 'Manager/shipment/ship.html',{'order':order})
+
+
+
+from Accounts.models import UserAccount
 @session_auth_required
 def customers(request):
     customer_list = UserAccount.objects.all()
@@ -520,6 +538,7 @@ def customer_details(request, customer_id):
     }
     
     return render(request, 'Manager/customer/customer_details.html', context)
+
 
 
 

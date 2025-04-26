@@ -1,5 +1,5 @@
 from django.urls import path
-from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,delete_order,delete_cart_item,edit_order,customers,customer_details
+from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,delete_order,delete_cart_item,edit_order,customers,customer_details,shipment_form
 
 
 urlpatterns = [
@@ -29,6 +29,8 @@ urlpatterns = [
 
     path('customers/',customers,name='customer_list'),
     path('customers/<int:customer_id>/', customer_details, name='customer_details'),
+
+    path('shipment-form/<int:order_id>/', shipment_form, name='shipment_form'),
 
  
 ]

@@ -1,0 +1,145 @@
+/* Manager/shipment/ship.css */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffe6eb;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background-color: #ffe6eb;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #d36b8b;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #d36b8b;
+    padding-bottom: 10px;
+}
+
+.order-info {
+    background-color: #ffe0e6;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border: 1px solid #f5c2cb;
+}
+
+.order-info p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #5c3b3b;
+}
+
+form {
+    background-color: #ffe0e6;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #f5c2cb;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #6e4444;
+}
+
+input[type="number"],
+input[type="text"],
+textarea {
+    width: calc(100% - 5px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #e0b1b8;
+    border-radius: 8px;
+    background-color: #fff5f7;
+    box-sizing: border-box; 
+}
+
+
+textarea {
+    resize: vertical;
+}
+
+.back-btn, .submit-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #ffd4dd, #ffecf0);
+    color: #94475a;
+    box-shadow: 5px 5px 15px #d9a5b0, -5px -5px 15px #fff7fa;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.back-btn:hover, .submit-btn:hover {
+    background: linear-gradient(145deg, #ffbfcf, #ffd8e0);
+    box-shadow: 2px 2px 8px #d9a5b0, -2px -2px 8px #fff7fa;
+}
+
+.submit-btn {
+    margin-left: 20px;
+}
+
+ /* === Mobile Access Message === */
+ .message-container {
+    display: none;
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 20px;
+    text-align: center;
+    background: rgba(255, 225, 235, 0.4);
+    border-radius: 12px;
+    border: 2px solid rgba(255, 190, 210, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  .message-container h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .message-container p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .message-container .icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+  }
+  
+  /* === Mobile View Restriction === */
+  @media (max-width: 768px) {
+    .container {
+      display: none;
+    }
+  
+    .message-container {
+      display: block;
+    }
+  
+    .actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  
