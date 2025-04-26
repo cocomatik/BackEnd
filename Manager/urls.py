@@ -1,5 +1,5 @@
 from django.urls import path
-from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,delete_order,delete_cart_item,edit_order,customers,customer_details,shipment_form
+from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,delete_order,delete_cart_item,edit_order,customers,customer_details,shipment_form,shipment_details
 from Manager.delivery_views import create_shipment
 
 urlpatterns = [
@@ -31,7 +31,8 @@ urlpatterns = [
     path('customers/<int:customer_id>/', customer_details, name='customer_details'),
 
     path('shipment-form/<int:order_id>/', shipment_form, name='shipment_form'),
-    path('create_shipment/', create_shipment, name='shipment_form'),
+    path('create_shipment/', create_shipment, name='shipment_create'),
+    path('shipments/', shipment_details, name='shipment_details'),
 
  
 ]
