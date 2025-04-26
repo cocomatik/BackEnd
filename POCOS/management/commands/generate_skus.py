@@ -8,11 +8,11 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         pocos_without_sku = POCOS.objects.filter(sku__isnull=True) | POCOS.objects.filter(sku="")
         pojos_without_sku = POJOS.objects.filter(sku__isnull=True) | POJOS.objects.filter(sku="")
-
         total_missing = pocos_without_sku.count() + pojos_without_sku.count()
 
         if total_missing == 0:
             self.stdout.write(self.style.SUCCESS("✅ All products have an SKU."))
+        
         else:
             self.stdout.write(self.style.WARNING(f"⚠️ {total_missing} products are missing an SKU:"))
 
