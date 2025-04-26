@@ -3,59 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Restricted</title>
+    <title>Invoice #{{ order.order_number }}</title>
     <style>
-        /* General Styles */
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #ff4b2b, #ff416c);
-            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .invoice-header {
             text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
         }
-
-        .message-container {
-            max-width: 500px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+        .invoice-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+        .invoice-items th, .invoice-items td {
+            padding: 8px;
+            border: 1px solid #ddd;
         }
-
-        p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .icon {
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
-
-        /* Responsive for Desktop */
-        @media (min-width: 768px) {
-            .message-container {
-                display: none; /* Hide on PC */
-            }
+        .invoice-footer {
+            text-align: right;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="message-container">
-        <div class="icon">🚫</div>
-        <h1>Access Restricted</h1>
-        <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+    <div class="invoice-header">
+        <h1>Invoice</h1>
+        <p>Order Number: {{ order.order_number }}</p>
+        <p>Date: {{ order.created_at }}</p>
+    </div>
+    
+    <h3>Customer Details</h3>
+    <p>Name: {{ user.username }}</p>
+    <p>Address: {{ address.street }}</p>
+    <p>City: {{ address.city }}</p>
+    
+    <h3>Order Items</h3>
+    <table class="invoice-items">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+                <tr>
+                    <td>{{ item.product.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product.price }}</td>
+                    <td>{{ item.item_price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="invoice-footer">
+        <p>Total Price: {{ order.total_price }}</p>
+        <p>Shipping Charges: {{ order.shipping_charges }}</p>
+        <p>Discount: {{ order.discount }}</p>
+        <p><strong>Grand Total: {{ order.total_price + order.shipping_charges - order.discount }}</strong></p>
     </div>
 </body>
 </html>
