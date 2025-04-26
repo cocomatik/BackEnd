@@ -55,6 +55,7 @@ def create_shipment(request):
             order_number=order.order_number,
             payment_mode=order.payment_mode,
             sub_total=order.sub_total,
+            total_price=order.total_price,
             discount=order.discount,
             tax=order.tax,
             shipping_charges=order.shipping_charges,

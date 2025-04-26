@@ -160,6 +160,7 @@ def place_order(request):
     cod_charges=request.data.get('cod_charges')
     handling_charges=request.data.get('handling_charges')
     sub_total = request.data.get("sub_total")
+    total_price = request.data.get("total_price")
 
 
     if not address_id or not payment_mode:
@@ -184,6 +185,7 @@ def place_order(request):
                 cod_charges=cod_charges,
                 handling_charges=handling_charges,
                 sub_total=sub_total,
+                total_price=total_price
             )
 
 

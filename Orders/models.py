@@ -67,7 +67,9 @@ class Order(models.Model):
     packaging_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
     cod_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
     handling_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
-    sub_total = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     
     status = models.CharField(max_length=30,choices=OrderStatus.choices,default=OrderStatus.ORDERED)
     
@@ -97,7 +99,11 @@ class OrderHistory(models.Model):
     payment_mode = models.CharField(max_length=30)  # COD or Prepaid
     status = models.CharField(max_length=30,choices=OrderHistoryStatus.choices,default=OrderHistoryStatus.PROCESSING)
     
+
     sub_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    
+
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     tax = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     shipping_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
