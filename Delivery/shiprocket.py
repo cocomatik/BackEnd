@@ -97,3 +97,12 @@ class ShiprocketAPI:
         except Exception as e:
             logger.error(f"[Shiprocket Error] Unexpected Error: {str(e)}")
             return {"error": "unexpected", "message": str(e)}
+    
+
+    def get_order_details(self, shiprocket_order_id):
+        url = f"https://apiv2.shiprocket.in/v1/external/orders/show/{shiprocket_order_id}"
+        headers = {
+            "Authorization": f"Bearer {self.token}"
+        }
+        response = requests.get(url, headers=headers)
+        return response.json()

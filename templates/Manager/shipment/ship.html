@@ -19,7 +19,7 @@
         <p><strong>Order Status:</strong> {{ order.status }}</p>
     </div>
 
-    <form method="post" action="#">
+    <form method="post" action="{% url "shipment_form" %}">
         {% csrf_token %}
       
         <input type="hidden" value="{{order.order_number}}" name="order_number" required><br>
