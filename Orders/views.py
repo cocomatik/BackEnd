@@ -7,7 +7,7 @@ from Accounts.decorators import token_auth_required
 from Accounts.models import Address
 from POCOS.models import POCOS
 from POJOS.models import POJOS
-from .models import Cart, CartItem, Order
+from .models import Cart, CartItem, Order ,OrderHistory,OrderHistoryItem
 from .serializers import CartSerializer, CartItemSerializer, OrderSerializer
 from django.db import transaction
 from rest_framework import status
@@ -153,7 +153,14 @@ def place_order(request):
 
     address_id = request.data.get("address_id")
     payment_mode = request.data.get("payment_mode")
-    payment_value = request.data.get("payment_value")
+    discount=request.data.get('discount')
+    tax=request.data.get('tax')
+    shipping_charges=request.data.get('shipping_charges')
+    packaging_charges=request.data.get('packaging_charges')
+    cod_charges=request.data.get('cod_charges')
+    handling_charges=request.data.get('handling_charges')
+    sub_total = request.data.get("sub_total")
+
 
     if not address_id or not payment_mode:
         return Response({"error": "Address ID and payment mode are required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -170,17 +177,25 @@ def place_order(request):
                 user=user,
                 address=address,
                 payment_mode=payment_mode,
-                total_price=payment_value
+                discount=discount,
+                tax=tax,
+                shipping_charges=shipping_charges,
+                packaging_charges=packaging_charges,
+                cod_charges=cod_charges,
+                handling_charges=handling_charges,
+                sub_total=sub_total,
             )
-        
-        cart.status = "ORDERED"
-        cart.save()
+
 
         order.status = "PROCESSING"
         order.save()
-        
+
+        cart.status = "ORDERED"
+        cart.save()
+
+
         return Response({
-            "message": "Order placed successfully and integrated with Shiprocket.",
+            "message": "Order placed successfully .",
             "order_id": order.order_number,
         }, status=status.HTTP_201_CREATED)
         

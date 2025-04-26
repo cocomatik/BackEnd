@@ -3,7 +3,7 @@ from Orders.models import Order
 
 # Create your models here.
 class ShiprocketOrder(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     shiprocket_order_id = models.BigIntegerField()
     shipment_id = models.BigIntegerField()
     status = models.CharField(max_length=50)

@@ -77,7 +77,7 @@
         </tbody>
     </table>
 
-    <p><strong>Total Order Price:</strong> ₹{{ order.cart.value }}</p>
+    <p><strong>Total Order Price:</strong> ₹{{ order.sub_total }}</p>
 
     <a href="javascript:history.back()" class="back-btn">← Back</a>
     <a href="{% url 'shipment_form' order.id %}" class="back-btn">Ship Now</a>

@@ -1,28 +1,39 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from rest_framework.views import Response
-from Orders.models import Order
+from django.http import HttpResponse
+from Orders.models import Order, OrderHistory, OrderHistoryItem
 from Delivery.shiprocket import ShiprocketAPI
 from Delivery.models import ShiprocketOrder
-from rest_framework import status
+from django.contrib import messages
 
 def create_shipment(request):
-    order_number=request.POST.get('order_number')
-    length=request.POST.get('length')
-    breadth=request.POST.get('breadth')
-    height=request.POST.get('height')
-    weight=request.POST.get('weight')
-    comment=request.POST.get('comment')
-    reseller_name=request.POST.get('reseller_name')
-    company_name=request.POST.get('company_name')
+    # Retrieve necessary data from POST
+    order_number = request.POST.get('order_number')
+    length = request.POST.get('length')
+    breadth = request.POST.get('breadth')
+    height = request.POST.get('height')
+    weight = request.POST.get('weight')
+    comment = request.POST.get('comment')
+    reseller_name = request.POST.get('reseller_name')
+    company_name = request.POST.get('company_name')
 
-    order=get_object_or_404(Order,order_number=order_number)
+    # Ensure the order exists
+    order = get_object_or_404(Order, order_number=order_number)
 
+    # Check if all required fields are present
+    if not all([order_number, length, breadth, height, weight]):
+        messages.error(request, "All shipment details are required.")
+        return redirect("order_list")
 
     try:
-        ship=ShiprocketAPI()
-        ship_response=ship.create_order(order,length,breadth,height,weight,comment,reseller_name,company_name)
+        # Create a shipment via Shiprocket API
+        ship = ShiprocketAPI()
+        ship_response = ship.create_order(
+            order, length, breadth, height, weight, comment, reseller_name, company_name
+        )
 
-        ShiprocketOrder.objects.create(
+       
+        # Store Shiprocket order info in your database
+        shiprocket_order = ShiprocketOrder.objects.create(
             order=order,
             shiprocket_order_id=ship_response.get('order_id'),
             shipment_id=ship_response.get('shipment_id'),
@@ -32,10 +43,54 @@ def create_shipment(request):
             courier_name=ship_response.get('courier_name'),
         )
 
+        # Update order status to 'SHIPMENT_CREATED'
+        order.status = "SHIPMENT_CREATED"
+        order.save()
+
+        # Create OrderHistory entry
+        order_his = OrderHistory.objects.create(
+            order=order,
+            user=order.user,
+            address=order.address,
+            order_number=order.order_number,
+            payment_mode=order.payment_mode,
+            sub_total=order.sub_total,
+            discount=order.discount,
+            tax=order.tax,
+            shipping_charges=order.shipping_charges,
+            packaging_charges=order.packaging_charges,
+            cod_charges=order.cod_charges,
+            handling_charges=order.handling_charges,
+            # additional_charges=order.additional_charges,
+            length=length,
+            breadth=breadth,
+            height=height,
+            weight=weight,
+            comment=comment,
+            reseller_name=reseller_name,
+            company_name=company_name,
+            shiprocket_order_id=ship_response.get('order_id'),
+        )
+        order_his.save()
+
+        # Create OrderHistoryItems
+        for item in order.cart.cart_items.all():
+            OrderHistoryItem.objects.create(
+                order_history=order_his,
+                title=item.title,
+                sku=item.sku,
+                quantity=item.quantity,
+                selling_price=item.product.price,
+                discount=item.product.discount,
+                product_type=item.product_type,
+                product=item.product,
+            )
+
+        # Redirect the user after success
+        messages.success(request, "Shipment created successfully!")
         return redirect("order_list")
 
     except Exception as e:
-        return Response({
-            "error": "Something went wrong during order placement.",
-            "details": str(e)
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # Log the error and show a friendly message
+        messages.error(request, f"Error creating shipment: {str(e)}")
+        return redirect("order_list")

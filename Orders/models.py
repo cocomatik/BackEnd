@@ -12,6 +12,10 @@ class CartStatus(models.TextChoices):
     PENDING = "PENDING", "PENDING"
     
 class OrderStatus(models.TextChoices):  
+    ORDERED = "ORDERED", "ORDERED"
+    SHIPMENT_CREATED = "SHIPMENT_CREATED", "SHIPMENT_CREATED"
+
+class OrderHistoryStatus(models.TextChoices):  
     PENDING = "PENDING", "PENDING"
     PROCESSING = "PROCESSING", "PROCESSING"
     SHIPPED = "SHIPPED", "SHIPPED"
@@ -54,11 +58,22 @@ class CartItem(models.Model):
 class Order(models.Model):
     order_number = models.CharField(max_length=15, editable=False, unique=True)
     cart = models.OneToOneField(Cart, on_delete=models.CASCADE, related_name="order")  # One order per cart
-    payment_mode = models.CharField(max_length=30, choices=PaymentMode.choices)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=30,choices=OrderStatus.choices,default=OrderStatus.PENDING)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
+    payment_mode = models.CharField(max_length=30, choices=PaymentMode.choices)
+    
+    discount=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+    tax=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+    shipping_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+    packaging_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+    cod_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+    handling_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    status = models.CharField(max_length=30,choices=OrderStatus.choices,default=OrderStatus.ORDERED)
+    
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
 
@@ -72,4 +87,54 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.order_number} - {self.user} ({self.payment_mode})"
+    
+class OrderHistory(models.Model):
+    order = models.OneToOneField('Order', on_delete=models.CASCADE, related_name='order_history')
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name="order_histories")
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
 
+    order_number = models.CharField(max_length=20)
+    payment_mode = models.CharField(max_length=30)  # COD or Prepaid
+    status = models.CharField(max_length=30,choices=OrderHistoryStatus.choices,default=OrderHistoryStatus.PROCESSING)
+    
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    tax = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    shipping_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    
+    # 👇 New charges added
+    packaging_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    cod_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    handling_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    
+    additional_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0,null=True,blank=True)
+    
+    length = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    breadth = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    height = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    weight = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+
+    comment = models.TextField(blank=True, null=True)
+    reseller_name = models.CharField(max_length=255, blank=True, null=True)
+    company_name = models.CharField(max_length=255, blank=True, null=True)
+
+    shiprocket_order_id = models.CharField(max_length=100, null=True, blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"OrderHistory for Order #{self.order_number}"
+
+class OrderHistoryItem(models.Model):
+    order_history = models.ForeignKey(OrderHistory, on_delete=models.CASCADE, related_name="items")
+    title = models.CharField(max_length=500)
+    sku = models.CharField(max_length=20)
+    quantity = models.PositiveIntegerField()
+    selling_price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    
+    product_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    product = GenericForeignKey('product_type', 'sku')
+
+    def __str__(self):
+        return f"{self.title} (x{self.quantity})"

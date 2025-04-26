@@ -81,7 +81,7 @@
                     <td>{% if order.user.first_name %}{{ order.user.first_name }} {% else %}{{ order.user.email }}{% endif %}</td>
                     <td>{{ order.cart.id }}</td>  
                     <td>{{ order.payment_mode }}</td>
-                    <td>₹{{ order.cart.value }}</td> 
+                    <td>₹{{ order.sub_total }}</td> 
                     <td>
                         <span class="status {% if order.cart.status == 'ordered' %}ordered{% else %}pending{% endif %}">
                             {{ order.status }}

@@ -67,7 +67,7 @@ class ShiprocketAPI:
             "shipping_is_billing": True,
             "order_items": line_items,
             "payment_method": "COD" if order.payment_mode == "COD" else "Prepaid",
-            "sub_total": float(order.total_price),
+            "sub_total": float(order.sub_total),
             "length": str(length),
             "breadth":str(breadth),
             "height": str(height),
