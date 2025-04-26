@@ -32,7 +32,7 @@ def create_shipment(request):
             courier_name=ship_response.get('courier_name'),
         )
 
-        return redirect("order_list")
+        return redirect("shipment_details")
 
     except Exception as e:
         return Response({

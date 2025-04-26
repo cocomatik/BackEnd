@@ -30,6 +30,7 @@
         <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
         <li><a href="{% url 'order_list' %}">Orders</a></li>
         <li><a href="{% url 'customer_list' %}">Customers</a></li>
+        <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
       </ul>
     </nav>
 
@@ -72,6 +73,7 @@
         <table class="product-table">
           <thead>
             <tr>
+              <th>S.No.</th>
               <th>Image</th>
               <th>Title</th>
               <th>SKU</th>
@@ -89,6 +91,7 @@
           <tbody>
             {% for product in cosmetic_products %}
               <tr>
+                <td>{{ forloop.counter }}</td>
                 <td><img src="{{ product.display_image.url }}" class="product-image"></td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.sku }}</td>
@@ -120,6 +123,7 @@
         <table class="product-table">
           <thead>
             <tr>
+              <th>S.No.</th>
               <th>Image</th>
               <th>Title</th>
               <th>SKU</th>
@@ -137,6 +141,7 @@
           <tbody>
             {% for product in jewellery_products %}
               <tr>
+                <td>{{ forloop.counter }}</td>
                 <td><img src="{{ product.display_image.url }}" class="product-image"></td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.sku }}</td>

@@ -3,59 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Restricted</title>
+    <title>Document</title>
     <style>
-        /* General Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #ff4b2b, #ff416c);
-            color: white;
-            text-align: center;
+        body{
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
         }
-
-        .message-container {
-            max-width: 500px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .icon {
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
-
-        /* Responsive for Desktop */
-        @media (min-width: 768px) {
-            .message-container {
-                display: none; /* Hide on PC */
-            }
+        iframe{
+            width: 80%;
+            height: 80%;
         }
     </style>
 </head>
 <body>
-    <div class="message-container">
-        <div class="icon">🚫</div>
-        <h1>Access Restricted</h1>
-        <p>This page is only accessible on a desktop. Please visit from a PC.</p>
-    </div>
+    <button onclick="window.location.href='https://app.shiprocket.in/seller/orders/details/819432130';">
+        Go to Shiprocket Orders
+      </button>
+      <button></button>
+      
 </body>
 </html>

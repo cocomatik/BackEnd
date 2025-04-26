@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'Manager/shipment/shipDetails.css' %}">
+    <title>Shipment Details</title>
+</head>
+<body>
+    <div class="main">
+    <nav class="navbar">
+        <a class="logo" href="{% url 'dashboard' %}">
+          <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+        </a>
+        <ul class="nav-links">
+          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+          <li class="dropdown">
+            <a href="#">Products <i class="fas fa-caret-down"></i></a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+              <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+            </ul>
+          </li>
+          <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
+          <li><a href="{% url 'order_list' %}">Orders</a></li>
+          <li><a href="{% url 'customer_list' %}">Customers</a></li>
+        </ul>
+      </nav>
+    <div class="container">
+        <h2 class="page-title"><b>Shipments</b></h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Package Details</th>
+                    <th>Payment mode</th>
+                    <th>Order Value</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for shipment in shipments %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ shipment.order.order_number }}</td>
+                    <td>{{ shipment.order.address.name }}</td>
+                    <td>
+                        Length: {{ shipment.length }} cm<br>
+                        Breadth: {{ shipment.breadth }} cm<br>
+                        Height: {{ shipment.height }} cm<br>
+                        Weight: {{ shipment.weight }} kg
+                    </td>
+                    <td>{{ shipment.order.get_payment_mode_display }}</td>
+                   <td>{{shipment.order.total_price}}</td>
+                    <td>{{ shipment.status }}</td>
+                    <td class="action">
+                        <a href="https://app.shiprocket.in/seller/orders/details/{{shipment.shiprocket_order_id}}">View</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">No shipments found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+     <!-- Mobile Restriction Message -->
+     <div class="message-container mt-5">
+        <div class="icon">🚫</div>
+        <h1>Access Restricted</h1>
+        <p>
+            This page is only accessible on a desktop. Please visit from a PC.
+        </p>
+    </div>
+
+</body>
+</html>

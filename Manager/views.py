@@ -506,17 +506,17 @@ def edit_order(request, order_id):
 # @session_auth_required
 def shipment_form(request, order_id):
     order = get_object_or_404(Order, id=order_id)
-    if request.method == 'POST':
-        length = request.POST.get('length')
-        breadth = request.POST.get('breadth')
-        height = request.POST.get('height')
-        weight = request.POST.get('weight')
-        channel_id = request.POST.get('channel_id')
-        comment = request.POST.get('comment')
-        reseller_name = request.POST.get('reseller_name')
-        company_name = request.POST.get('company_name')
 
     return render(request, 'Manager/shipment/ship.html',{'order':order})
+
+
+# @session_auth_required
+from Delivery.models import ShiprocketOrder
+
+def shipment_details(request):
+    shipments = ShiprocketOrder.objects.all()
+    return render(request, 'Manager/shipment/shipment_details.html', {'shipments': shipments})
+
 
 
 
@@ -530,6 +530,7 @@ def customer_details(request, customer_id):
     customer = get_object_or_404(UserAccount, id=customer_id)  # Fetch customer by ID
     orders = Order.objects.filter(user=customer)  # Fetch orders of this customer
     address = Address.objects.filter(user=customer).first()  # Get the first address or None
+    
 
     context = {
         'customer': customer,
