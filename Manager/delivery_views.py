@@ -89,7 +89,7 @@ def create_shipment(request):
 
         # Redirect the user after success
         messages.success(request, "Shipment created successfully!")
-        return redirect("order_list")
+        return redirect("shipment_details")
 
     except Exception as e:
         # Log the error and show a friendly message
