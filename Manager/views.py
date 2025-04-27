@@ -443,48 +443,23 @@ def mbop(request):
     
 
 
-
+from Orders.models import OrderHistory
 @session_auth_required
 def orders(request):
-    order_list = Order.objects.all().order_by('-created_at')
+    order_list = OrderHistory.objects.all().order_by('-created_at')
 
     return render(request, "Manager/order/orders.html", {"order_list": order_list})
+
+
 @session_auth_required
 def order_detail(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
+    order = get_object_or_404(OrderHistory, id=order_id)
     return render(request, 'Manager/order/order_detail.html', {'order': order})
-@session_auth_required
-def delete_order(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    order.delete()
-    messages.success(request, "Order deleted successfully.")
-    return redirect("order_list")
-@session_auth_required
-def delete_cart_item(request, item_id):
-    item = get_object_or_404(CartItem, id=item_id)
-    order_id = item.cart.order.id if hasattr(item.cart, 'order') else None  # Get order ID to redirect back
-    item.delete()
-    messages.success(request, "Item removed from cart successfully.")
-    
-    if order_id:
-        return redirect("order_detail", order_id=order_id)  # Redirect to order detail page
-    return redirect("order_list") 
-@session_auth_required
-def delete_order(request, order_id):
-    """View to delete an order"""
-    order = get_object_or_404(Order, id=order_id)
-    
-    if request.method == "POST":
-        order.delete()
-        messages.success(request, "Order deleted successfully.")
-        return redirect("order_list")  # Redirect back to orders list
-    
-    return redirect("order_detail", order_id=order_id)
 
 @session_auth_required
 def edit_order(request, order_id):
     """View to edit an order's details"""
-    order = get_object_or_404(Order, id=order_id)
+    order = get_object_or_404(OrderHistory, id=order_id)
     addresses = Address.objects.filter(user=order.user)  # Fetch addresses for this user
 
     if request.method == "POST":
@@ -514,7 +489,8 @@ def shipment_form(request, order_id):
 from Delivery.models import ShiprocketOrder
 
 def shipment_details(request):
-    shipments = ShiprocketOrder.objects.all()
+    shipments = ShiprocketOrder.objects.all().order_by('-created_at')
+
     return render(request, 'Manager/shipment/shipment_details.html', {'shipments': shipments})
 
 

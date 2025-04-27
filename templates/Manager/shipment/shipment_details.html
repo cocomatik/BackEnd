@@ -11,76 +11,107 @@
     <div class="main">
         <nav class="navbar">
             <a class="logo" href="{% url 'dashboard' %}">
-              <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+                <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
             </a>
             <ul class="nav-links">
-              <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-              <li class="dropdown">
-                <a href="#">Products <i class="fas fa-caret-down"></i></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
-                  <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
-                </ul>
-              </li>
-              <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
-              <li><a href="{% url 'order_list' %}">Orders</a></li>
-              <li><a href="{% url 'customer_list' %}">Customers</a></li>
-              <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#">Products <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+                        <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
+                <li><a href="{% url 'order_list' %}">Orders</a></li>
+                <li><a href="{% url 'customer_list' %}">Customers</a></li>
+                <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
             </ul>
-          </nav>
-          
-    <div class="container">
-        <h2 class="page-title"><b>Shipments</b></h2>
+        </nav>
+        
+        <div class="container">
+            <div class="header-row">
+                <h2 class="page-title"><b>Shipments</b></h2>
+                <a href="{% url 'pending_shipments' %}" class="pending-btn">Pending Shipment</a>
+            </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>S.No.</th>
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Package Details</th>
-                    <th>Payment mode</th>
-                    <th>Order Value</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for shipment in shipments %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ shipment.order.order_number }}</td>
-                    <td>{{ shipment.order.address.name }}</td>
-                    <td>
-                        Length: {{ shipment.length }} cm<br>
-                        Breadth: {{ shipment.breadth }} cm<br>
-                        Height: {{ shipment.height }} cm<br>
-                        Weight: {{ shipment.weight }} kg
-                    </td>
-                    <td>{{ shipment.order.get_payment_mode_display }}</td>
-                   <td>{{shipment.order.total_price}}</td>
-                    <td>{{ shipment.status }}</td>
-                    <td class="action">
-                        <a href="https://app.shiprocket.in/seller/orders/details/{{shipment.shiprocket_order_id}}">View</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="8">No shipments found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            <div class="filters">
+                <input type="text" id="searchBox" class="search-box" placeholder="Search products..." onkeyup="filterProducts()">
+            </div>
+            
+            <table id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Package Details</th>
+                        <th>Payment Mode</th>
+                        <th>Order Value</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shipment in shipments %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ shipment.order.order_number }}</td>
+                        <td>{{ shipment.order.address.name }}</td>
+                        <td>
+                            Length: {{ shipment.order.order_history.length }} cm<br>
+                            Breadth: {{ shipment.order.order_history.breadth }} cm<br>
+                            Height: {{ shipment.order.order_history.height }} cm<br>
+                            Weight: {{ shipment.order.order_history.weight }} kg
+                        </td>
+                        <td>{{ shipment.order.get_payment_mode_display }}</td>
+                        <td>{{ shipment.order.total_price }}</td>
+                        <td>{{ shipment.status }}</td>
+                        <td class="action">
+                            <a href="https://app.shiprocket.in/seller/orders/details/{{ shipment.shiprocket_order_id }}" target="_blank">View</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8">No shipments found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-     <!-- Mobile Restriction Message -->
-     <div class="message-container mt-5">
+    
+    <!-- Mobile Restriction Message -->
+    <div class="message-container mt-5">
         <div class="icon">🚫</div>
         <h1>Access Restricted</h1>
-        <p>
-            This page is only accessible on a desktop. Please visit from a PC.
-        </p>
+        <p>This page is only accessible on a desktop. Please visit from a PC.</p>
     </div>
 
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this order?");
+        }
+    
+        function filterProducts() {
+            let input = document.getElementById("searchBox").value.toLowerCase();
+            let table = document.getElementById("ordersTable").getElementsByTagName("tbody")[0];
+            let rows = table.getElementsByTagName("tr");
+    
+            for (let i = 0; i < rows.length; i++) {
+                let orderNumberCell = rows[i].getElementsByTagName("td")[1]; // Order #
+                let userCell = rows[i].getElementsByTagName("td")[2];        // User
+                if (orderNumberCell || userCell) {
+                    let orderText = orderNumberCell.textContent || orderNumberCell.innerText;
+                    let userText = userCell.textContent || userCell.innerText;
+                    if (orderText.toLowerCase().includes(input) || userText.toLowerCase().includes(input)) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>

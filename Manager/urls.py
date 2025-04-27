@@ -1,6 +1,6 @@
 from django.urls import path
-from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,delete_order,delete_cart_item,edit_order,customers,customer_details,shipment_form,shipment_details
-from Manager.delivery_views import create_shipment
+from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,edit_order,customers,customer_details,shipment_form,shipment_details
+from Manager.delivery_views import create_shipment,pending_shipments,pending_SDetails
 
 urlpatterns = [
     path('', landing, name='landing'),
@@ -22,8 +22,6 @@ urlpatterns = [
 
     path("orders/", orders, name="order_list"),
     path('order/<int:order_id>/', order_detail, name='order_detail'),
-    path("order/<int:order_id>/delete/", delete_order, name="delete_order"),
-    path("cart-item/<int:item_id>/delete/", delete_cart_item, name="delete_cart_item"),
     path("order/<int:order_id>/edit/", edit_order, name="edit_order"),
 
 
@@ -33,6 +31,8 @@ urlpatterns = [
     path('shipment-form/<int:order_id>/', shipment_form, name='shipment_form'),
     path('create_shipment/', create_shipment, name='shipment_create'),
     path('shipments/', shipment_details, name='shipment_details'),
+    path('shipments/pending/',pending_shipments,name='pending_shipments'),
+    path('shipments/pending/<int:order_id>/',pending_SDetails,name='pending_SDetails'),
 
  
 ]
