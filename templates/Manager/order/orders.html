@@ -89,7 +89,7 @@
                     <td>{{ order.payment_mode }}</td>
                     <td>₹{{ order.sub_total }}</td> 
                     <td>
-                        <span class="status {% if order.cart.status == 'ordered' %}ordered{% else %}pending{% endif %}">
+                        <span class="status {% if order.status == 'ordered' %}ORDERED{% else %}SHIPMENT_CREATED{% endif %}">
                             {{ order.status }}
                         </span>
                     </td>

@@ -8,8 +8,8 @@ import random, string
 User = get_user_model()
 
 class CartStatus(models.TextChoices):  
-    ORDERED = "ORDERED", "ORDERED"
     PENDING = "PENDING", "PENDING"
+    ORDERED = "ORDERED", "ORDERED"
     
 class OrderStatus(models.TextChoices):  
     ORDERED = "ORDERED", "ORDERED"

@@ -189,7 +189,6 @@ def place_order(request):
             )
 
 
-        order.status = "PROCESSING"
         order.save()
 
         cart.status = "ORDERED"
