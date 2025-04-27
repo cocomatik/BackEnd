@@ -9,24 +9,26 @@
 </head>
 <body>
     <div class="main">
-    <nav class="navbar">
-        <a class="logo" href="{% url 'dashboard' %}">
-          <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
-        </a>
-        <ul class="nav-links">
-          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-          <li class="dropdown">
-            <a href="#">Products <i class="fas fa-caret-down"></i></a>
-            <ul class="dropdown-menu">
-              <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
-              <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+        <nav class="navbar">
+            <a class="logo" href="{% url 'dashboard' %}">
+              <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+            </a>
+            <ul class="nav-links">
+              <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+              <li class="dropdown">
+                <a href="#">Products <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+                  <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+                </ul>
+              </li>
+              <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
+              <li><a href="{% url 'order_list' %}">Orders</a></li>
+              <li><a href="{% url 'customer_list' %}">Customers</a></li>
+              <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
             </ul>
-          </li>
-          <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
-          <li><a href="{% url 'order_list' %}">Orders</a></li>
-          <li><a href="{% url 'customer_list' %}">Customers</a></li>
-        </ul>
-      </nav>
+          </nav>
+          
     <div class="container">
         <h2 class="page-title"><b>Shipments</b></h2>
 
