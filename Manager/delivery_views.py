@@ -26,7 +26,46 @@ def create_shipment(request):
         return redirect("order_list")
 
     try:
-        # Create a shipment via Shiprocket API
+        # Create OrderHistory entry
+        order_his = OrderHistory.objects.create(
+            order=order,
+            user=order.user,
+            address=order.address,
+            order_number=order.order_number,
+            payment_mode=order.payment_mode,
+            sub_total=order.sub_total,
+            total_price=order.total_price,
+            discount=order.discount,
+            tax=order.tax,
+            shipping_charges=order.shipping_charges,
+            packaging_charges=order.packaging_charges,
+            cod_charges=order.cod_charges,
+            handling_charges=order.handling_charges,
+            # additional_charges=order.additional_charges,
+            length=length,
+            breadth=breadth,
+            height=height,
+            weight=weight,
+            comment=comment,
+            reseller_name=reseller_name,
+            company_name=company_name,
+            shiprocket_order_id=ship_response.get('order_id'),
+        )
+        order_his.save()
+
+        # Create OrderHistoryItems
+        for item in order.cart.cart_items.all():
+            OrderHistoryItem.objects.create(
+                order_history=order_his,
+                title=item.title,
+                sku=item.sku,
+                quantity=item.quantity,
+                selling_price=item.product.price,
+                discount=item.product.discount,
+                product_type=item.product_type,
+                product=item.product,
+            )
+
         ship = ShiprocketAPI()
         ship_response = ship.create_order(
             order, length, breadth, height, weight, comment, reseller_name, company_name
@@ -34,7 +73,7 @@ def create_shipment(request):
 
         with transaction.atomic():
             # Store Shiprocket order info in your database
-            shiprocket_order = ShiprocketOrder.objects.create(
+            ShiprocketOrder.objects.create(
                 order=order,
                 shiprocket_order_id=ship_response.get('order_id'),
                 shipment_id=ship_response.get('shipment_id'),
@@ -43,50 +82,14 @@ def create_shipment(request):
                 awb_code=ship_response.get('awb_code'),
                 courier_name=ship_response.get('courier_name'),
             )
+            
+            order_his.shiprocket_order_id=ship_response.get('order_id')
+            order_his.save()
 
-            # Update order status to 'SHIPMENT_CREATED'
             order.status = "SHIPMENT_CREATED"
             order.save()
 
-            # Create OrderHistory entry
-            order_his = OrderHistory.objects.create(
-                order=order,
-                user=order.user,
-                address=order.address,
-                order_number=order.order_number,
-                payment_mode=order.payment_mode,
-                sub_total=order.sub_total,
-                total_price=order.total_price,
-                discount=order.discount,
-                tax=order.tax,
-                shipping_charges=order.shipping_charges,
-                packaging_charges=order.packaging_charges,
-                cod_charges=order.cod_charges,
-                handling_charges=order.handling_charges,
-                # additional_charges=order.additional_charges,
-                length=length,
-                breadth=breadth,
-                height=height,
-                weight=weight,
-                comment=comment,
-                reseller_name=reseller_name,
-                company_name=company_name,
-                shiprocket_order_id=ship_response.get('order_id'),
-            )
-            order_his.save()
-
-            # Create OrderHistoryItems
-            for item in order.cart.cart_items.all():
-                OrderHistoryItem.objects.create(
-                    order_history=order_his,
-                    title=item.title,
-                    sku=item.sku,
-                    quantity=item.quantity,
-                    selling_price=item.product.price,
-                    discount=item.product.discount,
-                    product_type=item.product_type,
-                    product=item.product,
-                )
+            
 
             # Redirect the user after success
             messages.success(request, "Shipment created successfully!")

@@ -11,7 +11,10 @@ from .models import Cart, CartItem, Order ,OrderHistory,OrderHistoryItem
 from .serializers import CartSerializer, CartItemSerializer, OrderSerializer
 from django.db import transaction
 from rest_framework import status
+from django.utils import timezone
+from datetime import timedelta
 import logging
+from decimal import Decimal
 
 
 # Initialize logger
@@ -144,7 +147,6 @@ def delete_cart_item(request):
 @api_view(["POST"])
 @token_auth_required
 def place_order(request):
-    pass
     user = request.user
     cart = get_object_or_404(Cart, user=user, status="pending")
 
@@ -153,14 +155,17 @@ def place_order(request):
 
     address_id = request.data.get("address_id")
     payment_mode = request.data.get("payment_mode")
-    discount=request.data.get('discount')
-    tax=request.data.get('tax')
-    shipping_charges=request.data.get('shipping_charges')
-    packaging_charges=request.data.get('packaging_charges')
-    cod_charges=request.data.get('cod_charges')
-    handling_charges=request.data.get('handling_charges')
-    sub_total = request.data.get("sub_total")
-    total_price = request.data.get("total_price")
+    
+    discount=request.data.get('discount',0)
+    tax=request.data.get('tax',0)
+    shipping_charges=request.data.get('shipping_charges',0)
+    packaging_charges=request.data.get('packaging_charges',0)
+    cod_charges=request.data.get('cod_charges',0)
+    handling_charges=request.data.get('handling_charges',0)
+
+    sub_total = cart.value  
+    total_price = (sub_total + tax + shipping_charges + packaging_charges + cod_charges + handling_charges) - discount
+
 
 
     if not address_id or not payment_mode:
@@ -208,6 +213,38 @@ def place_order(request):
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
+
+@api_view(["POST"])
+@token_auth_required
+def cancel_order(request):
+    user = request.user
+    order_number = request.data.get("order_number")
+
+    if not order_number:
+        return Response({"error": "Order number is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        order = Order.objects.get(order_number=order_number, user=user)
+    except Order.DoesNotExist:
+        return Response({"error": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    # Example condition: allow cancellation within 30 minutes of creation
+    time_limit = order.created_at + timedelta(minutes=120)
+    if timezone.now() > time_limit:
+        return Response({"error": "Order can no longer be cancelled."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if order.status == "cancelled":
+        return Response({"message": "Order is already cancelled."}, status=status.HTTP_200_OK)
+
+    # Perform cancellation
+    order.status = "cancelled"
+    order.save()
+
+    return Response({"message": "Order cancelled successfully."}, status=status.HTTP_200_OK)
+
+
+
 @api_view(["GET"])
 @token_auth_required
 def get_pending_orders(request):
@@ -239,16 +276,19 @@ def processed_orders(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 @token_auth_required
-def get_order_details(request, order_id):
+def get_order_details(request):
     """
     Fetch details of a specific order by its ID.
     Handles invalid or non-existing order.
     """
     user = request.user
-    order = get_object_or_404(Order, id=order_id, user=user)
+    try:
+        order_number=request.data.get("order_number")
+        order = get_object_or_404(Order, order_number=order_number, user=user)
+        serializer = OrderSerializer(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    serializer = OrderSerializer(order)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
+    except :
+        return Response({"message":"Could not find the order details."})

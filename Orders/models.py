@@ -13,6 +13,7 @@ class CartStatus(models.TextChoices):
     
 class OrderStatus(models.TextChoices):  
     ORDERED = "ORDERED", "ORDERED"
+    CANCELED = "CANCELED", "CANCELED"
     SHIPMENT_CREATED = "SHIPMENT_CREATED", "SHIPMENT_CREATED"
 
 class OrderHistoryStatus(models.TextChoices):  
@@ -63,10 +64,11 @@ class Order(models.Model):
     
     discount=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
     tax=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
-    shipping_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
     packaging_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
-    cod_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
     handling_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+
+    shipping_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+    cod_charges=models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
     
     sub_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
@@ -106,13 +108,11 @@ class OrderHistory(models.Model):
 
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     tax = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    shipping_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    
-    # 👇 New charges added
     packaging_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    cod_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     handling_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     
+    shipping_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    cod_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     additional_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.0,null=True,blank=True)
     
     length = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
