@@ -56,16 +56,16 @@
                     {% for shipment in shipments %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ shipment.order.order_number }}</td>
-                        <td>{{ shipment.order.address.name }}</td>
+                        <td>{{ shipment.orderH.order_number }}</td>
+                        <td>{{ shipment.orderH.address.name }}</td>
                         <td>
-                            Length: {{ shipment.order.order_history.length }} cm<br>
-                            Breadth: {{ shipment.order.order_history.breadth }} cm<br>
-                            Height: {{ shipment.order.order_history.height }} cm<br>
-                            Weight: {{ shipment.order.order_history.weight }} kg
+                            Length: {{ shipment.orderH.length }} cm<br>
+                            Breadth: {{ shipment.orderH.breadth }} cm<br>
+                            Height: {{ shipment.orderH.height }} cm<br>
+                            Weight: {{ shipment.orderH.weight }} kg
                         </td>
-                        <td>{{ shipment.order.get_payment_mode_display }}</td>
-                        <td>{{ shipment.order.total_price }}</td>
+                        <td>{{ shipment.orderH.payment_mode }}</td>
+                        <td>{{ shipment.orderH.total_price }}</td>
                         <td>{{ shipment.status }}</td>
                         <td class="action">
                             <a href="https://app.shiprocket.in/seller/orders/details/{{ shipment.shiprocket_order_id }}" target="_blank">View</a>

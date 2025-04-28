@@ -79,16 +79,11 @@
                             </td>
                             <td>{{ order.cart.id }}</td>
                             <td>{{ order.payment_mode }}</td>
-                            <td>₹{{ order.sub_total }}</td>
+                            <td>₹{{ order.total_price }}</td>
                             
                             <td>{{ order.created_at|date:"M d, Y" }}</td>
                             <td class="actions">
                                 <a href="{% url 'pending_SDetails' order.id %}" class="view">View</a>
-                                <form method="POST" action="{% url 'delete_order' order.id %}" style="display: inline"
-                                    onsubmit="return confirmDelete();">
-                                    {% csrf_token %}
-                                    <button type="submit" class="delete">Delete</button>
-                                </form>
                             </td>
                         </tr>
                         {% empty %}
