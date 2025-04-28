@@ -183,7 +183,7 @@
       let rows = table.getElementsByTagName("tr");
 
       for (let i = 0; i < rows.length; i++) {
-        let productTitle = rows[i].getElementsByTagName("td")[1];
+        let productTitle = rows[i].getElementsByTagName("td")[2];
         if (productTitle) {
           let txtValue = productTitle.textContent || productTitle.innerText;
           rows[i].style.display = txtValue.toLowerCase().includes(input) ? "" : "none";

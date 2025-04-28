@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Orders</title>
+    <title>Order Management</title>
     <link rel="stylesheet" href="{% static 'Manager/order/css/order.css' %}" />
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +38,7 @@
         </nav>
 
         <div class="container">
-            <h2 class="page-title"><b>All Orders</b></h2>
+            <h2 class="page-title"><b>Pending Shipments</b></h2>
 
             <!-- Filters -->
             <form method="GET" action="{% url 'order_list' %}">
@@ -50,15 +50,6 @@
                         <option value="7days" {% if request.GET.filter == '7days' %}selected{% endif %}>Last 7 days</option>
                         <option value="30days" {% if request.GET.filter == '30days' %}selected{% endif %}>Last 30 days</option>
                     </select>
-
-                    <select name="status" id="statusDropdown" class="drpdn" onchange="this.form.submit()">
-                        <option value="all" {% if request.GET.status == 'all' or not request.GET.status %}selected{% endif %}>All Statuses</option>
-                        <option value="processing" {% if request.GET.status == 'processing' %}selected{% endif %}>Processing</option>
-                        <option value="delivered" {% if request.GET.status == 'delivered' %}selected{% endif %}>Delivered</option>
-                        <option value="canceled" {% if request.GET.status == 'canceled' %}selected{% endif %}>Canceled</option>
-                        <option value="refunded" {% if request.GET.status == 'refunded' %}selected{% endif %}>Refunded</option>
-                        <option value="shipped" {% if request.GET.status == 'shipped' %}selected{% endif %}>Shipped</option>
-                    </select>
                 </div>
             </form>
 
@@ -68,56 +59,48 @@
                     <thead>
                         <tr>
                             <th>S.No.</th>
-                            <th>Order Number</th>
-                            <th>Shiprocket Order ID</th>
+                            <th>Order #</th>
                             <th>User</th>
+                            <th>Cart ID</th>
                             <th>Payment Mode</th>
-                            <th>Status</th>
-                            <th>Sub Total</th>
-                            <th>Total Price</th>
-                            <th>Package Details</th>
-                            <th>Comment</th>
-                            <th>Reseller Name</th>
-                            <th>Company Name</th>
+                            <th>Price</th>
                             <th>Created At</th>
                             <th>Actions</th>
                         </tr>
+                        <tr></tr>
                     </thead>
                     <tbody>
                         {% for order in order_list %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ order.order_number }}</td>
-                            <td>{{ order.shiprocket_order_id }}</td>
-                            <td>{{ order.user }}</td>
-                            <td>{{ order.payment_mode }}</td>
-                            <td>{{ order.status }}</td>
-                            <td>₹{{ order.sub_total }}</td>
-                            <td>₹{{ order.total_price }}</td>
                             <td>
-                                L: {{ order.order_history.length }} cm<br>
-                                B: {{ order.order_history.breadth }} cm<br>
-                                H: {{ order.order_history.height }} cm<br>
-                                W: {{ order.order_history.weight }} kg
+                                {{ order.user }}
                             </td>
-                            <td>{{ order.comment }}</td>
-                            <td>{{ order.reseller_name }}</td>
-                            <td>{{ order.company_name }}</td>
+                            <td>{{ order.cart.id }}</td>
+                            <td>{{ order.payment_mode }}</td>
+                            <td>₹{{ order.sub_total }}</td>
+                            
                             <td>{{ order.created_at|date:"M d, Y" }}</td>
                             <td class="actions">
-                                <a href="{% url 'order_detail' order.id %}" class="view">View</a>
-                                <a href="{% url 'edit_order' order.id %}" class="edit">Edit</a>
+                                <a href="{% url 'pending_SDetails' order.id %}" class="view">View</a>
+                                <form method="POST" action="{% url 'delete_order' order.id %}" style="display: inline"
+                                    onsubmit="return confirmDelete();">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete">Delete</button>
+                                </form>
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="14" style="text-align: center">No orders available.</td>
+                            <td colspan="7" style="text-align: center">
+                                No orders available.
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 
@@ -129,11 +112,15 @@
     </div>
 
     <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this order?");
+        }
+    
         function filterProducts() {
             let input = document.getElementById("searchBox").value.toLowerCase();
             let table = document.getElementById("ordersTable").getElementsByTagName("tbody")[0];
             let rows = table.getElementsByTagName("tr");
-
+    
             for (let i = 0; i < rows.length; i++) {
                 let orderNumberCell = rows[i].getElementsByTagName("td")[1]; // Order #
                 let userCell = rows[i].getElementsByTagName("td")[2];        // User
@@ -149,7 +136,7 @@
             }
         }
     </script>
-
+    
 </body>
 
 </html>

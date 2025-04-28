@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Order Management</title>
+  <title>Order Details</title>
   <link rel="stylesheet" href="{% static 'Manager/order/css/order_detail.css' %}">
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,15 +35,14 @@
       </nav>
       <div class="container">
 
-<h2 class="page-title"><b>Order Details</b></h2>
+<h2 class="page-title"><b>Order To Be Shipped</b></h2>
 
     <div class="order-info">
         <p><strong>Order Number:</strong> {{ order.order_number }}</p>
-        <p><strong>User:</strong> {{ order.user }}</p>
-        <p><strong>Payment Mode:</strong> {{ order.order.payment_mode }}</p>
+        <p><strong>User:</strong> {{ order.user.name }} ({{ order.user.email }})</p>
+        <p><strong>Payment Mode:</strong> {{ order.get_payment_mode_display }}</p>
         <p><strong>Shipping Address:</strong> {{ order.address.name }}, {{order.address.contact_no}}, {{order.address.house_no}}, {{order.address.street}}, {{order.address.locality}}, {{order.address.city}}, {{order.address.district}}, {{order.address.state}}, {{order.address.pincode}}</p>
         <p><strong>Order Status:</strong> {{ order.status }}</p>
-          
     </div>
 
     <h3><strong>CART ITEMS</strong></h3>
@@ -56,11 +55,10 @@
                 <th>Price</th>
                 <th>Total</th>
                 <th>Order Date</th>
-                
             </tr>
         </thead>
         <tbody>
-            {% for item in order.items.all %}
+            {% for item in order.cart.cart_items.all %}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ item.product }}</td>
@@ -69,23 +67,16 @@
                 <td>₹{{ item.item_price }}</td>
                 <td>{{ order.created_at|date:"M d, Y" }}</td>
                 
-                
             </tr>
             {% endfor %}
         </tbody>
     </table>
-          <p><strong>Discount:</strong>₹{{ order.discount }}</p>
-          <p><strong>Tax:</strong>₹{{ order.tax }}</p>
-          <p><strong>Shipping Charges:</strong>₹{{ order.shipping_charges }}</p>
-          <p><strong>Packaging Charges:</strong>₹{{ order.packaging_charges }}</p>
-          <p><strong>COD Charges:</strong>₹{{ order.cod_charges }}</p>
-          <p><strong>Handling Charges:</strong>₹{{ order.handling_charges }}</p>
-          <p><strong>Additional Charges:</strong>₹{{ order.additional_charges }}</p>
-          <p><strong>Sub-Total Price:</strong>₹{{ order.sub_total }}</p>
-          <p><strong>Total Order Price:</strong>₹{{ order.total_price }}</p>
+    <p><strong>Sub-Total Price:</strong>₹{{ order.sub_total }}</p>
+    <p><strong>Total Order Price:</strong> ₹{{ order.total_price }}</p>
+    
 
     <a href="javascript:history.back()" class="back-btn">← Back</a>
-    
+    <a href="{% url 'shipment_form' order.id %}" class="back-btn">Ship Now</a>
     
 
 </div>
@@ -98,6 +89,11 @@
   <p>This page is only accessible on a desktop. Please visit from a PC.</p>
 </div>
 
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this item from this list?");
+    }
+</script>
 </body>
 
 </html>
