@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import UserSerializer
 
-@api_view(["GET", "POST", "PUT"])
+@api_view(["GET", "PUT"])
 @token_auth_required
 def user_profile_view(request):
     user = request.user
@@ -20,24 +20,16 @@ def user_profile_view(request):
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    elif request.method == "POST":
-        data = request.data.copy()
-        data.pop("email", None)  # Prevent email update
-        serializer = UserSerializer(user, data=data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     elif request.method == "PUT":
         data = request.data.copy()
-        data.pop("email", None)  # Prevent email update
-        serializer = UserSerializer(user, data=data)  # full update expected
+        data.pop("email", None)  # Prevent updating email
+        serializer = UserSerializer(user, data=data, partial=True)  # partial=True allows partial update
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
+    
 @api_view(["GET", "POST"])
 @token_auth_required
 def user_address_view(request):
