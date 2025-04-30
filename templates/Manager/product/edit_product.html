@@ -4,12 +4,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Product Management</title>
+    <title>Edit Product</title>
     <link rel="stylesheet" href="{% static 'Manager/product/css/edit_product.css' %}">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-
 </head>
 
 <body>
@@ -37,7 +36,6 @@
 
         <!-- === Main Section === -->
         <div class="main">
-
             <div class="form-container">
                 <h2 class="form-title"><b>EDIT PRODUCT</b></h2>
 
@@ -73,12 +71,12 @@
                     <div class="flex-container">
                         <div class="form-group">
                             <label>MRP</label>
-                            <input type="number" name="mrp" class="form-input" value="{{ product.mrp }}" required>
+                            <input type="number" step="0.01" name="mrp" class="form-input" value="{{ product.mrp }}" required>
                         </div>
 
                         <div class="form-group">
                             <label>Price</label>
-                            <input type="number" name="price" class="form-input" value="{{ product.price }}" required>
+                            <input type="number" step="0.01" name="price" class="form-input" value="{{ product.price }}" required>
                         </div>
                     </div>
 
@@ -88,11 +86,33 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Product Image</label>
+                        <label>Size (if applicable)</label>
+                        <input type="text" name="size" class="form-input" value="{{ product.size }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rating (out of 5)</label>
+                        <input type="number" step="0.1" min="0" max="5" name="rating" class="form-input" value="{{ product.rating }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Main Product Image</label>
                         <input type="file" name="product_image" class="form-input">
                         {% if product.display_image %}
                             <div class="image-preview">
                                 <img src="{{ product.display_image.url }}" alt="Product Image" class="product-preview">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Extra Images</label>
+                        <input type="file" name="extra_images" class="form-input" multiple>
+                        {% if extra_images %}
+                            <div class="extra-images-preview">
+                                {% for img in extra_images %}
+                                    <img src="{{ img.image.url }}" class="extra-thumb" alt="Extra Image">
+                                {% endfor %}
                             </div>
                         {% endif %}
                     </div>
@@ -103,13 +123,12 @@
         </div>
     </div>
 
-        <!-- === Mobile Message === -->
-        <div class="message-container">
-            <div class="icon">🚫</div>
-            <h1>Access Restricted</h1>
-            <p>This page is only accessible on a desktop. Please visit from a PC.</p>
-        </div>
-    
+    <!-- === Mobile Message === -->
+    <div class="message-container">
+        <div class="icon">🚫</div>
+        <h1>Access Restricted</h1>
+        <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+    </div>
 </body>
 
 </html>

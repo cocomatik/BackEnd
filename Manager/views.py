@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from django.db import IntegrityError
 from django.contrib import messages
 from django.db import transaction
-from POCOS.models import POCOS, Category as POCOSCategory
-from POJOS.models import POJOS, Category as POJOSCategory
+from POCOS.models import POCOS, Category as POCOSCategory,PocoImage
+from POJOS.models import POJOS, Category as POJOSCategory,PojoImage
 from Accounts.decorators import session_auth_required
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
@@ -173,27 +173,27 @@ def add_product(request):
 
 @session_auth_required
 def edit_product(request, product_id):
-    # Determine if the product is from POCOS (Cosmetics) or POJOS (Jewellery)
     product = None
     categories = []
+    extra_images = []
+    product_type = None
 
-    # Try finding in POCOS (Cosmetic)
     try:
         product = POCOS.objects.get(sku=product_id)
         categories = POCOSCategory.objects.all()
         product_type = "cosmetic"
     except POCOS.DoesNotExist:
-        pass
-
-    # If not found in POCOS, try finding in POJOS (Jewellery)
-    if product is None:
         try:
-            product = POJOS.objects.get(sku=product_id)  # Fixed: Use sku for POJOS
+            product = POJOS.objects.get(sku=product_id)
             categories = POJOSCategory.objects.all()
             product_type = "jewellery"
         except POJOS.DoesNotExist:
             messages.error(request, "Product not found!")
             return redirect("products")
+
+    # Fetch extra images (only for jewellery)
+    if product_type == "jewellery":
+        extra_images = PojoImage.objects.filter(pojo=product)
 
     if request.method == "POST":
         product.title = request.POST.get("title", "").strip()
@@ -202,31 +202,42 @@ def edit_product(request, product_id):
         product.mrp = request.POST.get("mrp", 0)
         product.price = request.POST.get("price", 0)
         product.stock = request.POST.get("stock", 0)
+        product.size = request.POST.get("size", "").strip()
+        product.rating = request.POST.get("rating", 0)
 
-        # Get category (Fixed: Use 'name' instead of 'id')
+        # Update category
         category_name = request.POST.get("category")
-        if category_name:
-            try:
-                if product_type == "cosmetic":
-                    product.category = POCOSCategory.objects.get(name=category_name)
-                elif product_type == "jewellery":
-                    product.category = POJOSCategory.objects.get(name=category_name)
-            except (POCOSCategory.DoesNotExist, POJOSCategory.DoesNotExist):
-                messages.error(request, "Invalid category selected!")
+        try:
+            if product_type == "cosmetic":
+                product.category = POCOSCategory.objects.get(name=category_name)
+            else:
+                product.category = POJOSCategory.objects.get(name=category_name)
+        except (POCOSCategory.DoesNotExist, POJOSCategory.DoesNotExist):
+            messages.error(request, "Invalid category selected!")
 
-        # Update image if provided
+        # Update main product image
         if "product_image" in request.FILES:
             product.display_image = request.FILES["product_image"]
 
         product.save()
 
+        # Save extra images (if any) for jewellery
+        if product_type == "jewellery" and "extra_images" in request.FILES:
+            for img in request.FILES.getlist("extra_images"):
+                PojoImage.objects.create(pojo=product, image=img)
+
         messages.success(request, "Product updated successfully!")
         return redirect(f"/products/?type={product_type}")
-
+        print(extra_images)
     return render(
         request,
         "Manager/product/edit_product.html",
-        {"product": product, "categories": categories, "product_type": product_type},
+        {
+            "product": product,
+            "categories": categories,
+            "product_type": product_type,
+            "extra_images": extra_images,
+        }
     )
 
 

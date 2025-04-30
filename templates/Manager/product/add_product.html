@@ -1,20 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Product Management</title>
+    <title>Add Product</title>
     <link rel="stylesheet" href="{% static 'Manager/product/css/edit_product.css' %}">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-
 </head>
 
 <body>
     <div class="main">
-        <!-- === Navbar === -->
+        <!-- Navbar -->
         <nav class="navbar">
             <a class="logo" href="{% url 'dashboard' %}">
                 <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
@@ -35,14 +33,14 @@
             </ul>
         </nav>
 
-        <!-- === Main Section === -->
+        <!-- Product Form -->
         <div class="form-container">
             <h2 class="form-title"><b>Add Product</b></h2>
 
             <form id="productForm" action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <!-- Product Type Selection -->
+                <!-- Product Type -->
                 <div class="form-group">
                     <label for="product_type">Product Type</label>
                     <select name="product_type" class="form-select" required onchange="this.form.submit()">
@@ -63,7 +61,7 @@
                     <textarea name="description" class="form-control" rows="4" required></textarea>
                 </div>
 
-                <!-- Category Selection -->
+                <!-- Category -->
                 <div class="form-group">
                     <label for="category">Category</label>
                     <select name="category" class="form-select" required>
@@ -79,26 +77,41 @@
                     <input type="text" name="brand" class="form-control">
                 </div>
 
+                <div class="form-group">
+                    <label for="size">Size</label>
+                    <input type="text" name="size" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">Rating (0.0 to 5.0)</label>
+                    <input type="number" name="rating" class="form-control" step="0.1" min="0" max="5">
+                </div>
+
                 <div class="flex-container">
                     <div class="form-group">
                         <label for="mrp">MRP</label>
-                        <input type="number" name="mrp" class="form-control" required>
+                        <input type="number" name="mrp" class="form-control" step="0.01" required>
                     </div>
 
                     <div class="form-group">
                         <label for="price">Price</label>
-                        <input type="number" name="price" class="form-control" required>
+                        <input type="number" name="price" class="form-control" step="0.01" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="stock">Stock</label>
-                    <input type="number" name="stock" class="form-control" required>
+                    <input type="number" name="stock" class="form-control" min="0" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_image">Product Image</label>
+                    <label for="product_image">Main Product Image</label>
                     <input type="file" name="product_image" class="form-control" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="extra_images">Extra Images (optional)</label>
+                    <input type="file" name="extra_images" class="form-control" accept="image/*" multiple>
                 </div>
 
                 <button type="submit" class="submit-btn">Save & Publish</button>
@@ -107,12 +120,11 @@
         </div>
     </div>
 
-    <!-- === Mobile Message === -->
+    <!-- Mobile Restriction Message -->
     <div class="message-container">
         <div class="icon">🚫</div>
         <h1>Access Restricted</h1>
         <p>This page is only accessible on a desktop. Please visit from a PC.</p>
     </div>
 </body>
-
 </html>
