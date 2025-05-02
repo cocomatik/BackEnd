@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Order Details</title>
-  <link rel="stylesheet" href="{% static 'Manager/order/css/order_detail.css' %}">
+  <link rel="stylesheet" href="{% static 'Manager/shipment/pendingShipment.css' %}">
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -73,11 +73,35 @@
     </table>
     <p><strong>Sub-Total Price:</strong>₹{{ order.sub_total }}</p>
     <p><strong>Total Order Price:</strong> ₹{{ order.total_price }}</p>
-    
 
-    <a href="javascript:history.back()" class="back-btn">← Back</a>
-    <a href="{% url 'shipment_form' order.id %}" class="back-btn">Ship Now</a>
-    
+    <form method="post" action="{% url "shipment_create" %}">
+        {% csrf_token %}
+      
+        <input type="hidden" value="{{order.order_number}}" name="order_number" required><br>
+
+        <label for="length">Length (cm):</label>
+        <input type="text" step="0.01" id="length" name="length" required><br>
+      
+        <label for="breadth">Breadth (cm):</label>
+        <input type="number" step="0.01" id="breadth" name="breadth" required><br>
+      
+        <label for="height">Height (cm):</label>
+        <input type="number" step="0.01" id="height" name="height" required><br>
+      
+        <label for="weight">Weight (kg):</label>
+        <input type="number" step="0.01" id="weight" name="weight" required><br>
+      
+        <label for="reseller_name">Reseller Name(Optional):</label>
+        <input type="text" id="reseller_name" name="reseller_name"><br>
+      
+        <label for="company_name">Company Name(Optional):</label>
+        <input type="text" id="company_name" name="company_name"><br>
+
+        <label for="comment">Comment(Optional):</label><br>
+        <textarea id="comment" name="comment" rows="3" cols="30"></textarea><br>
+                <button type="submit" class="submit-btn">Ship Now</button>
+    </form>
+    <a href="javascript:history.back()" class="back-btn">← Back</a>    
 
 </div>
 </div>
