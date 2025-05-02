@@ -74,15 +74,33 @@
             {% endfor %}
         </tbody>
     </table>
-          <p><strong>Discount:</strong>₹{{ order.discount }}</p>
-          <p><strong>Tax:</strong>₹{{ order.tax }}</p>
-          <p><strong>Shipping Charges:</strong>₹{{ order.shipping_charges }}</p>
-          <p><strong>Packaging Charges:</strong>₹{{ order.packaging_charges }}</p>
-          <p><strong>COD Charges:</strong>₹{{ order.cod_charges }}</p>
-          <p><strong>Handling Charges:</strong>₹{{ order.handling_charges }}</p>
-          <p><strong>Additional Charges:</strong>₹{{ order.additional_charges }}</p>
-          <p><strong>Sub-Total Price:</strong>₹{{ order.sub_total }}</p>
-          <p><strong>Total Order Price:</strong>₹{{ order.total_price }}</p>
+    <h3>PRICE BREAKDOWN</h3>
+
+    <table class="price-table">
+      <tr>
+        <th>Discount</th>
+        <th>Tax</th>
+        <th>Shipping Charge</th>
+        <th>Packaging Charges</th>
+        <th>COD Charges</th>
+        <th>Handling Charges</th>
+        <th>Additional Charges</th>
+        <th>Sub-Total Price</th>
+        <th>Total Price</th>
+      </tr>
+      <tr>
+        <td>₹{{ order.discount }}</td>
+        <td>₹{{ order.tax }}</td>
+        <td>₹{{ order.shipping_charges }}</td>
+        <td>₹{{ order.packaging_charges }}</td>
+        <td>₹{{ order.cod_charges }}</td>
+        <td>₹{{ order.handling_charges }}</td>
+        <td>₹{{ order.additional_charges }}</td>
+        <td>₹{{ order.sub_total }}</td>
+        <td><strong>₹{{ order.total_price }}</strong></td>
+      </tr>
+    </table>
+
 
     <a href="javascript:history.back()" class="back-btn">← Back</a>
     

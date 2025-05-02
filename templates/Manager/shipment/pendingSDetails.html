@@ -71,36 +71,67 @@
             {% endfor %}
         </tbody>
     </table>
-    <p><strong>Sub-Total Price:</strong>₹{{ order.sub_total }}</p>
-    <p><strong>Total Order Price:</strong> ₹{{ order.total_price }}</p>
+    <h3>PRICE BREAKDOWN</h3>
+
+    <table class="price-table">
+      <tr>
+        <th>Discount</th>
+        <th>Tax</th>
+        <th>Shipping Charge</th>
+        <th>Packaging Charges</th>
+        <th>COD Charges</th>
+        <th>Handling Charges</th>
+        <th>Additional Charges</th>
+        <th>Sub-Total Price</th>
+        <th>Total Price</th>
+      </tr>
+      <tr>
+        <td>₹{{ order.discount }}</td>
+        <td>₹{{ order.tax }}</td>
+        <td>₹{{ order.shipping_charges }}</td>
+        <td>₹{{ order.packaging_charges }}</td>
+        <td>₹{{ order.cod_charges }}</td>
+        <td>₹{{ order.handling_charges }}</td>
+        <td>₹{{ order.additional_charges }}</td>
+        <td>₹{{ order.sub_total }}</td>
+        <td><strong>₹{{ order.total_price }}</strong></td>
+      </tr>
+    </table>
+
 
     <form method="post" action="{% url 'shipment_create' %}">
-        {% csrf_token %}
-      
-        <input type="hidden" value="{{order.order_number}}" name="order_number" required><br>
+    {% csrf_token %}
+        <h3>PACKAGING DETAILS</h3>
 
-        <label for="length">Length (cm):</label>
-        <input type="text" step="0.01" id="length" name="length" required><br>
-      
-        <label for="breadth">Breadth (cm):</label>
-        <input type="number" step="0.01" id="breadth" name="breadth" required><br>
-      
-        <label for="height">Height (cm):</label>
-        <input type="number" step="0.01" id="height" name="height" required><br>
-      
-        <label for="weight">Weight (kg):</label>
-        <input type="number" step="0.01" id="weight" name="weight" required><br>
-      
-        <label for="reseller_name">Reseller Name(Optional):</label>
-        <input type="text" id="reseller_name" name="reseller_name"><br>
-      
-        <label for="company_name">Company Name(Optional):</label>
-        <input type="text" id="company_name" name="company_name"><br>
 
-        <label for="comment">Comment(Optional):</label><br>
-        <textarea id="comment" name="comment" rows="3" cols="30"></textarea><br>
-                <button type="submit" class="submit-btn">Ship Now</button>
-    </form>
+    <input type="hidden" value="{{order.order_number}}" name="order_number" required><br>
+
+    <div class="dimensions">
+        <label for="length">Length(cm):</label>
+        <input type="text" step="0.01" id="length" name="length" required>
+      
+        <label for="breadth">Breadth(cm):</label>
+        <input type="text" step="0.01" id="breadth" name="breadth" required>
+      
+        <label for="height">Height(cm):</label>
+        <input type="text" step="0.01" id="height" name="height" required>
+      
+        <label for="weight">Weight(kg):</label>
+        <input type="text" step="0.01" id="weight" name="weight" required>
+    </div><br>
+
+    <label for="reseller_name">Reseller Name (Optional):</label>
+    <input type="text" id="reseller_name" name="reseller_name">
+
+    <label for="company_name">Company Name (Optional):</label>
+    <input type="text" id="company_name" name="company_name">
+
+    <label for="comment">Comment (Optional):</label>
+    <textarea id="comment" name="comment" rows="3" cols="30"></textarea><br>
+
+    <button type="submit" class="submit-btn">Ship Now</button>
+</form>
+
     <a href="javascript:history.back()" class="back-btn">← Back</a>    
 
 </div>
