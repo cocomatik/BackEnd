@@ -74,7 +74,7 @@
     <p><strong>Sub-Total Price:</strong>₹{{ order.sub_total }}</p>
     <p><strong>Total Order Price:</strong> ₹{{ order.total_price }}</p>
 
-    <form method="post" action="{% url "shipment_create" %}">
+    <form method="post" action="{% url 'shipment_create' %}">
         {% csrf_token %}
       
         <input type="hidden" value="{{order.order_number}}" name="order_number" required><br>

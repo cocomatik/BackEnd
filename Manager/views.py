@@ -16,7 +16,7 @@ from POCOS.modelsxs import BestOfBodyCare,BestOfColorCosmetic,BestOfFragrance,Be
 #BEST_OF_Jewellery
 from POJOS.modelsxs import BestOfBangles,BestOfBracelets,BestOfChains,BestOfEarRings,BestOfFingerRings,BestOfImportedJewellery,BestOfNecklace,BestOfNoseRings,BestOfOneGramGoldenJewellery,BestOfPendants,BestOfWeddingJewellery,BestSellers as BSJ,FeatureProducts as FPJ
 
-from Orders.models import Order
+from Orders.models import Order,OrderHistory
 
 def landing(request):
     return render(request,"landing/landing.html")
@@ -451,10 +451,7 @@ def mbop(request):
     context = {'prd': p, 'tp': tpn, 'nm': nmn, 'qrd':q}
     return redirect("best_of_products")
 
-    
 
-
-from Orders.models import OrderHistory
 @session_auth_required
 def orders(request):
     order_list = OrderHistory.objects.all().order_by('-created_at')

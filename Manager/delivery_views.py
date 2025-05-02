@@ -17,6 +17,7 @@ def create_shipment(request):
     reseller_name = request.POST.get('reseller_name')
     company_name = request.POST.get('company_name')
 
+
     # Ensure the order exists
     order = get_object_or_404(Order, order_number=order_number)
 
@@ -26,55 +27,53 @@ def create_shipment(request):
         return redirect("order_list")
 
     try:
-        # Create OrderHistory entry
-        order_his = OrderHistory.objects.create(
-            order=order,
-            user=order.user,
-            address=order.address,
-            order_number=order.order_number,
-            payment_mode=order.payment_mode,
-            sub_total=order.sub_total,
-            total_price=order.total_price,
-            discount=order.discount,
-            tax=order.tax,
-            shipping_charges=order.shipping_charges,
-            packaging_charges=order.packaging_charges,
-            cod_charges=order.cod_charges,
-            handling_charges=order.handling_charges,
-            # additional_charges=order.additional_charges,
-            length=length,
-            breadth=breadth,
-            height=height,
-            weight=weight,
-            comment=comment,
-            reseller_name=reseller_name,
-            company_name=company_name,
-            shiprocket_order_id=ship_response.get('order_id'),
-        )
-        order_his.save()
+        with transaction.atomic():
+            order_his = OrderHistory.objects.create(
+                order=order,
+                user=order.user,
+                address=order.address,
+                order_number=order.order_number,
+                payment_mode=order.payment_mode,
+                sub_total=order.sub_total,
+                total_price=order.total_price,
+                discount=order.discount,
+                tax=order.tax,
+                shipping_charges=order.shipping_charges,
+                packaging_charges=order.packaging_charges,
+                cod_charges=order.cod_charges,
+                handling_charges=order.handling_charges,
+                length=length,
+                breadth=breadth,
+                height=height,
+                weight=weight,
+                comment=comment,
+                reseller_name=reseller_name,
+                company_name=company_name,
+            )
+            order_his.save()
+        
+            # Create OrderHistoryItems
+            for item in order.cart.cart_items.all():
+                OrderHistoryItem.objects.create(
+                    order_history=order_his,
+                    title=item.title,
+                    sku=item.sku,
+                    quantity=item.quantity,
+                    selling_price=item.product.price,
+                    discount=item.product.discount,
+                    product_type=item.product_type,
+                    product=item.product,
+                )
 
-        # Create OrderHistoryItems
-        for item in order.cart.cart_items.all():
-            OrderHistoryItem.objects.create(
-                order_history=order_his,
-                title=item.title,
-                sku=item.sku,
-                quantity=item.quantity,
-                selling_price=item.product.price,
-                discount=item.product.discount,
-                product_type=item.product_type,
-                product=item.product,
+            ship = ShiprocketAPI()
+            ship_response = ship.create_order(
+                order, length, breadth, height, weight, comment, reseller_name, company_name
             )
 
-        ship = ShiprocketAPI()
-        ship_response = ship.create_order(
-            order, length, breadth, height, weight, comment, reseller_name, company_name
-        )
-
-        with transaction.atomic():
+            
             # Store Shiprocket order info in your database
             ShiprocketOrder.objects.create(
-                order=order,
+                orderH=order_his,
                 shiprocket_order_id=ship_response.get('order_id'),
                 shipment_id=ship_response.get('shipment_id'),
                 status=ship_response.get('status'),
@@ -96,9 +95,10 @@ def create_shipment(request):
             return redirect("shipment_details")
 
     except Exception as e:
+        print(e)
         # Log the error and show a friendly message
         messages.error(request, f"Error creating shipment: {str(e)}")
-        return redirect("order_list")
+        return redirect("shipment_details")
 
 
 def pending_shipments(request):
