@@ -105,8 +105,8 @@
                             <td>{{ order.company_name }}</td>
                             <td>{{ order.created_at|date:"M d, Y" }}</td>
                             <td class="actions">
-                                <a href="{% url 'order_detail' order.id %}" class="view">View</a>
-                                <a href="{% url 'edit_order' order.id %}" class="edit">Edit</a>
+                                <a href="{% url 'order_detail' order.order_number %}" class="view">View</a>
+                                <a href="{% url 'edit_order' order.order_number %}" class="edit">Edit</a>
                             </td>
                         </tr>
                         {% empty %}

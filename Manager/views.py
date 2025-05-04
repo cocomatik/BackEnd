@@ -125,8 +125,10 @@ def add_product(request):
             mrp = int(request.POST.get("mrp", 0))
             price = int(request.POST.get("price", 0))
             stock = int(request.POST.get("stock", 0))
+            size = request.POST.get("size", "").strip()
+            rating = float(request.POST.get("rating", 0))
         except ValueError:
-            mrp, price, stock = 0, 0, 0  # Default values if conversion fails
+            mrp, price, stock, size, rating = 0, 0, 0, 0, 0  # Default values if conversion fails
 
         # Fetch category instance
         category = None
@@ -138,25 +140,27 @@ def add_product(request):
         if category:
             if product_type == "cosmetic":
                 POCOS.objects.create(
-                    title=title, 
-                    brand=brand, 
+                    title=title,
+                    brand=brand,
                     description=description,
-                    mrp=mrp, 
-                    price=price, 
+                    mrp=mrp,
+                    price=price,
                     stock=stock,
-                    category=category, 
-                    display_image=image
+                    size=size,
+                    rating=rating,
+                    category=category,
                 )
             elif product_type == "jewellery":
                 POJOS.objects.create(
-                    title=title, 
-                    brand=brand, 
+                    title=title,
+                    brand=brand,
                     description=description,
-                    mrp=mrp, 
-                    price=price, 
+                    mrp=mrp,
+                    price=price,
                     stock=stock,
-                    category=category, 
-                    display_image=image
+                    size=size,
+                    rating=rating,
+                    category=category,
                 )
                 
 
@@ -460,14 +464,14 @@ def orders(request):
 
 
 @session_auth_required
-def order_detail(request, order_id):
-    order = get_object_or_404(OrderHistory, id=order_id)
+def order_detail(request, order_number):
+    order = get_object_or_404(OrderHistory, order_number=order_number)
     return render(request, 'Manager/order/order_detail.html', {'order': order})
 
 @session_auth_required
-def edit_order(request, order_id):
+def edit_order(request, order_number):
     """View to edit an order's details"""
-    order = get_object_or_404(OrderHistory, id=order_id)
+    order = get_object_or_404(OrderHistory, id=order_number)
     addresses = Address.objects.filter(user=order.user)  # Fetch addresses for this user
 
     if request.method == "POST":

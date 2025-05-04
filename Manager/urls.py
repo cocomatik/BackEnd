@@ -21,8 +21,8 @@ urlpatterns = [
 
 
     path("orders/", orders, name="order_list"),
-    path('order/<int:order_id>/', order_detail, name='order_detail'),
-    path("order/<int:order_id>/edit/", edit_order, name="edit_order"),
+    path('order/<str:order_number>/', order_detail, name='order_detail'),
+    path("order/<str:order_number>/edit/", edit_order, name="edit_order"),
 
 
     path('customers/',customers,name='customer_list'),

@@ -1,3 +1,4 @@
+/* === Global Box Sizing & Body Reset === */
 * {
   box-sizing: border-box;
 }
@@ -7,8 +8,8 @@ body {
   padding: 0;
   overflow-x: hidden;
   font-family: Arial, sans-serif;
-  background-color: #fceef1;
-  color: #d88c9a;
+  background-color: #fdf5f7;
+  color: #a6596c;
 }
 
 /* === Navbar === */
@@ -16,15 +17,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #d8a7b1;
-  padding: 10px 30px;
+  background-color: #d89ca4;
+  padding: 5px 20px;
   width: 100%;
   flex-wrap: wrap;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* === Logo === */
@@ -38,12 +34,11 @@ body {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
   margin: 0;
   padding: 0;
 }
 
-/* === Link Styles === */
 .nav-links li {
   position: relative;
 }
@@ -59,7 +54,7 @@ body {
 }
 
 .nav-links li a:hover {
-  background-color: #944f6d;
+  background-color: #c07284;
   border-radius: 4px;
 }
 
@@ -67,7 +62,7 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  background-color: #d88c9a;
+  background-color: #e5b7be;
   top: 100%;
   left: 0;
   min-width: 160px;
@@ -91,7 +86,7 @@ body {
 }
 
 .dropdown-menu li a:hover {
-  background-color: #a65c75;
+  background-color: #cc9fa9;
 }
 
 /* === Main Container Offset === */

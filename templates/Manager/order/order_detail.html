@@ -66,7 +66,7 @@
                 <td>{{ item.product }}</td>
                 <td>{{ item.quantity }}</td>
                 <td>₹{{ item.product.price }}</td>
-                <td>₹{{ item.item_price }}</td>
+                <td>₹{{ item.total_price }}</td>
                 <td>{{ order.created_at|date:"M d, Y" }}</td>
                 
                 
@@ -85,7 +85,7 @@
         <th>COD Charges</th>
         <th>Handling Charges</th>
         <th>Additional Charges</th>
-        <th>Sub-Total Price</th>
+        <th>All Item's Price</th>
         <th>Total Price</th>
       </tr>
       <tr>

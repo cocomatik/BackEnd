@@ -87,7 +87,7 @@
                             <td>{{ order.created_at|date:"d M, Y" }}</td>
                             <td>{{ order.updated_at|date:"d M, Y" }}</td>
                             <td>
-                                <a href="{% url 'order_detail' order.id %}">
+                                <a href="{% url 'order_detail' order.order_number %}">
                                     <button class="view-btn">View</button>
                                 </a>
                             </td>

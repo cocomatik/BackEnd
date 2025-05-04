@@ -1,3 +1,4 @@
+/* === Global Box Sizing & Body Reset === */
 * {
   box-sizing: border-box;
 }
@@ -5,10 +6,10 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fceef1;
-  color: #5a3e2b;
   overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #fdf5f7;
+  color: #a6596c;
 }
 
 /* === Navbar === */
@@ -16,19 +17,19 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #d8a7b1;
+  background-color: #d89ca4;
   padding: 5px 20px;
   width: 100%;
   flex-wrap: wrap;
-  position: fixed;
-  top: 0;
 }
 
+/* === Logo === */
 .navbar img {
   height: 50px;
   flex-shrink: 0;
 }
 
+/* === Navigation Links === */
 .nav-links {
   list-style: none;
   display: flex;
@@ -53,7 +54,7 @@ body {
 }
 
 .nav-links li a:hover {
-  background-color: #b26e79;
+  background-color: #c07284;
   border-radius: 4px;
 }
 
@@ -61,7 +62,7 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  background-color: #e5b7bd;
+  background-color: #e5b7be;
   top: 100%;
   left: 0;
   min-width: 160px;
@@ -85,7 +86,7 @@ body {
 }
 
 .dropdown-menu li a:hover {
-  background-color: #a45e68;
+  background-color: #cc9fa9;
 }
 
 /* Main content */
