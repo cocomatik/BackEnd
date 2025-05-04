@@ -13,7 +13,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     age= models.IntegerField(null=True,blank=True)
     gender = models.CharField(max_length=10,null=True,blank=True)
-    dob= models.DateField(null=True,blank=True)
 
 
     is_active = models.BooleanField(default=True)
