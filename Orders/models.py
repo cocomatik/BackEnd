@@ -144,3 +144,6 @@ class OrderHistoryItem(models.Model):
 
     def __str__(self):
         return f"{self.title} (x{self.quantity})"
+
+    def total_price(self):
+        return self.selling_price * self.quantity  
