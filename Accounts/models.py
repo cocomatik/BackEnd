@@ -11,6 +11,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=15,null=True,blank=True)
     email = models.EmailField(unique=True)  
 
+    age= models.IntegerField(null=True,blank=True)
+    gender = models.CharField(max_length=10,null=True,blank=True)
+
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  
     is_superuser = models.BooleanField(default=False)
