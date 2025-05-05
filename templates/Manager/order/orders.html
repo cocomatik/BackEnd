@@ -43,22 +43,26 @@
             <!-- Filters -->
             <form method="GET" action="{% url 'order_list' %}">
                 <div class="filters">
-                    <input type="text" id="searchBox" class="search-box" placeholder="Search products..." onkeyup="filterProducts()">
+                    <input type="text" id="searchBox" class="search-box" placeholder="Search products..."
+                        onkeyup="filterProducts()">
 
-                    <select id="filterDropdown" class="drpdn" name="filter" onchange="this.form.submit()">
-                        <option value="all" {% if request.GET.filter == 'all' or not request.GET.filter %}selected{% endif %}>All Time</option>
-                        <option value="7days" {% if request.GET.filter == '7days' %}selected{% endif %}>Last 7 days</option>
-                        <option value="30days" {% if request.GET.filter == '30days' %}selected{% endif %}>Last 30 days</option>
-                    </select>
+                        <select id="filterDropdown" class="drpdn" name="filter" onchange="this.form.submit()">
+                            <option value="all" {% if request.GET.filter == 'all' or not request.GET.filter %}selected{% endif %}>All Time</option>
+                            <option value="7days" {% if request.GET.filter == '7days' %}selected{% endif %}>Last 7 days</option>
+                            <option value="30days" {% if request.GET.filter == '30days' %}selected{% endif %}>Last 30 days</option>
+                        </select>
+                        
+                        
 
-                    <select name="status" id="statusDropdown" class="drpdn" onchange="this.form.submit()">
-                        <option value="all" {% if request.GET.status == 'all' or not request.GET.status %}selected{% endif %}>All Statuses</option>
-                        <option value="processing" {% if request.GET.status == 'processing' %}selected{% endif %}>Processing</option>
-                        <option value="delivered" {% if request.GET.status == 'delivered' %}selected{% endif %}>Delivered</option>
-                        <option value="canceled" {% if request.GET.status == 'canceled' %}selected{% endif %}>Canceled</option>
-                        <option value="refunded" {% if request.GET.status == 'refunded' %}selected{% endif %}>Refunded</option>
-                        <option value="shipped" {% if request.GET.status == 'shipped' %}selected{% endif %}>Shipped</option>
-                    </select>
+                        <select name="status" id="statusDropdown" class="drpdn" onchange="this.form.submit()">
+                            <option value="all" {% if request.GET.status == 'all' or not request.GET.status %}selected{% endif %}>All Statuses</option>
+                            <option value="processing" {% if request.GET.status == 'processing' %}selected{% endif %}>Processing</option>
+                            <option value="delivered" {% if request.GET.status == 'delivered' %}selected{% endif %}>Delivered</option>
+                            <option value="canceled" {% if request.GET.status == 'canceled' %}selected{% endif %}>Canceled</option>
+                            <option value="refunded" {% if request.GET.status == 'refunded' %}selected{% endif %}>Refunded</option>
+                            <option value="shipped" {% if request.GET.status == 'shipped' %}selected{% endif %}>Shipped</option>
+                        </select>
+                        
                 </div>
             </form>
 
