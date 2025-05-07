@@ -2,13 +2,17 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserAccount, Address
+from django.shortcuts import get_object_or_404
+from .models import UserAccount, Address,Wishlist
 from .serializers import UserSerializer,AddressSerializer
 from .decorators import token_auth_required
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import UserSerializer
+from .serializers import UserSerializer,WishListSerializer
+from POCOS.models import POCOS
+from POJOS.models import POJOS
+from django.contrib.contenttypes.models import ContentType
 
 @api_view(["GET", "PUT"])
 @token_auth_required
@@ -69,3 +73,42 @@ def address_detail_view(request, pk):
     elif request.method == "DELETE":
         address.delete()
         return Response({"message": "Address deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    
+
+
+
+@api_view(["GET", "POST"])
+@token_auth_required
+def wishlist_view(request):
+    user = request.user
+
+    if request.method == "GET":
+        wishlist_items = Wishlist.objects.filter(user=user)
+        serializer = WishListSerializer(wishlist_items, many=True)
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        sku = request.data.get("sku")
+        if not sku:
+            return Response({"error": "Each product must have 'sku'."}, status=status.HTTP_400_BAD_REQUEST)
+
+        sku_prefix = sku.split("-")[0].upper()
+
+        if sku_prefix == "POCO":
+            product_model = POCOS
+        elif sku_prefix == "POJO":
+            product_model = POJOS
+        else:
+            return Response({"error": f"Unknown SKU prefix '{sku_prefix}' in '{sku}'."}, status=status.HTTP_400_BAD_REQUEST)
+
+        product = get_object_or_404(product_model, sku=sku)
+        content_type = ContentType.objects.get_for_model(product_model)
+
+        wishlist_item, created = Wishlist.objects.get_or_create(
+            user=user,
+            sku=sku,
+            product_type=content_type,
+        )
+
+        serializer = WishListSerializer(wishlist_item)
+        return Response(serializer.data, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)

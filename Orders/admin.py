@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import Cart,CartItem,Order,Wishlist
+from .models import Cart,CartItem,Order
 admin.site.register(CartItem)
 admin.site.register(Cart)
 admin.site.register(Order)
-admin.site.register(Wishlist)
 
 from .models import OrderHistory, OrderHistoryItem
 
