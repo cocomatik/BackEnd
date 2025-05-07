@@ -7,6 +7,18 @@ import random, string
 
 User = get_user_model()
 
+class Wishlist(models.Model):
+    
+    User=models.ForeignKey(User,on_delete=models.CASCADE)
+    sku = models.CharField(max_length=20, db_index=True)  
+    product_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)  
+    product = GenericForeignKey("product_type", "sku")
+    
+    def __str__(self):
+        return f"{self.user} x {self.product} in Cart"    
+
+
+
 class CartStatus(models.TextChoices):  
     PENDING = "PENDING", "PENDING"
     ORDERED = "ORDERED", "ORDERED"

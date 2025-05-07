@@ -7,8 +7,8 @@ from Accounts.decorators import token_auth_required
 from Accounts.models import Address
 from POCOS.models import POCOS
 from POJOS.models import POJOS
-from .models import Cart, CartItem, Order ,OrderHistory,OrderHistoryItem
-from .serializers import CartSerializer, CartItemSerializer, OrderSerializer
+from .models import Cart, CartItem, Order ,OrderHistory,OrderHistoryItem,Wishlist
+from .serializers import CartSerializer, CartItemSerializer, OrderSerializer,WishListSerializer
 from django.db import transaction
 from rest_framework import status
 from django.utils import timezone
@@ -21,6 +21,24 @@ from decimal import Decimal
 logger = logging.getLogger(__name__)
 
 
+
+
+
+@api_view(["GET", "POST"])
+@token_auth_required
+def wishlist_view(request):
+    if request.method == "GET":
+        wishlist_items = Wishlist.objects.filter(user=request.user)
+        serializer = WishListSerializer(wishlist_items, many=True)
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        serializer = WishListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(["GET"])
 @token_auth_required
 def cart_view(request):
