@@ -11,6 +11,9 @@ body {
   background-color: #fdf5f7;
   color: #a6596c;
 }
+a{
+  text-decoration: none;
+}
 
 /* === Navbar === */
 .navbar {
@@ -138,21 +141,6 @@ body {
   margin-top: 5px;
 }
 
-/* === Graph === */
-.graph-container {
-  width: 100%;
-  background: #fff;
-  margin-top: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.graph-container h4 {
-  font-size: 24px;
-  color: #a6596c;
-  text-align: center;
-  margin-bottom: 20px;
-}
 
 /* === Mobile Restriction Message === */
 .message-container {

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
 
-    
+
     <link rel="stylesheet" href="{% static 'Manager/dashboard/dashboard.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
@@ -53,6 +53,7 @@
                         <p>Total Products</p>
                     </div>
                 </div>
+                <a href="{% url 'order_list' %}">
                 <div class="stat-card">
                     <div class="stat-icon orders">
                         <i class="fas fa-shopping-cart"></i>
@@ -62,6 +63,7 @@
                         <p>Total Orders</p>
                     </div>
                 </div>
+            </a>
                 <div class="stat-card">
                     <div class="stat-icon revenue">
                         <i class="fa fa-inr"></i>
@@ -75,30 +77,27 @@
                     <div class="stat-icon customers">
                         <i class="fas fa-users"></i>
                     </div>
+                    <a href="{% url 'customer_list' %}">
                     <div class="stat-info">
                         <h3>{{ total_customers }}</h3>
                         <p>Total Customers</p>
                     </div>
+                </a>
                 </div>
             </div>
 
-            <!-- Optional Chart Area (empty canvas if needed) -->
-            <div class="graph-container mt-5">
-                <h4>Sales</h4>
-                <canvas id="salesChart"></canvas>
-            </div>
         </div>
     </div>
 
-        <!-- Mobile Restriction Message -->
-        <div class="message-container mt-5">
-            <div class="icon">🚫</div>
-            <h1>Access Restricted</h1>
-            <p>
-                This page is only accessible on a desktop. Please visit from a PC.
-            </p>
-        </div>
-    
+    <!-- Mobile Restriction Message -->
+    <div class="message-container mt-5">
+        <div class="icon">🚫</div>
+        <h1>Access Restricted</h1>
+        <p>
+            This page is only accessible on a desktop. Please visit from a PC.
+        </p>
+    </div>
+
 </body>
 
 </html>
