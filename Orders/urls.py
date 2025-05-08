@@ -5,6 +5,7 @@ urlpatterns = [
     path("", processed_orders, name="api-orders"),
     path("pending/", get_pending_orders, name="api-orders-pending"),
     path("details/", get_order_details, name="api-order-details"),
+
     path("cart/", cart_view, name="cart"),
     path("cart/add/", add_to_cart, name="add_to_cart"),
     path("cart/update/", update_cart_item, name="update_cart"),

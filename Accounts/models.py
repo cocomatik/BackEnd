@@ -1,7 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from .manager import AccountManager
-
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.utils.timezone import now
 from datetime import timedelta
 
@@ -55,3 +56,13 @@ class Verification(models.Model):
     def __str__(self):
         return f"OTP for {self.email} is {self.otp}"
         
+
+class Wishlist(models.Model):
+    
+    user=models.ForeignKey(UserAccount,on_delete=models.CASCADE)
+    sku = models.CharField(max_length=20, db_index=True)  
+    product_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)  
+    product = GenericForeignKey("product_type", "sku")
+    
+    def __str__(self):
+        return f"{self.user} x {self.product} in Cart"  

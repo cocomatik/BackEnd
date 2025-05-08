@@ -7,6 +7,7 @@ from POCOS.models import POCOS
 from POJOS.models import POJOS
 
 
+
 class CartItemSerializer(serializers.ModelSerializer):
     product_details = serializers.SerializerMethodField()
 

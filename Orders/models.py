@@ -7,6 +7,7 @@ import random, string
 
 User = get_user_model()
 
+
 class CartStatus(models.TextChoices):  
     PENDING = "PENDING", "PENDING"
     ORDERED = "ORDERED", "ORDERED"

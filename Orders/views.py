@@ -21,6 +21,7 @@ from decimal import Decimal
 logger = logging.getLogger(__name__)
 
 
+    
 @api_view(["GET"])
 @token_auth_required
 def cart_view(request):
