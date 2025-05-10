@@ -160,8 +160,7 @@ table td {
 }
 
 /* === Action Buttons === */
-a.view-btn,
-a.delete-btn {
+a.view-btn {
   display: inline-block;
   padding: 8px 15px;
   border-radius: 10px;
@@ -189,17 +188,6 @@ td {
 .view-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 14px rgba(245, 156, 172, 0.5);
-}
-
-/* === Delete Button === */
-.delete-btn {
-  background: linear-gradient(to right, #d87093, #f5a9bc);
-  color: white;
-}
-
-.delete-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 14px rgba(216, 112, 147, 0.5);
 }
 
 

@@ -164,12 +164,19 @@ textarea:focus {
   margin-top: 15px;
 }
 
-.product-preview {
+.product-preview  {
   width: 100%;
   max-width: 200px;
   height: auto;
   border-radius: 8px;
 }
+.extra-thumb {
+    width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+}
+
 
 /* === Flex Inputs === */
 .flex-container {

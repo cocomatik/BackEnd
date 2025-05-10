@@ -43,7 +43,7 @@
             <!-- Filters -->
             <form method="GET" action="{% url 'order_list' %}">
                 <div class="filters">
-                    <input type="text" id="searchBox" class="search-box" placeholder="Search products..."
+                    <input type="text" id="searchBox" class="search-box" placeholder="Search Order Number..."
                         onkeyup="filterProducts()">
 
                         <select id="filterDropdown" class="drpdn" name="filter" onchange="this.form.submit()">
@@ -110,7 +110,7 @@
                             <td>{{ order.created_at|date:"M d, Y" }}</td>
                             <td class="actions">
                                 <a href="{% url 'order_detail' order.order_number %}" class="view">View</a>
-                                <a href="{% url 'edit_order' order.order_number %}" class="edit">Edit</a>
+                               
                             </td>
                         </tr>
                         {% empty %}

@@ -213,14 +213,13 @@ td {
 }
 
 /* === Actions === */
-.actions {
-  display: flex;
+/* .actions {
   justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 10px;
   flex-direction: column;
-}
+} */
 
 .actions a,
 .actions button {
@@ -248,16 +247,6 @@ td {
   box-shadow: 0 6px 14px rgba(245, 156, 172, 0.4);
 }
 
-/* === Edit Button === */
-.actions .edit {
-  background: linear-gradient(to right, #e892c6, #fbd0e6);
-  color: white;
-}
-
-.actions .edit:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 14px rgba(232, 146, 198, 0.4);
-}
 
 /* === Delete Button === */
 .actions .delete {

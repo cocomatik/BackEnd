@@ -105,7 +105,7 @@ def products(request):
 @session_auth_required
 def add_product(request):
     categories = []
-    selected_type = request.GET.get("product_type", request.POST.get("product_type", ""))  # Remember selection
+    selected_type = request.GET.get("product_type", request.POST.get("product_type", ""))
 
     if selected_type == "cosmetic":
         categories = POCOSCategory.objects.all()
@@ -118,17 +118,19 @@ def add_product(request):
         description = request.POST.get("description", "").strip()
         category_n = request.POST.get("category", "").strip()
         product_type = request.POST.get("product_type", "").strip()
-        image = request.FILES.get("product_image")
 
-        # Convert numeric values safely
+        # Convert numeric fields safely
         try:
             mrp = int(request.POST.get("mrp", 0))
             price = int(request.POST.get("price", 0))
             stock = int(request.POST.get("stock", 0))
-            size = request.POST.get("size", "").strip()
             rating = float(request.POST.get("rating", 0))
         except ValueError:
-            mrp, price, stock, size, rating = 0, 0, 0, 0, 0  # Default values if conversion fails
+            mrp, price, stock, rating = 0, 0, 0, 0.0
+
+        size = request.POST.get("size", "").strip()
+        display_image = request.FILES.get("product_image")
+        extra_images = request.FILES.getlist("extra_images")
 
         # Fetch category instance
         category = None
@@ -139,7 +141,7 @@ def add_product(request):
 
         if category:
             if product_type == "cosmetic":
-                POCOS.objects.create(
+                poco = POCOS.objects.create(
                     title=title,
                     brand=brand,
                     description=description,
@@ -149,9 +151,18 @@ def add_product(request):
                     size=size,
                     rating=rating,
                     category=category,
+                    display_image=display_image,
                 )
+
+                # Handle extra images for POCOS
+                for extra_image in extra_images:
+                    PocoImage.objects.create(
+                        poco=poco,  # Correct: use the actual POCOS instance
+                        image=extra_image,
+                    )
+
             elif product_type == "jewellery":
-                POJOS.objects.create(
+                pojo = POJOS.objects.create(
                     title=title,
                     brand=brand,
                     description=description,
@@ -161,8 +172,15 @@ def add_product(request):
                     size=size,
                     rating=rating,
                     category=category,
+                    display_image=display_image,
                 )
-                
+
+                # Handle extra images for POJOS
+                for extra_image in extra_images:
+                    PojoImage.objects.create(
+                        pojo=pojo,  # Correct: use the actual POJOS instance
+                        image=extra_image,
+                    )
 
             messages.success(request, "Product added successfully!")
             if product_type == "cosmetic":
@@ -174,6 +192,7 @@ def add_product(request):
         "categories": categories,
         "selected_type": selected_type
     })
+
 
 @session_auth_required
 def edit_product(request, product_id):
@@ -195,8 +214,9 @@ def edit_product(request, product_id):
             messages.error(request, "Product not found!")
             return redirect("products")
 
-    # Fetch extra images (only for jewellery)
-    if product_type == "jewellery":
+    if product_type == "cosmetic":
+        extra_images = PocoImage.objects.filter(poco=product)
+    elif product_type == "jewellery":
         extra_images = PojoImage.objects.filter(pojo=product)
 
     if request.method == "POST":
@@ -209,7 +229,6 @@ def edit_product(request, product_id):
         product.size = request.POST.get("size", "").strip()
         product.rating = request.POST.get("rating", 0)
 
-        # Update category
         category_name = request.POST.get("category")
         try:
             if product_type == "cosmetic":
@@ -219,20 +238,28 @@ def edit_product(request, product_id):
         except (POCOSCategory.DoesNotExist, POJOSCategory.DoesNotExist):
             messages.error(request, "Invalid category selected!")
 
-        # Update main product image
         if "product_image" in request.FILES:
             product.display_image = request.FILES["product_image"]
 
         product.save()
 
-        # Save extra images (if any) for jewellery
-        if product_type == "jewellery" and "extra_images" in request.FILES:
-            for img in request.FILES.getlist("extra_images"):
-                PojoImage.objects.create(pojo=product, image=img)
+        if "extra_images" in request.FILES:
+            new_images = request.FILES.getlist("extra_images")
+
+            if product_type == "cosmetic":
+                # Just remove old DB references
+                PocoImage.objects.filter(poco=product).delete()
+                for img in new_images:
+                    PocoImage.objects.create(poco=product, image=img)
+
+            elif product_type == "jewellery":
+                PojoImage.objects.filter(pojo=product).delete()
+                for img in new_images:
+                    PojoImage.objects.create(pojo=product, image=img)
 
         messages.success(request, "Product updated successfully!")
         return redirect(f"/products/?type={product_type}")
-        print(extra_images)
+
     return render(
         request,
         "Manager/product/edit_product.html",
@@ -243,6 +270,9 @@ def edit_product(request, product_id):
             "extra_images": extra_images,
         }
     )
+
+
+
 
 
 
@@ -467,25 +497,6 @@ def orders(request):
 def order_detail(request, order_number):
     order = get_object_or_404(OrderHistory, order_number=order_number)
     return render(request, 'Manager/order/order_detail.html', {'order': order})
-
-@session_auth_required
-def edit_order(request, order_number):
-    """View to edit an order's details"""
-    order = get_object_or_404(OrderHistory, id=order_number)
-    addresses = Address.objects.filter(user=order.user)  # Fetch addresses for this user
-
-    if request.method == "POST":
-        payment_mode = request.POST.get("payment_mode")
-        address_id = request.POST.get("address")
-
-        order.payment_mode = payment_mode
-        order.address = Address.objects.get(id=address_id)
-        order.save()
-
-        messages.success(request, "Order updated successfully.")
-        return redirect("order_list")
-
-    return render(request, "Manager/order/edit_order.html", {"order": order, "addresses": addresses})
 
 
 

@@ -56,27 +56,31 @@
                         <label>Category</label>
                         <select name="category" class="form-input">
                             {% for category in categories %}
-                                <option value="{{ category.name }}" {% if product.category.name == category.name %}selected{% endif %}>
-                                    {{ category.name }}
-                                </option>
+                            <option value="{{ category.name }}" {% if product.category.name == category.name %}selected{% endif %}>
+
+                                {{ category.name }}
+                            </option>
                             {% endfor %}
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea name="description" class="form-input" rows="4" required>{{ product.description }}</textarea>
+                        <textarea name="description" class="form-input" rows="4"
+                            required>{{ product.description }}</textarea>
                     </div>
 
                     <div class="flex-container">
                         <div class="form-group">
                             <label>MRP</label>
-                            <input type="number" step="0.01" name="mrp" class="form-input" value="{{ product.mrp }}" required>
+                            <input type="number" step="0.01" name="mrp" class="form-input" value="{{ product.mrp }}"
+                                required>
                         </div>
 
                         <div class="form-group">
                             <label>Price</label>
-                            <input type="number" step="0.01" name="price" class="form-input" value="{{ product.price }}" required>
+                            <input type="number" step="0.01" name="price" class="form-input" value="{{ product.price }}"
+                                required>
                         </div>
                     </div>
 
@@ -92,16 +96,17 @@
 
                     <div class="form-group">
                         <label>Rating (out of 5)</label>
-                        <input type="number" step="0.1" min="0" max="5" name="rating" class="form-input" value="{{ product.rating }}">
+                        <input type="number" step="0.1" min="0" max="5" name="rating" class="form-input"
+                            value="{{ product.rating }}">
                     </div>
 
                     <div class="form-group">
                         <label>Main Product Image</label>
                         <input type="file" name="product_image" class="form-input">
                         {% if product.display_image %}
-                            <div class="image-preview">
-                                <img src="{{ product.display_image.url }}" alt="Product Image" class="product-preview">
-                            </div>
+                        <div class="image-preview">
+                            <img src="{{ product.display_image.url }}" alt="Product Image" class="product-preview">
+                        </div>
                         {% endif %}
                     </div>
 
@@ -109,13 +114,14 @@
                         <label>Extra Images</label>
                         <input type="file" name="extra_images" class="form-input" multiple>
                         {% if extra_images %}
-                            <div class="extra-images-preview">
-                                {% for img in extra_images %}
-                                    <img src="{{ img.image.url }}" class="extra-thumb" alt="Extra Image">
-                                {% endfor %}
-                            </div>
+                        <div class="extra-images-preview">
+                            {% for img in extra_images %}
+                            <img src="{{ img.image.url }}" class="extra-thumb" alt="Extra Image">
+                            {% endfor %}
+                        </div>
                         {% endif %}
                     </div>
+
 
                     <button type="submit" class="submit-btn">Update Product</button>
                 </form>
