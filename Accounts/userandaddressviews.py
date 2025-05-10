@@ -76,8 +76,7 @@ def address_detail_view(request, pk):
     
 
 
-
-@api_view(["GET", "POST"])
+@api_view(["GET", "POST", "DELETE"])
 @token_auth_required
 def wishlist_view(request):
     user = request.user
@@ -93,7 +92,6 @@ def wishlist_view(request):
             return Response({"error": "Each product must have 'sku'."}, status=status.HTTP_400_BAD_REQUEST)
 
         sku_prefix = sku.split("-")[0].upper()
-
         if sku_prefix == "POCO":
             product_model = POCOS
         elif sku_prefix == "POJO":
@@ -112,3 +110,15 @@ def wishlist_view(request):
 
         serializer = WishListSerializer(wishlist_item)
         return Response(serializer.data, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
+
+    elif request.method == "DELETE":
+        sku = request.data.get("sku")
+        if not sku:
+            return Response({"error": "Please provide SKU to delete."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            wishlist_item = Wishlist.objects.get(user=user, sku=sku)
+            wishlist_item.delete()
+            return Response({"message": f"Item with SKU '{sku}' removed from wishlist."}, status=status.HTTP_204_NO_CONTENT)
+        except Wishlist.DoesNotExist:
+            return Response({"error": f"No wishlist item found with SKU '{sku}'."}, status=status.HTTP_404_NOT_FOUND)
