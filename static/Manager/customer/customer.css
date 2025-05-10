@@ -27,9 +27,12 @@
   }
   
   .navbar img {
-    height: 50px;
-    flex-shrink: 0;
-  }
+  height: 50px;
+  flex-shrink: 0;
+  
+  border: 10px solid rgb(247, 245, 245);
+  border-radius: 16px;
+}
   
   .nav-links {
     list-style: none;
