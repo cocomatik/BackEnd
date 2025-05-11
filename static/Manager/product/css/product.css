@@ -25,10 +25,9 @@ body {
 
 /* === Logo === */
 .navbar img {
-  height: 50px;
+  height: 40px;
   flex-shrink: 0;
-  border: 10px solid rgb(247, 245, 245);
-  border-radius: 16px;
+  border-radius: 10px;
 }
 
 /* === Navigation Links === */

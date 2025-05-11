@@ -1,4 +1,4 @@
-/* === Global Reset & Base === */
+/* === Global Box Sizing & Body Reset === */
 * {
   box-sizing: border-box;
 }
@@ -6,10 +6,13 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fceef1;
-  color: #5a3e2b;
   overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #fdf5f7;
+  color: #a6596c;
+}
+a{
+  text-decoration: none;
 }
 
 /* === Navbar === */
@@ -17,22 +20,21 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #d8a7b1;
+  background-color: #d89ca4;
   padding: 5px 20px;
   width: 100%;
   flex-wrap: wrap;
-  position: fixed;
-  top: 0;
-  z-index: 1000;
+
 }
 
+/* === Logo === */
 .navbar img {
-  height: 50px;
+  height: 40px;
   flex-shrink: 0;
-  border: 10px solid rgb(247, 245, 245);
-  border-radius: 16px;
+  border-radius: 10px;
 }
 
+/* === Navigation Links === */
 .nav-links {
   list-style: none;
   display: flex;
@@ -53,11 +55,11 @@ body {
   white-space: nowrap;
   padding: 8px 12px;
   display: block;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .nav-links li a:hover {
-  background-color: #b26e79;
+  background-color: #c07284;
   border-radius: 4px;
 }
 
@@ -65,7 +67,7 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  background-color: #f4c2cc;
+  background-color: #e5b7be;
   top: 100%;
   left: 0;
   min-width: 160px;
@@ -86,20 +88,17 @@ body {
 
 .dropdown-menu li a {
   padding: 10px 15px;
-  display: block;
-  color: #5a3e2b;
-  font-weight: 500;
 }
 
 .dropdown-menu li a:hover {
-  background-color: #cc7a8b;
-  color: white;
+  background-color: #cc9fa9;
 }
+
 
 /* === Container === */
 .container {
   max-width: 1100px;
-  margin: 100px auto 40px auto;
+  margin: 30px auto 40px auto;
   padding: 30px;
   background: #ffe5ec;
   border-radius: 16px;

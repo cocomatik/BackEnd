@@ -11,6 +11,9 @@ body {
   background-color: #fdf5f7;
   color: #a6596c;
 }
+a{
+  text-decoration: none;
+}
 
 /* === Navbar === */
 .navbar {
@@ -21,14 +24,14 @@ body {
   padding: 5px 20px;
   width: 100%;
   flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
 /* === Logo === */
 .navbar img {
-  height: 50px;
+  height: 40px;
   flex-shrink: 0;
-  border: 10px solid rgb(247, 245, 245);
-  border-radius: 16px;
+  border-radius: 10px;
 }
 
 /* === Navigation Links === */
@@ -91,13 +94,12 @@ body {
   background-color: #cc9fa9;
 }
 
-/* === Main Container Offset === */
-.main {
-  padding-top: 80px;
-}
+
+
 
 /* === Form Container === */
 .form-container {
+  padding-top: 80px;
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);

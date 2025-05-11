@@ -1,4 +1,4 @@
-/* === Base Reset === */
+/* === Global Box Sizing & Body Reset === */
 * {
   box-sizing: border-box;
 }
@@ -6,10 +6,13 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fceef1;
-  color: #5a3e2b;
   overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #fdf5f7;
+  color: #a6596c;
+}
+a{
+  text-decoration: none;
 }
 
 /* === Navbar === */
@@ -17,22 +20,21 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #d8a7b1;
+  background-color: #d89ca4;
   padding: 5px 20px;
   width: 100%;
   flex-wrap: wrap;
-  position: fixed;
-  top: 0;
-  z-index: 999;
+  margin-bottom: 30px;
 }
 
+/* === Logo === */
 .navbar img {
-  height: 50px;
+  height: 40px;
   flex-shrink: 0;
-  border: 10px solid rgb(247, 245, 245);
-  border-radius: 16px;
+  border-radius: 10px;
 }
 
+/* === Navigation Links === */
 .nav-links {
   list-style: none;
   display: flex;
@@ -57,7 +59,7 @@ body {
 }
 
 .nav-links li a:hover {
-  background-color: #b26e79;
+  background-color: #c07284;
   border-radius: 4px;
 }
 
@@ -65,18 +67,23 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  background-color: #e5b7bd;
+  background-color: #e5b7be;
   top: 100%;
   left: 0;
   min-width: 160px;
   border-radius: 4px;
   padding: 5px 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  z-index: 999;
 }
 
 .nav-links li:hover .dropdown-menu {
   display: block;
+}
+
+.dropdown-menu li {
+  width: 100%;
+  list-style: none;
 }
 
 .dropdown-menu li a {
@@ -84,12 +91,7 @@ body {
 }
 
 .dropdown-menu li a:hover {
-  background-color: #a45e68;
-}
-
-/* === Main Container Offset === */
-.main {
-  padding-top: 80px;
+  background-color: #cc9fa9;
 }
 
 /* === Form Container === */
