@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="{% static 'Manager/report/report.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    
+    <!-- jsPDF and html2pdf CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <nav class="navbar">
+            <a class="logo" href="{% url 'dashboard' %}">
+                <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#">Products <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+                        <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
+                <li><a href="{% url 'order_list' %}">Orders</a></li>
+                <li><a href="{% url 'customer_list' %}">Customers</a></li>
+                <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
+                <li><a href="{% url 'revenue_report' %}">Report</a></li>
+            </ul>
+        </nav>
+
+        <main id="reportContent">
+            <h1>REVENUE REPORT</h1>
+
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="card">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h2>₹ {{ total_revenue|floatformat:2 }}</h2>
+                    <p>Total Revenue</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>₹ {{ avg_monthly_revenue|floatformat:2 }}</h2>
+                    <p>Monthly Average</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>₹ {{ avg_order_value|floatformat:2 }}</h2>
+                    <p>Average Order Value</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-percentage"></i>
+                    <h2>{{ growth_rate|floatformat:2 }}%</h2>
+                    <p>Growth Rate</p>
+                </div>
+            </div>
+
+            <!-- Top Products Table -->
+            <div class="report-section">
+                <h2>Top Revenue Generating Products</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Units Sold</th>
+                            <th>Total Revenue (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if top_products %}
+                            {% for product in top_products %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ product.title }}</td>
+                                <td>{{ product.product_type__model|capfirst }}</td>
+                                <td>{{ product.total_units_sold }}</td>
+                                <td>₹{{ product.total_revenue|floatformat:2 }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="5">No data available</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Monthly Revenue Comparison -->
+            <div class="report-section">
+                <h2>Monthly Revenue Comparison</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th>Month</th>
+                            <th>Total Revenue (₹)</th>
+                            <th>Total Orders</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if revenues %}
+                            {% for rev in revenues %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ rev.month|date:"F Y" }}</td>
+                                <td>₹{{ rev.monthly_total|floatformat:2 }}</td>
+                                <td>{{ rev.total_orders }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="4">No data available</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+    <footer class="footer">
+    <p>&copy; 2025 Cocomatik. All rights reserved.</p>
+    </footer>
+
+
+     </div>
+    <!-- Mobile Restriction Message -->
+    <div class="message-container mt-5">
+        <div class="icon">🚫</div>
+        <h1>Access Restricted</h1>
+        <p>
+            This page is only accessible on a desktop. Please visit from a PC.
+        </p>
+    </div>
+
+
+    <script>
+    // Using html2pdf to generate PDF
+    document.getElementById('downloadPdf').addEventListener('click', function() {
+        const element = document.getElementById('reportContent'); // Content to be converted into PDF
+
+        const opt = {
+            margin:       0.2,   // Reduced margin
+            filename:     'revenue_report.pdf',
+            image:        { type: 'jpeg', quality: 0.99 },
+            html2canvas:  { scale: 1.5 },  // Lowered scale value for better fit
+            jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
+        };
+
+        html2pdf().from(element).set(opt).save(); // Generate and save the PDF
+    });
+</script>
+
+</body>
+
+</html>

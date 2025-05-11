@@ -202,6 +202,20 @@ td {
     padding: 12px;
     border-radius: 8px;
 }
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;  /* Light gray background */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: #555; /* Darker text color */
+}
 
 
 /* === Mobile Access Message === */

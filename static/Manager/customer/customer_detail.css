@@ -194,6 +194,20 @@ a{
     color: #777;
     text-align: center;
   }
+  .footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;  /* Light gray background */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: #555; /* Darker text color */
+}
   
   /* === Mobile Access Message === */
   .message-container {

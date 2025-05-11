@@ -42,12 +42,15 @@ INSTALLED_APPS = [
     'Manager.apps.ManagerConfig',
     'Api.apps.ApiConfig',
     'Delivery.apps.DeliveryConfig',
+    'Reports.apps.ReportsConfig',
 
     'django_extensions',
     "cloudinary",
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+
+   
 
 
 ]

@@ -13,6 +13,7 @@
 </head>
 
 <body>
+     <div class="page-wrapper">
     <div class="main">
         <nav class="navbar">
             <a class="logo" href="{% url 'dashboard' %}">
@@ -33,6 +34,7 @@
                 <li><a href="{% url 'order_list' %}">Orders</a></li>
                 <li><a href="{% url 'customer_list' %}">Customers</a></li>
                 <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
+                <li><a href="{% url 'revenue_report' %}">Report</a></li>
             </ul>
         </nav>
 
@@ -66,10 +68,12 @@
                     <div class="stat-icon revenue">
                         <i class="fa fa-inr"></i>
                     </div>
+                    <a href="{% url 'revenue_report' %}">
                     <div class="stat-info">
                         <h3>₹ {{ value }}</h3>
                         <p>Total Revenue</p>
                     </div>
+                    
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon customers">
@@ -85,7 +89,12 @@
             </div>
 
         </div>
+        </div>
+        <footer class="footer">
+    <p>&copy; 2025 Cocomatik. All rights reserved.</p>
+    </footer>
     </div>
+    
 
     <!-- Mobile Restriction Message -->
     <div class="message-container mt-5">

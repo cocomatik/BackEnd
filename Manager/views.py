@@ -9,7 +9,7 @@ from Accounts.decorators import session_auth_required
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
 
-from Orders.models import Order,CartItem,Address
+from Orders.models import Order,CartItem,Address,OrderHistoryItem
 #BEST_OF_Cosmetics
 from POCOS.modelsxs import BestOfBodyCare,BestOfColorCosmetic,BestOfFragrance,BestOfHairCare,BestOfImportedProducts,BestOfSkinCare,BestSellers as BSC,FeatureProducts as FPC
 
@@ -543,8 +543,67 @@ def customer_details(request, customer_id):
 
 
 # @session_auth_required
-def reports(request):
-    return render(request, "Manager/reports.html")
+from django.db.models import Sum, F, DecimalField, Count
+from django.db.models.functions import TruncMonth
+from Orders.models import OrderHistory, OrderHistoryItem
+from django.shortcuts import render
+
+def revenue_report(request):
+    # Filter orders with relevant statuses
+    queryset = OrderHistory.objects.filter(status__in=["DELIVERED", "SHIPPED", "PROCESSING"])
+
+    # Monthly revenue aggregation
+    monthly_revenues = (
+        queryset
+        .annotate(month=TruncMonth('created_at'))
+        .values('month')
+        .annotate(monthly_total=Sum('total_price'), total_orders=Count('id'))  # Added total_orders per month
+        .annotate(avg_order_value=F('monthly_total') / F('total_orders'))  # Calculated AOV directly
+        .order_by('month')
+    )
+
+    # Revenue growth rate: Compare current and previous month
+    monthly_list = list(monthly_revenues)
+    growth_rate = 0.0
+
+    if len(monthly_list) >= 2:
+        previous = monthly_list[-2]['monthly_total'] or 0
+        current = monthly_list[-1]['monthly_total'] or 0
+        if previous > 0:
+            growth_rate = ((current - previous) / previous) * 100
+
+    # General stats
+    total_revenue = queryset.aggregate(total=Sum('total_price'))['total'] or 0
+    total_orders = queryset.count()
+    avg_monthly_revenue = total_revenue / len(monthly_list) if monthly_list else 0
+    avg_order_value = total_revenue / total_orders if total_orders else 0
+
+    # Top 10 products by revenue
+    top_products = (
+        OrderHistoryItem.objects
+        .values('title', 'product_type__model')
+        .annotate(
+            total_revenue=Sum(F('selling_price') * F('quantity'), output_field=DecimalField()),
+            total_units_sold=Sum('quantity')
+        )
+        .order_by('-total_revenue')[:10]
+    )
+
+    return render(request, 'Manager/reports/revenue_report.html', {
+        'revenues': monthly_list,
+        'total_revenue': total_revenue,
+        'avg_monthly_revenue': avg_monthly_revenue,
+        'avg_order_value': avg_order_value,
+        'growth_rate': round(growth_rate, 2),
+        'top_products': top_products,
+    })
+
+
+
+
+
+
+
 
 # @session_auth_required
 def settings(request):

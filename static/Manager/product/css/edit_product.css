@@ -217,6 +217,21 @@ button.submit-btn:hover {
   box-shadow: 0 6px 12px rgba(216, 140, 154, 0.3);
 }
 
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;  /* Light gray background */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: #555; /* Darker text color */
+}
+
 /* === Mobile Restriction Message === */
 .message-container {
   display: none;
