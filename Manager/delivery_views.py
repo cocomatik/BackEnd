@@ -104,9 +104,9 @@ def create_shipment(request):
 def pending_shipments(request):
     order_list = Order.objects.filter(status="ORDERED").order_by('-created_at')
 
-    return render(request, "Manager\shipment\pendingShipment.html", {"order_list": order_list})
+    return render(request, "Manager/shipment/pendingShipment.html", {"order_list": order_list})
 
 
 def pending_SDetails(request, order_id):
     order = get_object_or_404(Order, id=order_id)
-    return render(request, 'Manager\shipment\pendingSDetails.html', {'order': order})
+    return render(request, 'Manager/shipment/pendingSDetails.html', {'order': order})
