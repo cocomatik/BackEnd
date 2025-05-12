@@ -245,12 +245,11 @@ def cancel_order(request):
     return Response({"message": "Order cancelled successfully."}, status=status.HTTP_200_OK)
 
 
-
 @api_view(["GET"])
 @token_auth_required
 def get_all_orders(request):
-    pending_orders = Order.objects.filter(user=request.user, status="ORDERED")
-    processed_orders = OrderHistory.objects.filter(user=request.user)
+    pending_orders = Order.objects.filter(user=request.user, status="ORDERED").order_by("-created_at")
+    processed_orders = OrderHistory.objects.filter(user=request.user).order_by("-created_at")
 
     response_data = {
         "pending": ActiveOrderSerializer(pending_orders, many=True).data,
