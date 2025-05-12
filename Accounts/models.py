@@ -30,7 +30,15 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 class Address(models.Model):
+    ADDRESS_TYPE_CHOICES = [
+        ('home', 'Home'),
+        ('work', 'Work'),
+        ('other', 'Other'),
+    ]
+
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name="addresses")
+    address_name = models.CharField(max_length=100,default='other')
+    address_type = models.CharField(max_length=100, choices=ADDRESS_TYPE_CHOICES, default='home')
     name = models.CharField(max_length=100)
     contact_no = models.CharField(max_length=15) 
     house_no = models.CharField(max_length=300)
