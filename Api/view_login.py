@@ -88,3 +88,4 @@ def send_otp_login(request):
     email_message.send()
 
     return Response({'message': f"OTP sent successfully for {status}."})
+
