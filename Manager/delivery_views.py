@@ -110,3 +110,27 @@ def pending_shipments(request):
 def pending_SDetails(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'Manager/shipment/pendingSDetails.html', {'order': order})
+
+
+
+from django.views.decorators.http import require_POST
+
+@require_POST
+def cancel_shipment(request):
+    order_number = request.POST.get('order_number')
+    
+    try:
+        order = get_object_or_404(Order, order_number=order_number)
+
+        if order.status == "ORDERED":
+            order.status = "CANCELLED"
+            order.save()
+            messages.success(request, f"Shipment for order #{order_number} cancelled successfully.")
+        else:
+            messages.warning(request, "Shipment cannot be cancelled. It may not exist or has already been processed.")
+
+    except Exception as e:
+        print(e)
+        messages.error(request, f"Error cancelling shipment: {str(e)}")
+
+    return redirect("shipment_details")

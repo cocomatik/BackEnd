@@ -1,6 +1,6 @@
 from django.urls import path
 from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,customers,customer_details,shipment_form,shipment_details,revenue_report
-from Manager.delivery_views import create_shipment,pending_shipments,pending_SDetails
+from Manager.delivery_views import create_shipment,pending_shipments,pending_SDetails,cancel_shipment
 
 urlpatterns = [
     path('', landing, name='landing'),
@@ -32,6 +32,9 @@ urlpatterns = [
     path('shipments/', shipment_details, name='shipment_details'),
     path('shipments/pending/',pending_shipments,name='pending_shipments'),
     path('shipments/pending/<int:order_id>/',pending_SDetails,name='pending_SDetails'),
+    path('shipment/cancel/', cancel_shipment, name='cancel_shipment'),
+
+
 
 
     path('revenue_report/', revenue_report, name='revenue_report'),
