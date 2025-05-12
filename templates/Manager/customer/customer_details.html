@@ -64,6 +64,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>S.No.</th>
                         <th>Order ID</th>
                         <th>Status</th>
                         <th>Price</th>
@@ -78,6 +79,7 @@
                     {% if orders %}
                         {% for order in orders %}
                         <tr>
+                            <td>{{ forloop.counter }}</td>
                             <td>{{ order.order_number }}</td>
                             <td style="text-align: center;">{{ order.status }}</td>
                             <td>₹{{ order.cart.value }}</td>

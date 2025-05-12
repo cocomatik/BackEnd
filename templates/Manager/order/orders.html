@@ -80,10 +80,6 @@
                             <th>Status</th>
                             <th>Sub Total</th>
                             <th>Total Price</th>
-                            <th>Package Details</th>
-                            <th>Comment</th>
-                            <th>Reseller Name</th>
-                            <th>Company Name</th>
                             <th>Created At</th>
                             <th>Actions</th>
                         </tr>
@@ -91,6 +87,7 @@
                     <tbody>
                         {% for order in order_list %}
                         <tr>
+
                             <td>{{ forloop.counter }}</td>
                             <td>{{ order.order_number }}</td>
                             <td>{{ order.shiprocket_order_id }}</td>
@@ -99,15 +96,6 @@
                             <td>{{ order.status }}</td>
                             <td>₹{{ order.sub_total }}</td>
                             <td>₹{{ order.total_price }}</td>
-                            <td>
-                                L: {{ order.length }} cm<br>
-                                B: {{ order.breadth }} cm<br>
-                                H: {{ order.height }} cm<br>
-                                W: {{ order.weight }} kg
-                            </td>
-                            <td>{{ order.comment }}</td>
-                            <td>{{ order.reseller_name }}</td>
-                            <td>{{ order.company_name }}</td>
                             <td>{{ order.created_at|date:"M d, Y" }}</td>
                             <td class="actions">
                                 <a href="{% url 'order_detail' order.order_number %}" class="view">View</a>
