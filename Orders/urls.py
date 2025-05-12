@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import cart_view, add_to_cart,get_pending_orders,processed_orders,get_order_details,update_cart_item,delete_cart_item,place_order,cancel_order
+from .views import cart_view, add_to_cart,get_all_orders,get_order_details,update_cart_item,delete_cart_item,place_order,cancel_order
 from .bills import generate_invoice
 urlpatterns = [
-    path("", processed_orders, name="api-orders"),
-    path("pending/", get_pending_orders, name="api-orders-pending"),
+    path("", get_all_orders, name="api-orders"),
     path("details/", get_order_details, name="api-order-details"),
 
     path("cart/", cart_view, name="cart"),

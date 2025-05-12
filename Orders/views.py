@@ -245,36 +245,22 @@ def cancel_order(request):
     return Response({"message": "Order cancelled successfully."}, status=status.HTTP_200_OK)
 
 
-
 @api_view(["GET"])
 @token_auth_required
-def get_pending_orders(request):
+def get_all_orders(request):
     """
-    Fetch all orders placed by the user.
-    Handles empty order history.
+    Fetch both pending and processed orders for the user.
     """
-    orders = Order.objects.filter(user=request.user,status="ORDERED")
+    pending_orders = Order.objects.filter(user=request.user, status="ORDERED")
+    processed_orders = OrderHistory.objects.filter(user=request.user)
 
-    if not orders.exists():
-        return Response({"message": "You have not placed any orders yet."}, status=status.HTTP_200_OK)
+    response_data = {
+        "pending": OrderSerializer(pending_orders, many=True).data,
+        "processed": OrderSerializer(processed_orders, many=True).data
+    }
 
-    serializer = OrderSerializer(orders, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(response_data, status=status.HTTP_200_OK)
 
-@api_view(["GET"])
-@token_auth_required
-def processed_orders(request):
-    """
-    Fetch all orders placed by the user.
-    Handles empty order history.
-    """
-    orders = OrderHistory.objects.filter(user=request.user)
-
-    if not orders.exists():
-        return Response({"message": "You have not placed any orders yet."}, status=status.HTTP_200_OK)
-
-    serializer = OrderSerializer(orders, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])

@@ -66,7 +66,6 @@ class CartSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
-    user = UserSerializer()
 
     class Meta:
         model = Order
@@ -78,5 +77,5 @@ class OrderSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "address",
-            "user",
+
         ]
