@@ -46,7 +46,9 @@ def user_address_view(request):
     elif request.method == "POST":
         data = request.data.copy()
         data['user'] = user.id 
-        serializer = AddressSerializer(data=request.data)
+        print(data)
+        serializer = AddressSerializer(data=data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save(user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
