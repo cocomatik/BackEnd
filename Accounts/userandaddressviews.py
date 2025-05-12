@@ -33,21 +33,35 @@ def user_profile_view(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
-@api_view(["GET", "POST"])
+@api_view(["GET", "POST","DELETE"])
 @token_auth_required
 def user_address_view(request):
     user = request.user
+    
     if request.method == "GET":
         addresses = Address.objects.filter(user=user)
         serializer = AddressSerializer(addresses, many=True)
         return Response(serializer.data)
-    
+
     elif request.method == "POST":
         serializer = AddressSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    elif request.method == "DELETE":
+        address_id = request.data.get("id")
+        if not address_id:
+            return Response({"error": "Address ID required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            address = Address.objects.get(id=address_id, user=user)
+            address.delete()
+            return Response({"message": "Address deleted"}, status=status.HTTP_204_NO_CONTENT)
+        except Address.DoesNotExist:
+            return Response({"error": "Address not found"}, status=status.HTTP_404_NOT_FOUND)
     
 
 @api_view(["GET", "PUT", "DELETE"])
