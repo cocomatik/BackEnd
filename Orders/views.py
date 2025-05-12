@@ -8,7 +8,7 @@ from Accounts.models import Address
 from POCOS.models import POCOS
 from POJOS.models import POJOS
 from .models import Cart, CartItem, Order ,OrderHistory,OrderHistoryItem
-from .serializers import CartSerializer, CartItemSerializer, OrderSerializer
+from .serializers import CartSerializer, CartItemSerializer, ActiveOrderSerializer,ArchivedOrderSerializer,OrderHistorySerializer
 from django.db import transaction
 from rest_framework import status
 from django.utils import timezone
@@ -245,37 +245,35 @@ def cancel_order(request):
     return Response({"message": "Order cancelled successfully."}, status=status.HTTP_200_OK)
 
 
+
 @api_view(["GET"])
 @token_auth_required
 def get_all_orders(request):
-    """
-    Fetch both pending and processed orders for the user.
-    """
     pending_orders = Order.objects.filter(user=request.user, status="ORDERED")
     processed_orders = OrderHistory.objects.filter(user=request.user)
 
     response_data = {
-        "pending": OrderSerializer(pending_orders, many=True).data,
-        "processed": OrderSerializer(processed_orders, many=True).data
+        "pending": ActiveOrderSerializer(pending_orders, many=True).data,
+        "processed": OrderHistorySerializer(processed_orders, many=True).data
     }
 
     return Response(response_data, status=status.HTTP_200_OK)
 
 
-
 @api_view(["POST"])
 @token_auth_required
 def get_order_details(request):
-    """
-    Fetch details of a specific order by its ID.
-    Handles invalid or non-existing order.
-    """
-    user = request.user
-    try:
-        order_number=request.data.get("order_number")
-        order = get_object_or_404(Order, order_number=order_number, user=user)
-        serializer = OrderSerializer(order)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    pass
+    # """
+    # Fetch details of a specific order by its ID.
+    # Handles invalid or non-existing order.
+    # """
+    # user = request.user
+    # try:
+    #     order_number=request.data.get("order_number")
+    #     order = get_object_or_404(Order, order_number=order_number, user=user)
+    #     serializer = OrderSerializer(order)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
-    except :
-        return Response({"message":"Could not find the order details."})
+    # except :
+    #     return Response({"message":"Could not find the order details."})

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Order, Cart, CartItem
+from .models import Order, Cart, CartItem,OrderHistory,OrderHistoryItem
 from Accounts.models import Address, UserAccount
 from Accounts.serializers import AddressSerializer, UserSerializer
 from django.contrib.contenttypes.models import ContentType
@@ -60,22 +60,46 @@ class CartSerializer(serializers.ModelSerializer):
                 if product:
                     total += item.quantity * product.price
         return total
+    
 
-
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    address = AddressSerializer()
+class ActiveOrderSerializer(serializers.ModelSerializer):
+    cart_items = serializers.SerializerMethodField()
+    address = AddressSerializer()  # Optional: for nested address details
 
     class Meta:
         model = Order
-        fields = [
-            "id",
-            "order_number",
-            "payment_mode",
-            "status",
-            "created_at",
-            "updated_at",
-            "address",
+        fields = "__all__"
 
-        ]
+    def get_cart_items(self, obj):
+        return CartItemSerializer(obj.cart.cart_items.all(), many=True).data if obj.cart else []
+
+
+class ArchivedOrderSerializer(serializers.ModelSerializer):
+    product_details = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OrderHistoryItem
+        fields = ["title", "sku", "quantity", "selling_price", "discount", "product_details"]
+
+    def get_product_details(self, obj):
+        product_model = obj.product_type.model_class() if obj.product_type else None
+        if product_model in [POCOS, POJOS]:
+            product = product_model.objects.filter(sku=obj.sku).first()
+            if product:
+                return {
+                    "name": product.title,
+                    "price": product.price,
+                    "mrp": product.mrp,
+                    "description": product.description,
+                    "display_image": str(product.display_image),
+                }
+        return {"error": "Product not found"}
+
+
+class OrderHistorySerializer(serializers.ModelSerializer):
+    items = ArchivedOrderSerializer(many=True)
+    address = AddressSerializer()
+
+    class Meta:
+        model = OrderHistory
+        fields = "__all__"
