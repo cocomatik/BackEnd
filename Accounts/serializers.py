@@ -36,6 +36,7 @@ class WishListSerializer(serializers.ModelSerializer):
                     "price": product.price,
                     "mrp": product.mrp,
                     "description": product.description,
+                    "stock": product.stock,
                     "display_image": str(product.display_image),
                 }
             else:
