@@ -27,8 +27,10 @@ class WishListSerializer(serializers.ModelSerializer):
 
     def get_product_details(self, obj):
         product_model = obj.product_type.model_class() if obj.product_type else None
+        
         if product_model in [POCOS, POJOS]:
             product = product_model.objects.filter(sku=obj.sku).first()
+            
             if product:
                 return {
                     "sku": obj.sku,
@@ -37,7 +39,8 @@ class WishListSerializer(serializers.ModelSerializer):
                     "mrp": product.mrp,
                     "description": product.description,
                     "stock": product.stock,
-                    "display_image": str(product.display_image),
+                    "product_type": obj.sku.split("-")[0],  # str of instance field
+                    "display_image": str(product.display_image),  # assume this is ImageField or FileField
                 }
             else:
                 return {
@@ -47,4 +50,5 @@ class WishListSerializer(serializers.ModelSerializer):
                     "price": None,
                     "display_image": None
                 }
-        return {"error": "Product not found"}
+
+        return {"error": "Unsupported product type"}
