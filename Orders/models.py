@@ -76,7 +76,23 @@ class Order(models.Model):
     
     status = models.CharField(max_length=30,choices=OrderStatus.choices,default=OrderStatus.ORDERED)
     
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    ADDRESS_TYPE_CHOICES = [
+        ('home', 'Home'),
+        ('work', 'Work'),
+        ('other', 'Other'),
+    ]
+
+    rcv_address_name = models.CharField(max_length=100,default='other')
+    rcv_address_type = models.CharField(max_length=100, choices=ADDRESS_TYPE_CHOICES, default='home')
+    rcv_name = models.CharField(max_length=100)
+    rcv_contact_no = models.CharField(max_length=15) 
+    rcv_house_no = models.CharField(max_length=300)
+    rcv_street = models.CharField(max_length=300)
+    rcv_locality = models.CharField(max_length=300)
+    rcv_city = models.CharField(max_length=300)
+    rcv_district = models.CharField(max_length=300)
+    rcv_state = models.CharField(max_length=300)
+    rcv_pincode = models.CharField(max_length=10)  
     
     
     created_at = models.DateTimeField(auto_now_add=True)
@@ -96,7 +112,7 @@ class Order(models.Model):
 class OrderHistory(models.Model):
     order = models.OneToOneField('Order', on_delete=models.CASCADE, related_name='order_history')
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name="order_histories")
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
+    
 
     order_number = models.CharField(max_length=20)
     payment_mode = models.CharField(max_length=30)  # COD or Prepaid
@@ -126,6 +142,25 @@ class OrderHistory(models.Model):
     company_name = models.CharField(max_length=255, blank=True, null=True)
 
     shiprocket_order_id = models.CharField(max_length=100, null=True, blank=True)
+
+
+    ADDRESS_TYPE_CHOICES = [
+        ('home', 'Home'),
+        ('work', 'Work'),
+        ('other', 'Other'),
+    ]
+
+    rcv_address_name = models.CharField(max_length=100,default='other')
+    rcv_address_type = models.CharField(max_length=100, choices=ADDRESS_TYPE_CHOICES, default='home')
+    rcv_name = models.CharField(max_length=100)
+    rcv_contact_no = models.CharField(max_length=15) 
+    rcv_house_no = models.CharField(max_length=300)
+    rcv_street = models.CharField(max_length=300)
+    rcv_locality = models.CharField(max_length=300)
+    rcv_city = models.CharField(max_length=300)
+    rcv_district = models.CharField(max_length=300)
+    rcv_state = models.CharField(max_length=300)
+    rcv_pincode = models.CharField(max_length=10)
     
     created_at = models.DateTimeField(auto_now_add=True)
 

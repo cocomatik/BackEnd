@@ -22,7 +22,7 @@ class OrderHistoryAdmin(admin.ModelAdmin):
     search_fields = ['order_number', 'user__email']
     inlines = [OrderHistoryItemInline]
     readonly_fields = [
-        'order', 'user', 'address', 'order_number', 'payment_mode', 
+        'order', 'user', 'order_number', 'payment_mode', 
         'status', 'sub_total', 'discount', 'tax', 
         'shipping_charges', 'additional_charges',
         'packaging_charges', 'cod_charges', 'handling_charges',

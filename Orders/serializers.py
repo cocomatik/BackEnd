@@ -1,8 +1,5 @@
 from rest_framework import serializers
 from .models import Order, Cart, CartItem,OrderHistory,OrderHistoryItem
-from Accounts.models import Address, UserAccount
-from Accounts.serializers import AddressSerializer, UserSerializer
-from django.contrib.contenttypes.models import ContentType
 from POCOS.models import POCOS
 from POJOS.models import POJOS
 
@@ -64,7 +61,7 @@ class CartSerializer(serializers.ModelSerializer):
 
 class ActiveOrderSerializer(serializers.ModelSerializer):
     cart_items = serializers.SerializerMethodField()
-    address = AddressSerializer()  # Optional: for nested address details
+    
 
     class Meta:
         model = Order
@@ -79,7 +76,7 @@ class ArchivedOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderHistoryItem
-        fields = ["title", "sku", "quantity", "selling_price", "discount", "product_details"]
+        fields = "__all__"
 
     def get_product_details(self, obj):
         product_model = obj.product_type.model_class() if obj.product_type else None
@@ -98,7 +95,6 @@ class ArchivedOrderSerializer(serializers.ModelSerializer):
 
 class OrderHistorySerializer(serializers.ModelSerializer):
     items = ArchivedOrderSerializer(many=True)
-    address = AddressSerializer()
 
     class Meta:
         model = OrderHistory
