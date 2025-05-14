@@ -24,15 +24,39 @@ logger = logging.getLogger(__name__)
     
 @api_view(["GET"])
 @token_auth_required
+# def cart_view(request):
+#     """
+#     Fetch the user's cart with all items, total item count, and total cart value.
+#     Handles empty cart scenario.
+#     """
+#     user = request.user
+#     cart, _ = Cart.objects.get_or_create(user=user, status="pending")
+
+#     if not cart.cart_items.exists():
+#         return Response({"message": "Your cart is empty."}, status=status.HTTP_200_OK)
+
+#     serializer = CartSerializer(cart)
+#     return Response(serializer.data, status=status.HTTP_200_OK)
 def cart_view(request):
     """
     Fetch the user's cart with all items, total item count, and total cart value.
     Handles empty cart scenario.
+    Deletes items from the cart if the associated product has less than 10 in stock.
     """
     user = request.user
     cart, _ = Cart.objects.get_or_create(user=user, status="pending")
 
-    if not cart.cart_items.exists():
+    cart_items = cart.cart_items.all()
+
+    for cart_item in cart_items:
+        product = cart_item.product
+        if product and product.stock < 10:
+            cart_item.delete()  # Permanently remove from DB
+
+    # Refresh cart_items after deletion
+    updated_cart_items = cart.cart_items.all()
+
+    if not updated_cart_items.exists():
         return Response({"message": "Your cart is empty."}, status=status.HTTP_200_OK)
 
     serializer = CartSerializer(cart)

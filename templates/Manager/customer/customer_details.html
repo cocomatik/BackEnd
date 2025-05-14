@@ -85,8 +85,8 @@
                             <td>₹{{ order.cart.value }}</td>
                             <td>{{ order.payment_mode }}</td>
                             <td>
-                                {{ order.address.house_no }}, {{ order.address.street }}, {{ order.address.locality }},
-                                {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}
+                                {{ order.rcv_house_no }}, {{ order.rcv_street }}, {{ order.rcv_locality }},
+                                {{ order.rcv_city }}, {{ order.rcv_state }} - {{ order.rcv_pincode }}
                             </td>
                             <td>{{ order.created_at|date:"d M, Y" }}</td>
                             <td>{{ order.updated_at|date:"d M, Y" }}</td>

@@ -30,7 +30,6 @@ class ShiprocketAPI:
         if not self.token:
             return {"error": "Authentication failed. No token received."}
 
-        address = order.address
         cart_items = order.cart.cart_items.all()
 
         # Construct line items
@@ -54,16 +53,15 @@ class ShiprocketAPI:
             "comment": str(comment),
             "reseller_name":str(reseller_name),
             "company_name" :str(company_name),
-            "billing_customer_name": address.name,
-            "billing_last_name": getattr(address, "last_name", ""),
-            "billing_address": address.street,
-            # "billing_address_2": "",
-            "billing_city": address.city,
-            "billing_pincode": address.pincode,
-            "billing_state": address.state,
+            "billing_customer_name": str(order.rcv_name),
+            "billing_last_name": " ",
+            "billing_address": str(order.rcv_street),
+            "billing_city": str(order.rcv_city),
+            "billing_pincode": int(order.rcv_pincode),
+            "billing_state": str(order.rcv_state),
             "billing_country": "India",
-            "billing_email": address.user.email,
-            "billing_phone": address.contact_no,
+            "billing_email": str(order.user.email),
+            "billing_phone": int(order.rcv_contact_no),
             "shipping_is_billing": True,
             "order_items": line_items,
             "payment_method": "COD" if order.payment_mode == "COD" else "Prepaid",

@@ -42,7 +42,7 @@
         <p><strong>Order Number:</strong> {{ order.order_number }}</p>
         <p><strong>User:</strong> {{ order.user }}</p>
         <p><strong>Payment Mode:</strong> {{ order.order.payment_mode }}</p>
-        <p><strong>Shipping Address:</strong> {{ order.address.name }}, {{order.address.contact_no}}, {{order.address.house_no}}, {{order.address.street}}, {{order.address.locality}}, {{order.address.city}}, {{order.address.district}}, {{order.address.state}}, {{order.address.pincode}}</p>
+        <p><strong>Shipping Address:</strong> {{ order.rcv_name }}, {{order.rcv_contact_no}}, {{order.rcv_house_no}}, {{order.rcv_street}}, {{order.rcv_locality}}, {{order.rcv_city}}, {{order.rcv_district}}, {{order.rcv_state}}, {{order.rcv_pincode}}</p>
         <p><strong>Order Status:</strong> {{ order.status }}</p>
         <p><strong>Comment:</strong> {{ order.comment|default:"NULL"}}</p>
         <p><strong>Reseller Name:</strong> {{ order.reseller_name|default:"NULL" }}</p>
