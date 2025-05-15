@@ -39,7 +39,12 @@ class PocoDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = POCOS
-        fields = '__all__'
+        fields = [
+    'sku', 'title', 'description', 'price', 'mrp', 'stock', 'category',
+    'brand', 'display_image', 'rating', 'size', 'created_at', 'updated_at',
+    'extra_images', 'reviews', 'discount'
+]
+
 
     def get_discount(self, obj):
         """Ensure discount is serialized correctly."""
