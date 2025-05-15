@@ -23,7 +23,7 @@ class PocoImageSerializer(serializers.ModelSerializer):
     """Serializer for extra images of POCOS."""
     class Meta:
         model = PocoImage
-        fields = ['image']
+        fields = '__all__'
 
 class ReviewSerializer(serializers.ModelSerializer):
     """Serializer for reviews."""
@@ -32,8 +32,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['user_name', "verified_user", 'rating', 'comment', 'created_at']
 
 class PocoDetailSerializer(serializers.ModelSerializer):
-    extra_images = PocoImageSerializer(many=True, read_only=True, source="pojoimage_set")
-    reviews = ReviewSerializer(many=True, read_only=True, source="review_set")
+    extra_images = PocoImageSerializer(many=True, read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
     discount = serializers.SerializerMethodField()
 
     class Meta:
@@ -46,4 +46,5 @@ class PocoDetailSerializer(serializers.ModelSerializer):
 
     def get_discount(self, obj):
         return obj.discount or 0
+
 
