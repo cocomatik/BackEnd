@@ -5,6 +5,9 @@ from POCOS.modelsxs import BestSellers as BSC,BestSellersSerializer as BSCS
 from POJOS.modelsxs import BestSellers as BSJ,BestSellersSerializer as BSJS
 from rest_framework.response import Response
 
+from POCOS.models import POCOS
+from POJOS.models import POJOS
+
 @api_view(['GET'])
 def home_best_sellers(request):
     bsc_products = BSC.objects.filter(id=1)
@@ -17,3 +20,37 @@ def home_best_sellers(request):
     random.shuffle(combined_data)
 
     return Response(combined_data)
+
+
+from rest_framework import status
+from django.db.models import Q
+from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+@api_view(['GET'])
+def all_products_list(request):
+    pocos = POCOS.objects.all().values('title', 'sku')
+    pojos = POJOS.objects.all().values('title', 'sku')
+
+    results = []
+    c=0
+    for p in pocos:
+        results.append({
+            "name": "poco",
+            "title": p['title'],
+            "sku": p['sku']
+        })
+        c+=1
+
+    for p in pojos:
+        results.append({
+            "name": "pojo",
+            "title": p['title'],
+            "sku": p['sku']
+        })
+        c+=1
+
+    print(c)
+
+    return Response(results)
