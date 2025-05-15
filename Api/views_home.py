@@ -28,6 +28,13 @@ from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSim
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from POCOS.serializers import PocoListSerializer
+from POJOS.serializers import PojoListSerializer
+
+from POCOS.models import POCOS
+from POJOS.models import POJOS
+
+
 @api_view(['GET'])
 def all_products_list(request):
     pocos = POCOS.objects.all().values('title', 'sku', 'description')
@@ -50,3 +57,34 @@ def all_products_list(request):
             "description":p['description']
         })
     return Response(results)
+
+
+from django.contrib.postgres.search import SearchVector
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
+
+@api_view(['GET'])
+def combined_search(request):
+    query = request.GET.get('q', '')
+
+    pocos = POCOS.objects.all()
+    pojos = POJOS.objects.all()
+
+    if query:
+        pocos = pocos.annotate(search=SearchVector('title', 'description', 'brand')).filter(search=query)
+        pojos = pojos.annotate(search=SearchVector('title', 'description', 'brand')).filter(search=query)
+
+    # Serialize separately with type annotation
+    pocos_data = PocoListSerializer(pocos, many=True).data
+    pojos_data = PojoListSerializer(pojos, many=True).data
+
+    # Combine and sort by created_at (if needed)
+    combined = sorted(pocos_data + pojos_data, key=lambda x: x['created_at'], reverse=True)
+
+    # Paginate manually
+    paginator = PageNumberPagination()
+    paginator.page_size = 100
+    paginated = paginator.paginate_queryset(combined, request)
+
+    return paginator.get_paginated_response(paginated)
