@@ -31,7 +31,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['user_name', "verified_user", 'rating', 'comment', 'created_at']
 
-class PojoDetailSerializer(serializers.ModelSerializer):
+class PocoDetailSerializer(serializers.ModelSerializer):
     extra_images = PocoImageSerializer(many=True, read_only=True, source="pojoimage_set")
     reviews = ReviewSerializer(many=True, read_only=True, source="review_set")
     discount = serializers.SerializerMethodField()
