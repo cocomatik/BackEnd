@@ -34,23 +34,19 @@ def all_products_list(request):
     pojos = POJOS.objects.all().values('title', 'sku')
 
     results = []
-    c=0
+
     for p in pocos:
         results.append({
-            "name": "poco",
+            "type": "poco",
             "title": p['title'],
-            "sku": p['sku']
+            "sku": p['sku'],
+            "description":p['description']
         })
-        c+=1
-
     for p in pojos:
         results.append({
-            "name": "pojo",
+            "type": "pojo",
             "title": p['title'],
-            "sku": p['sku']
+            "sku": p['sku'],
+            "description":p['description']
         })
-        c+=1
-
-    print(c)
-
     return Response(results)
