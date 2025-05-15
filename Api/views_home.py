@@ -30,8 +30,8 @@ from rest_framework.response import Response
 from rest_framework import status
 @api_view(['GET'])
 def all_products_list(request):
-    pocos = POCOS.objects.all().values('title', 'sku')
-    pojos = POJOS.objects.all().values('title', 'sku')
+    pocos = POCOS.objects.all().values('title', 'sku', 'description')
+    pojos = POJOS.objects.all().values('title', 'sku', 'description')
 
     results = []
 
