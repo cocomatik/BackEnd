@@ -271,17 +271,13 @@ def get_all_orders(request):
 @api_view(["POST"])
 @token_auth_required
 def get_order_details(request):
-    pass
-    # """
-    # Fetch details of a specific order by its ID.
-    # Handles invalid or non-existing order.
-    # """
-    # user = request.user
-    # try:
-    #     order_number=request.data.get("order_number")
-    #     order = get_object_or_404(Order, order_number=order_number, user=user)
-    #     serializer = OrderSerializer(order)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # except :
-    #     return Response({"message":"Could not find the order details."})
+    user = request.user
+    try:
+        order_number=request.data.get("order_number")
+        order = get_object_or_404(Order, order_number=order_number, user=user)
+        serializer = ActiveOrderSerializer(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except :
+        return Response({"message":"Could not find the order details."})
