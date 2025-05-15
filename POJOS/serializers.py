@@ -37,7 +37,6 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class PojoDetailSerializer(serializers.ModelSerializer):
-    """Serializer for detailed POJOS view."""
     extra_images = PojoImageSerializer(many=True, read_only=True, source="pojoimage_set")
     reviews = ReviewSerializer(many=True, read_only=True, source="review_set")
     discount = serializers.SerializerMethodField()
@@ -45,11 +44,11 @@ class PojoDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = POJOS
         fields = [
-    'sku', 'title', 'description', 'price', 'mrp', 'stock', 'category',
-    'brand', 'display_image', 'rating', 'size', 'created_at', 'updated_at',
-    'extra_images', 'reviews', 'discount'
-]
-
+            'sku', 'title', 'description', 'price', 'mrp', 'stock',
+            'category', 'brand', 'display_image', 'rating', 'size',
+            'created_at', 'updated_at', 'extra_images', 'reviews', 'discount'
+        ]
 
     def get_discount(self, obj):
-        return obj.discount
+        return obj.discount or 0
+

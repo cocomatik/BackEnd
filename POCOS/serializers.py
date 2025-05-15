@@ -31,21 +31,19 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['user_name', "verified_user", 'rating', 'comment', 'created_at']
 
-class PocoDetailSerializer(serializers.ModelSerializer):
-    """Serializer for detailed POCOS view."""
-    extra_images = PocoImageSerializer(many=True, read_only=True, source="pocoimage_set")
+class PojoDetailSerializer(serializers.ModelSerializer):
+    extra_images = PocoImageSerializer(many=True, read_only=True, source="pojoimage_set")
     reviews = ReviewSerializer(many=True, read_only=True, source="review_set")
     discount = serializers.SerializerMethodField()
 
     class Meta:
         model = POCOS
         fields = [
-    'sku', 'title', 'description', 'price', 'mrp', 'stock', 'category',
-    'brand', 'display_image', 'rating', 'size', 'created_at', 'updated_at',
-    'extra_images', 'reviews', 'discount'
-]
-
+            'sku', 'title', 'description', 'price', 'mrp', 'stock',
+            'category', 'brand', 'display_image', 'rating', 'size',
+            'created_at', 'updated_at', 'extra_images', 'reviews', 'discount'
+        ]
 
     def get_discount(self, obj):
-        """Ensure discount is serialized correctly."""
-        return obj.discount
+        return obj.discount or 0
+
