@@ -30,27 +30,21 @@ def get_poco_details(request, sku):
     serializer = PocoDetailSerializer(poco)
     return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
-@token_auth_required  # Secure review posting
+@api_view(['POST'])
+@token_auth_required
 def reviews(request, sku):
-    poco = get_object_or_404(POCOS, sku=sku)  # Use SKU instead of poco_id
+    poco = get_object_or_404(POCOS, sku=sku)
 
-    if request.method == 'GET':
-        reviews = poco.reviews.all()
-        
-        if not reviews.exists():
-            return Response({"detail": "No reviews found for this product."}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = ReviewSerializer(reviews, many=True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
-        serializer = ReviewSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(poco=poco, user=request.user)  # Ensure the review is linked to the user
-            return Response({"message": "Review added successfully!", "review": serializer.data}, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer = ReviewSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save(poco=poco, user=request.user)
+        return Response({
+            "message": "Review added successfully!",
+            "review": serializer.data
+        }, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def search_products(request):

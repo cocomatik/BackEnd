@@ -30,10 +30,10 @@ class PojoImageSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    """Serializer for reviews."""
     class Meta:
         model = Review
-        fields = ['user_name', "verified_user", 'rating', 'comment', 'created_at']
+        fields = ['id', 'user', 'pojo', 'rating', 'comment', 'created_at']
+        read_only_fields = ['id', 'user', 'pojo', 'created_at']
 
 
 class PojoDetailSerializer(serializers.ModelSerializer):

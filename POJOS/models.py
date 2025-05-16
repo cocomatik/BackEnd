@@ -3,6 +3,7 @@ from cloudinary.models import CloudinaryField
 import random
 from django.core.validators import MinValueValidator, MaxValueValidator
 import string
+from Accounts.models import UserAccount
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True, db_index=True, primary_key=True)  
@@ -61,11 +62,10 @@ class PojoImage(models.Model):
 
 class Review(models.Model):
     pojo = models.ForeignKey(POJOS, on_delete=models.CASCADE, related_name='reviews')
-    user_name = models.CharField(max_length=255)
+    user = models.ForeignKey(UserAccount,on_delete=models.CASCADE,related_name='pojos_reviews')
     rating = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    verified_user = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user_name} - {self.pojo.title} ({self.rating})"

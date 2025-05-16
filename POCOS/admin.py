@@ -23,9 +23,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('user_name', 'poco', 'rating', 'created_at')
+    list_display = ('user', 'poco', 'rating', 'created_at')
     list_filter = ('rating', 'created_at')
-    search_fields = ('user_name', 'poco__title')  
+    search_fields = ('user', 'poco__title')  
 
 from .modelsxs import (
     FeatureProducts, BestSellers, BestOfSkinCare,
