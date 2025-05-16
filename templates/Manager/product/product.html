@@ -5,11 +5,487 @@
 <head>
   <meta charset="UTF-8">
   <title>Product Management</title>
-  <link rel="stylesheet" href="{% static 'Manager/product/css/product.css' %}">
-  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <style>
+    /* === Global Box Sizing & Body Reset === */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fdf5f7;
+      color: #a6596c;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* === Main Container === */
+    .main {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* === Navbar === */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #d89ca4 0%, #c07284 100%);
+      padding: 12px 24px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* === Logo === */
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .logo img {
+      height: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+
+    /* === Navigation Links === */
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 16px;
+      display: block;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* === Dropdown Menu === */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background: linear-gradient(to bottom, #e5b7be, #d8a5ae);
+      top: 100%;
+      left: 0;
+      min-width: 180px;
+      border-radius: 8px;
+      padding: 8px 0;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-links li:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu li {
+      width: 100%;
+    }
+
+    .dropdown-menu li a {
+      padding: 12px 20px;
+      border-radius: 0;
+      transition: all 0.2s ease;
+    }
+
+    .dropdown-menu li a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding-left: 25px;
+    }
+
+    .dropdown-menu li a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* === Main Content === */
+    .all-main {
+      padding: 30px;
+      margin-top: 80px;
+      flex: 1;
+    }
+
+    /* === Page Title === */
+    .page-title {
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #a6596c;
+      text-align: center;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(to right, #d89ca4, #c07284);
+      border-radius: 3px;
+    }
+
+    /* === Section Title === */
+    .section-title {
+      font-size: 22px;
+      margin: 30px 0 20px;
+      color: #a6596c;
+      position: relative;
+      display: inline-block;
+      padding-left: 15px;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 5px;
+      background: linear-gradient(to bottom, #d89ca4, #c07284);
+      border-radius: 3px;
+    }
+
+    /* === Filters === */
+    .filter-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-form {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .search-box {
+      padding: 12px 15px 12px 40px;
+      font-size: 14px;
+      border: 1px solid #e4c9cc;
+      border-radius: 8px;
+      flex: 1;
+      min-width: 200px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a6596c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 15px center;
+      transition: all 0.3s ease;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: #c07284;
+      box-shadow: 0 0 0 3px rgba(192, 114, 132, 0.2);
+    }
+
+    .filter-dropdown {
+      padding: 12px 15px;
+      font-size: 14px;
+      border: 1px solid #e4c9cc;
+      border-radius: 8px;
+      background-color: white;
+      color: #a6596c;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-dropdown:focus {
+      outline: none;
+      border-color: #c07284;
+      box-shadow: 0 0 0 3px rgba(192, 114, 132, 0.2);
+    }
+
+    .add-product-btn {
+      background: linear-gradient(to right, #d88c9a, #c07284);
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(192, 114, 132, 0.2);
+    }
+
+    .add-product-btn:hover {
+      background: linear-gradient(to right, #c07284, #a6596c);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(192, 114, 132, 0.3);
+    }
+
+    /* === Table === */
+    .product-table-container {
+      overflow-x: auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 30px;
+    }
+
+    .product-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .product-table th {
+      background: linear-gradient(to right, #f9e3e7, #f6dfe4);
+      color: #a6596c;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
+      padding: 15px 10px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+    }
+
+    .product-table th:first-child {
+      border-top-left-radius: 12px;
+    }
+
+    .product-table th:last-child {
+      border-top-right-radius: 12px;
+    }
+
+    .product-table td {
+      padding: 15px 10px;
+      text-align: center;
+      border-top: 1px solid #f6dfe4;
+      font-size: 14px;
+    }
+
+    .product-table tr:hover td {
+      background-color: #fef8fa;
+    }
+
+    .product-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .product-image:hover {
+      transform: scale(1.1);
+    }
+
+    /* === Action Buttons === */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* === Edit Button === */
+    .edit-btn {
+      background: linear-gradient(to right, #c7a3dd, #a174b2);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(161, 116, 178, 0.2);
+      display: inline-block;
+    }
+
+    .edit-btn:hover {
+      background: linear-gradient(to right, #b688d4, #8e5fa8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(161, 116, 178, 0.3);
+    }
+
+    /* === Delete Button === */
+    .delete-btn {
+      background: linear-gradient(to right, #f58a9f, #d55a6a);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(213, 90, 106, 0.2);
+      display: inline-block;
+    }
+
+    .delete-btn:hover {
+      background: linear-gradient(to right, #e46d83, #c44856);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(213, 90, 106, 0.3);
+    }
+
+    /* === No Products Message === */
+    .no-products {
+      text-align: center;
+      padding: 30px;
+      color: #b08a77;
+      font-size: 16px;
+      font-weight: 500;
+      background-color: #fef8fa;
+      border-radius: 10px;
+    }
+
+    /* === Footer === */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(to right, #f9e3e7, #f6dfe4);
+      color: #a6596c;
+      margin-top: auto;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .footer p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    /* === Mobile Message === */
+    .message-container {
+      display: none;
+      max-width: 500px;
+      margin: 100px auto;
+      padding: 40px 30px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 16px;
+      border: 2px solid rgba(216, 156, 164, 0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .message-container h1 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      color: #a6596c;
+    }
+
+    .message-container p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #b08a77;
+      line-height: 1.6;
+    }
+
+    .message-container .icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+      color: #d55a6a;
+    }
+
+    /* === Responsive Design === */
+    @media (max-width: 1200px) {
+      .nav-links {
+        gap: 5px;
+      }
+      
+      .nav-links li a {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .all-main {
+        padding: 20px;
+      }
+      
+      .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filter-form {
+        width: 100%;
+      }
+      
+      .add-product-link {
+        width: 100%;
+      }
+      
+      .add-product-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .message-container {
+        display: block;
+      }
+
+      .main {
+        display: none;
+      }
+    }
+
+    /* === Animations === */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .all-main {
+      animation: fadeIn 0.5s ease;
+    }
+  </style>
 </head>
 
 <body>
@@ -19,29 +495,29 @@
         <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
       </a>
       <ul class="nav-links">
-        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
         <li class="dropdown">
-          <a href="#">Products <i class="fas fa-caret-down"></i></a>
+          <a href="#"><i class="fas fa-box"></i> Products <i class="fas fa-caret-down"></i></a>
           <ul class="dropdown-menu">
             <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
             <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
           </ul>
         </li>
-        <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
-        <li><a href="{% url 'order_list' %}">Orders</a></li>
-        <li><a href="{% url 'customer_list' %}">Customers</a></li>
-        <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
-        <li><a href="{% url 'revenue_report' %}">Report</a></li>
+        <li><a href="{% url 'best_of_products' %}"><i class="fas fa-star"></i> Best Items</a></li>
+        <li><a href="{% url 'order_list' %}"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+        <li><a href="{% url 'customer_list' %}"><i class="fas fa-users"></i> Customers</a></li>
+        <li><a href="{% url 'shipment_details' %}"><i class="fas fa-truck"></i> Shipments</a></li>
+        <li><a href="{% url 'revenue_report' %}"><i class="fas fa-chart-line"></i> Report</a></li>
       </ul>
     </nav>
 
     <div class="all-main">
-      <h2 class="page-title"><b>PRODUCT MANAGEMENT</b></h2>
+      <h2 class="page-title">PRODUCT MANAGEMENT</h2>
 
       <!-- Search & Filters -->
       <div class="filter-container">
         <form method="GET" action="{% url 'products' %}" class="filter-form">
-          <input type="text" id="searchBox" class="search-box" placeholder="Search products..." onkeyup="filterProducts()">
+          <input type="text" name="q" id="searchBox" class="search-box" placeholder="Search products..." value="{{ query }}">
 
           <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Categories</option>
@@ -64,112 +540,117 @@
         </form>
 
         <a href="{% url 'add_product' %}" class="add-product-link">
-          <button type="button" class="add-product-btn">➕ Add New Product</button>
+          <button type="button" class="add-product-btn"><i class="fas fa-plus-circle"></i> Add New Product</button>
         </a>
       </div>
 
       <!-- Cosmetic Products Table -->
       {% if product_type == "cosmetic" %}
         <h3 class="section-title">Cosmetic Products</h3>
-        <table class="product-table">
-          <thead>
-            <tr>
-              <th>S.No.</th>
-              <th>Image</th>
-              <th>Title</th>
-              <th>SKU</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Brand</th>
-              <th>MRP</th>
-              <th>Price</th>
-              <th>Discount</th>
-              <th>Stock</th>
-              <th>Rating</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for product in cosmetic_products %}
+        <div class="product-table-container">
+          <table class="product-table">
+            <thead>
               <tr>
-                <td>{{ forloop.counter }}</td>
-                <td><img src="{{ product.display_image.url }}" class="product-image"></td>
-                <td>{{ product.title }}</td>
-                <td>{{ product.sku }}</td>
-                <td>{{ product.description|truncatewords:10 }}</td>
-                <td>{{ product.category.name }}</td>
-                <td>{{ product.brand|default:"N/A" }}</td>
-                <td>₹ {{ product.mrp }}</td>
-                <td>₹ {{ product.price }}</td>
-                <td>{{ product.discount }}%</td>
-                <td>{{ product.stock }}</td>
-                <td>{{ product.rating }} ⭐</td>
-                <td class="action-buttons">
-                  <a href="{% url 'edit_product' product.sku %}" class="edit-btn">Edit</a>
-                  <a href="{% url 'delete_product' product.sku %}" class="delete-btn">Delete</a>
-                </td>
+                <th>S.No.</th>
+                <th>Image</th>
+                <th>Title</th>
+                <th>SKU</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>MRP</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Stock</th>
+                <th>Rating</th>
+                <th>Actions</th>
               </tr>
-            {% empty %}
-              <tr>
-                <td colspan="12" class="no-products">No cosmetic products available</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {% for product in cosmetic_products %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td><img src="{{ product.display_image.url }}" class="product-image" alt="{{ product.title }}"></td>
+                  <td>{{ product.title }}</td>
+                  <td>{{ product.sku }}</td>
+                  <td>{{ product.description|truncatewords:10 }}</td>
+                  <td>{{ product.category.name }}</td>
+                  <td>{{ product.brand|default:"N/A" }}</td>
+                  <td>₹ {{ product.mrp }}</td>
+                  <td>₹ {{ product.price }}</td>
+                  <td>{{ product.discount }}%</td>
+                  <td>{{ product.stock }}</td>
+                  <td>{{ product.rating }} ⭐</td>
+                  <td class="action-buttons">
+                    <a href="{% url 'edit_product' product.sku %}" class="edit-btn"><i class="fas fa-edit"></i> Edit</a>
+                    <a href="{% url 'delete_product' product.sku %}" class="delete-btn"><i class="fas fa-trash"></i> Delete</a>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="13" class="no-products">No cosmetic products available</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       {% endif %}
 
       <!-- Jewellery Products Table -->
       {% if product_type == "jewellery" %}
         <h3 class="section-title">Jewellery Products</h3>
-        <table class="product-table">
-          <thead>
-            <tr>
-              <th>S.No.</th>
-              <th>Image</th>
-              <th>Title</th>
-              <th>SKU</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Brand</th>
-              <th>MRP</th>
-              <th>Price</th>
-              <th>Discount</th>
-              <th>Stock</th>
-              <th>Rating</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for product in jewellery_products %}
+        <div class="product-table-container">
+          <table class="product-table">
+            <thead>
               <tr>
-                <td>{{ forloop.counter }}</td>
-                <td><img src="{{ product.display_image.url }}" class="product-image"></td>
-                <td>{{ product.title }}</td>
-                <td>{{ product.sku }}</td>
-                <td>{{ product.description|truncatewords:10 }}</td>
-                <td>{{ product.category.name }}</td>
-                <td>{{ product.brand|default:"N/A" }}</td>
-                <td>₹ {{ product.mrp }}</td>
-                <td>₹ {{ product.price }}</td>
-                <td>{{ product.discount }}%</td>
-                <td>{{ product.stock }}</td>
-                <td>{{ product.rating }} ⭐</td>
-                <td class="action-buttons">
-                  <a href="{% url 'edit_product' product.sku %}" class="edit-btn">Edit</a>
-                  <a href="{% url 'delete_product' product.sku %}" class="delete-btn">Delete</a>
-                </td>
+                <th>S.No.</th>
+                <th>Image</th>
+                <th>Title</th>
+                <th>SKU</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>MRP</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Stock</th>
+                <th>Rating</th>
+                <th>Actions</th>
               </tr>
-            {% empty %}
-              <tr>
-                <td colspan="12" class="no-products">No jewellery products available</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {% for product in jewellery_products %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td><img src="{{ product.display_image.url }}" class="product-image" alt="{{ product.title }}"></td>
+                  <td>{{ product.title }}</td>
+                  <td>{{ product.sku }}</td>
+                  <td>{{ product.description|truncatewords:10 }}</td>
+                  <td>{{ product.category.name }}</td>
+                  <td>{{ product.brand|default:"N/A" }}</td>
+                  <td>₹ {{ product.mrp }}</td>
+                  <td>₹ {{ product.price }}</td>
+                  <td>{{ product.discount }}%</td>
+                  <td>{{ product.stock }}</td>
+                  <td>{{ product.rating }} ⭐</td>
+                  <td class="action-buttons">
+                    <a href="{% url 'edit_product' product.sku %}" class="edit-btn"><i class="fas fa-edit"></i> Edit</a>
+                    <a href="{% url 'delete_product' product.sku %}" class="delete-btn"><i class="fas fa-trash"></i> Delete</a>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="13" class="no-products">No jewellery products available</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       {% endif %}
     </div>
+    
     <footer class="footer">
-    <p>&copy; 2025 Cocomatik. All rights reserved.</p>
+      <p>&copy; 2025 Cocomatik. All rights reserved.</p>
     </footer>
   </div>
 
@@ -177,25 +658,45 @@
   <div class="message-container">
     <div class="icon">🚫</div>
     <h1>Access Restricted</h1>
-    <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+    <p>This product management dashboard is only accessible on a desktop. Please visit from a PC for the best experience.</p>
   </div>
 
   <script>
-    function filterProducts() {
-      let input = document.getElementById("searchBox").value.toLowerCase();
+    // Add event listener for search box
+    document.getElementById('searchBox').addEventListener('input', function() {
+      let input = this.value.toLowerCase();
       let table = document.querySelector(".product-table tbody");
       let rows = table.getElementsByTagName("tr");
+      let hasVisibleRow = false;
 
       for (let i = 0; i < rows.length; i++) {
         let productTitle = rows[i].getElementsByTagName("td")[2];
+
         if (productTitle) {
           let txtValue = productTitle.textContent || productTitle.innerText;
-          rows[i].style.display = txtValue.toLowerCase().includes(input) ? "" : "none";
+          if (txtValue.toLowerCase().includes(input)) {
+            rows[i].style.display = "";
+            hasVisibleRow = true;
+          } else {
+            rows[i].style.display = "none";
+          }
+        } else {
+          // Hide the "No products available" row during search
+          rows[i].style.display = "none";
         }
       }
-    }
-  </script>
 
+      // If no products match the search, show a "no match found" row
+      if (!hasVisibleRow && !document.getElementById("noMatchRow")) {
+        const tr = document.createElement("tr");
+        tr.id = "noMatchRow";
+        tr.innerHTML = `<td colspan="13" class="no-products">No matching products found</td>`;
+        table.appendChild(tr);
+      } else if (hasVisibleRow && document.getElementById("noMatchRow")) {
+        document.getElementById("noMatchRow").remove();
+      }
+    });
+  </script>
 </body>
 
 </html>

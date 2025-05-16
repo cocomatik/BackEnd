@@ -6,7 +6,381 @@
     <title>Best Sellers</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-    <link rel="stylesheet" href="{% static 'Manager/product/css/best.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        /* === Global Box Sizing & Body Reset === */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdf5f7;
+            color: #a6596c;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* === Main Container === */
+        .main {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* === Container === */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s ease;
+            flex: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === Page Title === */
+        h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #a6596c;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #d89ca4, #c07284);
+            border-radius: 3px;
+        }
+
+        /* === Product List === */
+        .product-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            background-color: #f9f0f2;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 4px solid #d89ca4;
+        }
+
+        .product-item:hover {
+            transform: translateX(5px);
+            background-color: #f6e3e7;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-title {
+            font-weight: 500;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: #c07284;
+            background: linear-gradient(to right, #f9e3e7, #f6dfe4);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* === Action Buttons === */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            background: linear-gradient(to right, #d88c9a, #c07284);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(192, 114, 132, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(to right, #c07284, #a6596c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(192, 114, 132, 0.3);
+        }
+
+        /* === Popup === */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup {
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-overlay.active .popup {
+            transform: scale(1);
+        }
+
+        /* === Search Box === */
+        #searchBox {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            font-size: 15px;
+            border: 1px solid #e4c9cc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a6596c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 15px center;
+            transition: all 0.3s ease;
+        }
+
+        #searchBox:focus {
+            outline: none;
+            border-color: #c07284;
+            box-shadow: 0 0 0 3px rgba(192, 114, 132, 0.2);
+        }
+
+        /* === Product Table === */
+        .prod {
+            overflow-y: auto;
+            max-height: calc(80vh - 180px);
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+
+        .prod::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .prod::-webkit-scrollbar-track {
+            background: #f9f0f2;
+            border-radius: 10px;
+        }
+
+        .prod::-webkit-scrollbar-thumb {
+            background: #d89ca4;
+            border-radius: 10px;
+        }
+
+        .prod table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .prod table th {
+            background: linear-gradient(to right, #f9e3e7, #f6dfe4);
+            color: #a6596c;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 15px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .prod table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f6dfe4;
+            font-size: 14px;
+        }
+
+        .prod table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .prod table tr:hover td {
+            background-color: #fef8fa;
+        }
+
+        .txt {
+            color: #333;
+        }
+
+        /* === Checkbox Styling === */
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #c07284;
+            cursor: pointer;
+        }
+
+        /* === Close Button === */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #a6596c;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            background-color: #f9f0f2;
+            transform: rotate(90deg);
+        }
+
+        .close-btn::before {
+            content: '×';
+        }
+
+        /* === Footer === */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to right, #f9e3e7, #f6dfe4);
+            color: #a6596c;
+            margin-top: auto;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* === Mobile Message === */
+        .message-container {
+            display: none;
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 40px 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            border: 2px solid rgba(216, 156, 164, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .message-container .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #d55a6a;
+        }
+
+        .message-container h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #a6596c;
+        }
+
+        .message-container p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #b08a77;
+            line-height: 1.6;
+        }
+
+        /* === Responsive Design === */
+        @media (max-width: 768px) {
+            .message-container {
+                display: block;
+            }
+
+            .main {
+                display: none;
+            }
+        }
+
+        /* === Animations === */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .empty-list {
+            text-align: center;
+            padding: 30px;
+            color: #b08a77;
+            font-size: 16px;
+            font-style: italic;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,31 +388,44 @@
     <div class="main">
         <div class="container">
             <h2>{{ nm }}</h2>
+            
             <ul class="product-list">
                 {% for pi in prd %}
                 <li class="product-item">
                     <span class="product-title">{{ pi.title }}</span>
                     <span class="product-price">₹{{ pi.price }}</span>                
                 </li>
+                {% empty %}
+                <li class="empty-list">No products in this category yet.</li>
                 {% endfor %}
             </ul>
 
-            <a href="{% url 'best_of_products' %}" class="action-btn">Back</a>
-            <button class="action-btn" onclick="openPopup()">Edit</button>
+            <div class="action-buttons">
+                <a href="{% url 'best_of_products' %}" class="action-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button class="action-btn" onclick="openPopup()">
+                    <i class="fas fa-edit"></i> Edit Products
+                </button>
+            </div>
         </div>
 
         <!-- Popup -->
         <div class="popup-overlay" id="popup-overlay">
             <div class="popup">
+                <button class="close-btn" onclick="closePopup()"></button>
+                <h2>Edit {{ nm }}</h2>
+                
                 <input type="text" id="searchBox" placeholder="Search products..." onkeyup="filterProducts()">
+                
                 <div class="prod">
                     <form id="product-action-form" action="{% url 'ad_best_product' %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="type" value="{{ tp }}">
                         <input type="hidden" name="name" value="{{ nm }}">
 
-                        <button type="submit" name="action_type" value="add" class="action-btn" style="margin-bottom: 10px;">
-                            Add Selected
+                        <button type="submit" name="action_type" value="add" class="action-btn" style="margin-bottom: 20px;">
+                            <i class="fas fa-save"></i> Save Changes
                         </button>
 
                         <table>
@@ -66,19 +453,19 @@
                         </table>
                     </form>
                 </div>
-                <button class="close-btn" onclick="closePopup()">Close</button>
             </div>
         </div>
+        
         <footer class="footer">
-    <p>&copy; 2025 Cocomatik. All rights reserved.</p>
-    </footer>
+            <p>&copy; 2025 Cocomatik. All rights reserved.</p>
+        </footer>
     </div>
 
     <!-- Mobile Restriction Message -->
     <div class="message-container">
         <div class="icon">🚫</div>
         <h1>Access Restricted</h1>
-        <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+        <p>This product management page is only accessible on a desktop. Please visit from a PC for the best experience.</p>
     </div>
 
     <!-- Scripts -->
@@ -103,6 +490,25 @@
                 }
             }
         }
+
+        // Close popup when clicking outside
+        document.getElementById('popup-overlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        // Prevent closing when clicking inside the popup
+        document.querySelector('.popup').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
     </script>
 </body>
 </html>

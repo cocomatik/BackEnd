@@ -4,8 +4,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'Manager/shipment/shipDetails.css' %}">
     <title>Shipment Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        /* === Global Box Sizing & Body Reset === */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdf5f7;
+            color: #a6596c;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* === Main Container === */
+        .main {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* === Navbar === */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #d89ca4 0%, #c07284 100%);
+            padding: 12px 24px;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* === Logo === */
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        /* === Navigation Links === */
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 16px;
+            display: block;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* === Dropdown Menu === */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: linear-gradient(to bottom, #e5b7be, #d8a5ae);
+            top: 100%;
+            left: 0;
+            min-width: 180px;
+            border-radius: 8px;
+            padding: 8px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-links li:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            width: 100%;
+        }
+
+        .dropdown-menu li a {
+            padding: 12px 20px;
+            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding-left: 25px;
+        }
+
+        .dropdown-menu li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* === Container === */
+        .container {
+            padding: 30px;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* === Header Row === */
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* === Page Title === */
+        .page-title {
+            font-size: 28px;
+            color: #a6596c;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #d89ca4, #c07284);
+            border-radius: 3px;
+        }
+
+        /* === Pending Button === */
+        .pending-btn {
+            background: linear-gradient(to right, #6a85b6, #5a6abf);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(106, 133, 182, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .pending-btn:hover {
+            background: linear-gradient(to right, #5a6abf, #4a5aaf);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(106, 133, 182, 0.3);
+        }
+
+        .pending-btn::before {
+            content: '\f017';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        /* === Filters === */
+        .filters {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border: 1px solid #e4c9cc;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: white;
+            transition: all 0.3s ease;
+            color: #555;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #c07284;
+            box-shadow: 0 0 0 3px rgba(192, 114, 132, 0.2);
+        }
+
+        .filters::before {
+            content: '\f002';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a6596c;
+            font-size: 16px;
+        }
+
+        /* === Table === */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        /* === Table Header === */
+        thead {
+            background: linear-gradient(to right, #f9e3e7, #f6dfe4);
+        }
+
+        th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: #a6596c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* === Table Body === */
+        tbody tr {
+            border-bottom: 1px solid #f6dfe4;
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #fef8fa;
+        }
+
+        td {
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #555;
+            border-bottom: 1px solid #f6dfe4;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* === Status Cell === */
+        td:nth-child(7) {
+            font-weight: 500;
+        }
+
+        /* === Action Cell === */
+        .action {
+            text-align: center;
+        }
+
+        .action a {
+            background: linear-gradient(to right, #6a85b6, #5a6abf);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(106, 133, 182, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+
+        .action a:hover {
+            background: linear-gradient(to right, #5a6abf, #4a5aaf);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(106, 133, 182, 0.3);
+        }
+
+        .action a::before {
+            content: '\f06e';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        /* === Package Details === */
+        td:nth-child(4) {
+            line-height: 1.8;
+        }
+
+        /* === Status Badge === */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status-processing {
+            background-color: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .status-delivered {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-cancelled, .status-canceled {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-refunded {
+            background-color: #ffedd5;
+            color: #ea580c;
+        }
+
+        .status-shipped {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        /* === Footer === */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to right, #f9e3e7, #f6dfe4);
+            color: #a6596c;
+            margin-top: auto;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* === Mobile Message === */
+        .message-container {
+            display: none;
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 40px 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            border: 2px solid rgba(216, 156, 164, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .message-container .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #d55a6a;
+        }
+
+        .message-container h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #a6596c;
+        }
+
+        .message-container p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #b08a77;
+            line-height: 1.6;
+        }
+
+        /* === Empty State === */
+        tbody tr td[colspan="8"] {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b08a77;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        /* === Responsive Design === */
+        @media (max-width: 1200px) {
+            .nav-links {
+                gap: 5px;
+            }
+            
+            .nav-links li a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .message-container {
+                display: block;
+            }
+
+            .main {
+                display: none;
+            }
+        }
+
+        /* === Animations === */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="main">
@@ -14,102 +489,104 @@
                 <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
             </a>
             <ul class="nav-links">
-                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
                 <li class="dropdown">
-                    <a href="#">Products <i class="fas fa-caret-down"></i></a>
+                    <a href="#"><i class="fas fa-box"></i> Products <i class="fas fa-caret-down"></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
                         <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
                     </ul>
                 </li>
-                <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
-                <li><a href="{% url 'order_list' %}">Orders</a></li>
-                <li><a href="{% url 'customer_list' %}">Customers</a></li>
-                <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
-                <li><a href="{% url 'revenue_report' %}">Report</a></li>
+                <li><a href="{% url 'best_of_products' %}"><i class="fas fa-star"></i> Best Items</a></li>
+                <li><a href="{% url 'order_list' %}"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="{% url 'customer_list' %}"><i class="fas fa-users"></i> Customers</a></li>
+                <li><a href="{% url 'shipment_details' %}"><i class="fas fa-truck"></i> Shipments</a></li>
+                <li><a href="{% url 'revenue_report' %}"><i class="fas fa-chart-line"></i> Report</a></li>
             </ul>
         </nav>
         
         <div class="container">
             <div class="header-row">
-                <h2 class="page-title"><b>Shipments</b></h2>
-                <a href="{% url 'pending_shipments' %}" class="pending-btn">Pending Shipment</a>
+                <h2 class="page-title"><i class="fas fa-shipping-fast"></i> Shipment Management</h2>
+                <a href="{% url 'pending_shipments' %}" class="pending-btn">Pending Shipments</a>
             </div>
 
             <div class="filters">
-                <input type="text" id="searchBox" class="search-box" placeholder="Search products..." onkeyup="filterProducts()">
+                <input type="text" id="searchBox" class="search-box" placeholder="Search by order ID or customer name..." onkeyup="filterProducts()">
             </div>
             
-            <table id="ordersTable">
-                <thead>
-                    <tr>
-                        <th>S.No.</th>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Package Details</th>
-                        <th>Payment Mode</th>
-                        <th>Order Value</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for shipment in shipments %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ shipment.orderH.order_number }}</td>
-                        <td>{{ shipment.orderH.rcv_name }}</td>
-                        <td>
-                            Length: {{ shipment.orderH.length }} cm<br>
-                            Breadth: {{ shipment.orderH.breadth }} cm<br>
-                            Height: {{ shipment.orderH.height }} cm<br>
-                            Weight: {{ shipment.orderH.weight }} kg
-                        </td>
-                        <td>{{ shipment.orderH.payment_mode }}</td>
-                        <td>{{ shipment.orderH.total_price }}</td>
-                        <td>{{ shipment.status }}</td>
-                        <td class="action">
-                            <a href="https://app.shiprocket.in/seller/orders/details/{{ shipment.shiprocket_order_id }}" target="_blank">View</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="8">No shipments found.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            
+            <div class="table-wrapper">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Package Details</th>
+                            <th>Payment Mode</th>
+                            <th>Order Value</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for shipment in shipments %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>#{{ shipment.orderH.order_number }}</td>
+                            <td>{{ shipment.orderH.rcv_name }}</td>
+                            <td>
+                                <i class="fas fa-ruler-combined"></i> Length: {{ shipment.orderH.length }} cm<br>
+                                <i class="fas fa-ruler-horizontal"></i> Breadth: {{ shipment.orderH.breadth }} cm<br>
+                                <i class="fas fa-ruler-vertical"></i> Height: {{ shipment.orderH.height }} cm<br>
+                                <i class="fas fa-weight-hanging"></i> Weight: {{ shipment.orderH.weight }} kg
+                            </td>
+                            <td>{{ shipment.orderH.payment_mode }}</td>
+                            <td>₹{{ shipment.orderH.total_price }}</td>
+                            <td>
+                                <span class="status-badge status-{{ shipment.status|lower }}">{{ shipment.status }}</span>
+                            </td>
+                            <td class="action">
+                                <a href="https://app.shiprocket.in/seller/orders/details/{{ shipment.shiprocket_order_id }}" target="_blank">View</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8">No shipments found. New shipments will appear here once created.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
+        
         <footer class="footer">
-    <p>&copy; 2025 Cocomatik. All rights reserved.</p>
-    </footer>
+            <p>&copy; 2025 Cocomatik. All rights reserved.</p>
+        </footer>
     </div>
     
     <!-- Mobile Restriction Message -->
-    <div class="message-container mt-5">
+    <div class="message-container">
         <div class="icon">🚫</div>
         <h1>Access Restricted</h1>
-        <p>This page is only accessible on a desktop. Please visit from a PC.</p>
+        <p>This shipment management page is only accessible on a desktop. Please visit from a PC for the best experience.</p>
     </div>
 
     <script>
-        function confirmDelete() {
-            return confirm("Are you sure you want to delete this order?");
-        }
-    
         function filterProducts() {
             let input = document.getElementById("searchBox").value.toLowerCase();
             let table = document.getElementById("ordersTable").getElementsByTagName("tbody")[0];
             let rows = table.getElementsByTagName("tr");
     
             for (let i = 0; i < rows.length; i++) {
-                let orderNumberCell = rows[i].getElementsByTagName("td")[1]; // Order #
-                let userCell = rows[i].getElementsByTagName("td")[2];        // User
-                if (orderNumberCell || userCell) {
+                let orderNumberCell = rows[i].getElementsByTagName("td")[1]; // Order ID
+                let customerCell = rows[i].getElementsByTagName("td")[2];    // Customer
+                
+                if (orderNumberCell && customerCell) {
                     let orderText = orderNumberCell.textContent || orderNumberCell.innerText;
-                    let userText = userCell.textContent || userCell.innerText;
-                    if (orderText.toLowerCase().includes(input) || userText.toLowerCase().includes(input)) {
+                    let customerText = customerCell.textContent || customerCell.innerText;
+                    
+                    if (orderText.toLowerCase().includes(input) || customerText.toLowerCase().includes(input)) {
                         rows[i].style.display = "";
                     } else {
                         rows[i].style.display = "none";
@@ -117,6 +594,19 @@
                 }
             }
         }
+
+        // Add status badge styling
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusCells = document.querySelectorAll('td:nth-child(7) .status-badge');
+            
+            statusCells.forEach(cell => {
+                const status = cell.textContent.trim().toLowerCase();
+                
+                if (!cell.classList.contains(`status-${status}`)) {
+                    cell.classList.add(`status-${status}`);
+                }
+            });
+        });
     </script>
 </body>
 </html>

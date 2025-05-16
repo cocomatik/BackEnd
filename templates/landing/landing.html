@@ -18,12 +18,18 @@
         --text-dark: #3d2c2e;
         --text-light: #7a5c5f;
         --container-bg: #fff;
-        --gradient-bg: linear-gradient(135deg, rgba(253, 245, 247, 0.9), rgba(245, 225, 229, 0.9));
+        --gradient-bg: linear-gradient(135deg, rgba(253, 245, 247, 0.95), rgba(245, 225, 229, 0.95));
+      }
+    
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
     
       body {
-        font-family: "Arial", sans-serif;
-        background: var(--gradient-bg);
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+        background: var(--gradient-bg), url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1587&q=80') center/cover no-repeat fixed;
         color: var(--text-dark);
         margin: 0;
         padding: 0;
@@ -36,11 +42,11 @@
       .container {
         text-align: center;
         background: var(--container-bg);
-        padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        padding: 50px 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         width: 90%;
-        max-width: 600px;
+        max-width: 800px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -48,6 +54,18 @@
         position: relative;
         overflow: hidden;
         border: 1px solid rgba(216, 156, 164, 0.2);
+        animation: fadeIn 0.8s ease-out;
+      }
+    
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     
       .container::before {
@@ -56,20 +74,25 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 5px;
+        height: 6px;
         background: linear-gradient(90deg, var(--accent), var(--primary));
       }
     
       .logo-container {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 15px;
       }
     
       .logo-icon {
-        font-size: 32px;
-        margin: 0 10px;
+        font-size: 36px;
+        transition: transform 0.3s ease;
+      }
+      
+      .logo-icon:hover {
+        transform: scale(1.1);
       }
     
       .cosmetic-icon {
@@ -82,15 +105,15 @@
     
       h1 {
         color: var(--button-dark);
-        font-size: 32px;
-        margin-bottom: 10px;
+        font-size: 34px;
+        margin-bottom: 12px;
         font-weight: 600;
         letter-spacing: 1px;
       }
     
       .subtitle {
         color: var(--primary);
-        font-size: 18px;
+        font-size: 20px;
         margin-top: 0;
         margin-bottom: 15px;
         font-weight: 400;
@@ -98,41 +121,65 @@
       }
     
       p {
-        font-size: 16px;
-        margin-bottom: 30px;
-        line-height: 1.6;
+        font-size: 17px;
+        margin-bottom: 35px;
+        line-height: 1.7;
         color: var(--text-light);
+        max-width: 500px;
+      }
+    
+      .divider {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--primary));
+        margin: 20px auto 30px;
+        border-radius: 2px;
       }
     
       .features {
         display: flex;
         justify-content: space-around;
         width: 100%;
-        margin-bottom: 30px;
-        gap: 20px;
+        margin-bottom: 40px;
+        gap: 25px;
       }
     
       .feature {
         text-align: center;
-        padding: 15px;
+        padding: 20px;
         width: 45%;
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: rgba(253, 245, 247, 0.5);
+      }
+      
+      .feature:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
       }
     
       .feature-icon {
-        font-size: 28px;
-        margin-bottom: 10px;
+        font-size: 32px;
+        margin-bottom: 15px;
         color: var(--accent);
+        transition: transform 0.3s ease;
+      }
+      
+      .feature:hover .feature-icon {
+        transform: scale(1.1);
       }
     
       .feature-title {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 600;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        color: var(--button-dark);
       }
     
       .feature-desc {
-        font-size: 14px;
-        color: #946c70;
+        font-size: 15px;
+        color: var(--text-light);
+        line-height: 1.5;
       }
     
       .buttons {
@@ -140,13 +187,15 @@
         flex-direction: column;
         gap: 15px;
         width: 100%;
-        max-width: 250px;
+        max-width: 280px;
       }
     
       .admin-button,
       .main-button {
-        display: block;
-        padding: 12px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
         font-size: 16px;
         color: white;
         border: none;
@@ -158,51 +207,64 @@
         font-weight: 500;
         letter-spacing: 0.5px;
       }
+      
+      .button-icon {
+        margin-right: 8px;
+        font-size: 18px;
+      }
     
       .admin-button {
         background-color: var(--button-dark);
-        box-shadow: 0 4px 8px rgba(192, 114, 132, 0.2);
+        box-shadow: 0 4px 15px rgba(192, 114, 132, 0.25);
       }
     
       .admin-button:hover {
         background-color: var(--button-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(192, 114, 132, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(192, 114, 132, 0.35);
       }
     
       .main-button {
         background-color: var(--primary);
-        box-shadow: 0 4px 8px rgba(229, 183, 190, 0.2);
+        box-shadow: 0 4px 15px rgba(229, 183, 190, 0.25);
       }
     
       .main-button:hover {
         background-color: #cc9fa9;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(229, 183, 190, 0.3);
-      }
-    
-      .divider {
-        width: 50px;
-        height: 2px;
-        background: linear-gradient(90deg, var(--accent), var(--primary));
-        margin: 20px auto;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(229, 183, 190, 0.35);
       }
     
       .message-container {
         display: none;
         max-width: 500px;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        margin: 0 auto;
+        padding: 40px 30px;
         text-align: center;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        border: 2px solid rgba(216, 156, 164, 0.5);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
       }
     
       .message-container .icon {
-        font-size: 50px;
-        margin-bottom: 10px;
+        font-size: 60px;
+        margin-bottom: 20px;
+        color: #d55a6a;
+      }
+    
+      .message-container h1 {
+        font-size: 28px;
+        margin-bottom: 15px;
+        color: var(--button-dark);
+      }
+    
+      .message-container p {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: var(--text-light);
+        line-height: 1.6;
       }
     
       @media (max-width: 768px) {
@@ -216,7 +278,6 @@
       }
     </style>
     
-
     <script>
       function redirectToAdmin() {
         window.location.href = "/dashboard/";
@@ -246,24 +307,24 @@
             <i class="fas fa-magic feature-icon cosmetic-icon"></i>
             <div class="feature-title">Premium Cosmetics</div>
             <div class="feature-desc">
-              Luxurious skincare and beauty solutions
+              Luxurious skincare and beauty solutions for your radiant glow
             </div>
           </div>
           <div class="feature">
             <i class="fas fa-ring feature-icon jewelry-icon"></i>
             <div class="feature-title">Elegant Jewelry</div>
             <div class="feature-desc">
-              Timeless pieces crafted with precision
+              Timeless pieces crafted with precision and attention to detail
             </div>
           </div>
         </div>
 
         <div class="buttons">
           <button class="admin-button" onclick="redirectToAdmin()">
-            Admin Panel
+            <i class="fas fa-user-shield button-icon"></i> Admin Panel
           </button>
           <button class="main-button" onclick="redirectToMain()">
-            Visit Main Site
+            <i class="fas fa-external-link-alt button-icon"></i> Visit Main Site
           </button>
         </div>
       </div>
@@ -274,7 +335,5 @@
       <h1>Access Restricted</h1>
       <p>This page is only accessible on a desktop. Please visit from a PC.</p>
     </div>
-
-   
   </body>
 </html>

@@ -6,105 +6,476 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
-
-
-    <link rel="stylesheet" href="{% static 'Manager/dashboard/dashboard.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        /* === Global Box Sizing & Body Reset === */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdf5f7;
+            color: #a6596c;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* === Main Container === */
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* === Navbar === */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #d89ca4 0%, #c07284 100%);
+            padding: 12px 24px;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* === Logo === */
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        /* === Navigation Links === */
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 16px;
+            display: block;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* === Dropdown Menu === */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: linear-gradient(to bottom, #e5b7be, #d8a5ae);
+            top: 100%;
+            left: 0;
+            min-width: 180px;
+            border-radius: 8px;
+            padding: 8px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-links li:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li {
+            width: 100%;
+        }
+
+        .dropdown-menu li a {
+            padding: 12px 20px;
+            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding-left: 25px;
+        }
+
+        .dropdown-menu li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* === Main Content === */
+        .container {
+            padding: 30px;
+            flex: 1;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .mt-4 {
+            margin-top: 1.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1.5rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* === Page Title === */
+        h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #a6596c;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #d89ca4, #c07284);
+            border-radius: 3px;
+        }
+
+        /* === Dashboard Stats === */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #d89ca4, #c07284);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon.products {
+            background: linear-gradient(135deg, #6a85b6 0%, #5a6abf 100%);
+        }
+
+        .stat-icon.orders {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .stat-icon.revenue {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .stat-icon.customers {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-info h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .stat-info p {
+            font-size: 16px;
+            color: #777;
+            margin: 0;
+        }
+
+        /* Make the entire card clickable */
+        .stat-card a {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            text-decoration: none;
+        }
+
+        /* === Footer === */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to right, #f9e3e7, #f6dfe4);
+            color: #a6596c;
+            margin-top: auto;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* === Mobile Message === */
+        .message-container {
+            display: none;
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 40px 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            border: 2px solid rgba(216, 156, 164, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .message-container .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #d55a6a;
+        }
+
+        .message-container h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #a6596c;
+        }
+
+        .message-container p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #b08a77;
+            line-height: 1.6;
+        }
+
+        /* === Responsive Design === */
+        @media (max-width: 1200px) {
+            .nav-links {
+                gap: 5px;
+            }
+            
+            .nav-links li a {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .message-container {
+                display: block;
+            }
+
+            .page-wrapper {
+                display: none;
+            }
+        }
+
+        /* === Animations === */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .stat-card:hover .stat-icon {
+            animation: pulse 1s infinite;
+        }
+    </style>
 </head>
 
 <body>
-     <div class="page-wrapper">
-    <div class="main">
-        <nav class="navbar">
-            <a class="logo" href="{% url 'dashboard' %}">
-                <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
-            </a>
+    <div class="page-wrapper">
+        <div class="main">
+            <nav class="navbar">
+                <a class="logo" href="{% url 'dashboard' %}">
+                    <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
+                </a>
 
+                <ul class="nav-links">
+                    <li><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="dropdown">
+                        <a href="#"><i class="fas fa-box"></i> Products <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
+                            <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'best_of_products' %}"><i class="fas fa-star"></i> Best Items</a></li>
+                    <li><a href="{% url 'order_list' %}"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                    <li><a href="{% url 'customer_list' %}"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="{% url 'shipment_details' %}"><i class="fas fa-truck"></i> Shipments</a></li>
+                    <li><a href="{% url 'revenue_report' %}"><i class="fas fa-chart-line"></i> Report</a></li>
+                </ul>
+            </nav>
 
-            <ul class="nav-links">
-                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li class="dropdown">
-                    <a href="#">Products <i class="fas fa-caret-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'products' %}?type=cosmetic"><i class="fas fa-spa"></i> Cosmetic</a></li>
-                        <li><a href="{% url 'products' %}?type=jewellery"><i class="fas fa-gem"></i> Jewellery</a></li>
-                    </ul>
-                </li>
-                <li><a href="{% url 'best_of_products' %}">Best Items</a></li>
-                <li><a href="{% url 'order_list' %}">Orders</a></li>
-                <li><a href="{% url 'customer_list' %}">Customers</a></li>
-                <li><a href="{% url 'shipment_details' %}">Shipments</a></li>
-                <li><a href="{% url 'revenue_report' %}">Report</a></li>
-            </ul>
-        </nav>
+            <!-- Main Content -->
+            <div class="container mt-4">
+                <h2 class="mb-4 text-center"><b>DASHBOARD</b></h2>
 
-        <!-- Main Content -->
-        <div class="container mt-4">
-            <h2 class="mb-4 text-center"><b>DASHBOARD</b></h2>
-
-            <!-- Dashboard Stats -->
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-icon products">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ total_products }}</h3>
-                        <p>Total Products</p>
-                    </div>
-                </div>
-                <a href="{% url 'order_list' %}">
-                <div class="stat-card">
-                    <div class="stat-icon orders">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ total_orders }}</h3>
-                        <p>Total Orders</p>
-                    </div>
-                </div>
-            </a>
-                <div class="stat-card">
-                    <div class="stat-icon revenue">
-                        <i class="fa fa-inr"></i>
-                    </div>
-                    <a href="{% url 'revenue_report' %}">
-                    <div class="stat-info">
-                        <h3>₹ {{ value }}</h3>
-                        <p>Total Revenue</p>
+                <!-- Dashboard Stats -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon products">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ total_products }}</h3>
+                            <p>Total Products</p>
+                        </div>
                     </div>
                     
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon customers">
-                        <i class="fas fa-users"></i>
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ total_orders }}</h3>
+                            <p>Total Orders</p>
+                        </div>
+                        <a href="{% url 'order_list' %}" aria-label="View Orders"></a>
                     </div>
-                    <a href="{% url 'customer_list' %}">
-                    <div class="stat-info">
-                        <h3>{{ total_customers }}</h3>
-                        <p>Total Customers</p>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fa fa-inr"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>₹ {{ value }}</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                        <a href="{% url 'revenue_report' %}" aria-label="View Revenue Report"></a>
                     </div>
-                </a>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon customers">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ total_customers }}</h3>
+                            <p>Total Customers</p>
+                        </div>
+                        <a href="{% url 'customer_list' %}" aria-label="View Customers"></a>
+                    </div>
                 </div>
             </div>
-
+            
+            <footer class="footer">
+                <p>&copy; 2025 Cocomatik. All rights reserved.</p>
+            </footer>
         </div>
-        </div>
-        <footer class="footer">
-    <p>&copy; 2025 Cocomatik. All rights reserved.</p>
-    </footer>
     </div>
-    
 
     <!-- Mobile Restriction Message -->
     <div class="message-container mt-5">
         <div class="icon">🚫</div>
         <h1>Access Restricted</h1>
         <p>
-            This page is only accessible on a desktop. Please visit from a PC.
+            This dashboard is only accessible on a desktop. Please visit from a PC for the best experience.
         </p>
     </div>
-
 </body>
 
 </html>

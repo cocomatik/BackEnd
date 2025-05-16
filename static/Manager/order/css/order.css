@@ -272,6 +272,14 @@ td {
     font-size: 14px;
     color: #555; /* Darker text color */
 }
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  flex: 1;
+}
 
 
 /* === Mobile Restriction === */

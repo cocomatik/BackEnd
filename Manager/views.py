@@ -26,12 +26,12 @@ def dashboard(request):
     total_cosmetic_products = POCOS.objects.count()
     total_jewellery_products = POJOS.objects.count()
     total_products = total_cosmetic_products + total_jewellery_products
-    total_orders = Order.objects.count()
+    total_orders = OrderHistory.objects.count()
     total_customers = UserAccount.objects.count()
-    orders=Order.objects.all()
+    orders=OrderHistory.objects.all()
     value=0
     for order in orders:
-        value += order.cart.value
+        value += order.total_price
 
     context = {
         "total_products": total_products,
