@@ -29,7 +29,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     """Serializer for reviews."""
     class Meta:
         model = Review
-        fields = ['user_name', "verified_user", 'rating', 'comment', 'created_at']
+        fields = ['user_name', 'rating', 'comment', 'created_at']
 
 class PocoDetailSerializer(serializers.ModelSerializer):
     extra_images = PocoImageSerializer(many=True, read_only=True)
