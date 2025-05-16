@@ -68,4 +68,4 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user_name} - {self.pojo.title} ({self.rating})"
+        return f"{self.user} - {self.pojo.title} ({self.rating})"
