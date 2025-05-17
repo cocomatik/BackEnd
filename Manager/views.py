@@ -501,16 +501,17 @@ def order_detail(request, order_number):
 
 
 
-# @session_auth_required
+@session_auth_required
 def shipment_form(request, order_id):
     order = get_object_or_404(Order, id=order_id)
 
     return render(request, 'Manager/shipment/ship.html',{'order':order})
 
 
-# @session_auth_required
+
 from Delivery.models import ShiprocketOrder
 
+@session_auth_required
 def shipment_details(request):
     shipments = ShiprocketOrder.objects.all().order_by('-created_at')
 
@@ -524,7 +525,8 @@ from Accounts.models import UserAccount
 def customers(request):
     customer_list = UserAccount.objects.all()
     return render(request, "Manager/customer/customer.html",{'customer_list':customer_list})
-# @session_auth_required
+
+@session_auth_required
 def customer_details(request, customer_id):
     customer = get_object_or_404(UserAccount, id=customer_id)  # Fetch customer by ID
     orders = Order.objects.filter(user=customer)  # Fetch orders of this customer
@@ -542,12 +544,12 @@ def customer_details(request, customer_id):
 
 
 
-# @session_auth_required
 from django.db.models import Sum, F, DecimalField, Count
 from django.db.models.functions import TruncMonth
 from Orders.models import OrderHistory, OrderHistoryItem
 from django.shortcuts import render
 
+@session_auth_required
 def revenue_report(request):
     # Filter orders with relevant statuses
     queryset = OrderHistory.objects.filter(status__in=["DELIVERED", "SHIPPED", "PROCESSING"])
@@ -597,24 +599,3 @@ def revenue_report(request):
         'growth_rate': round(growth_rate, 2),
         'top_products': top_products,
     })
-
-
-
-
-
-
-
-
-# @session_auth_required
-def settings(request):
-    return render(request, "Manager/settings.html")
-
-# @session_auth_required
-def logout_view(request):
-    return render(request, "Manager/login.html")
-
-
-
-
-
-

@@ -107,8 +107,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .nav-links li:hover .dropdown-menu {
@@ -435,7 +442,7 @@
       .nav-links {
         gap: 5px;
       }
-      
+
       .nav-links li a {
         padding: 8px 12px;
         font-size: 14px;
@@ -446,20 +453,20 @@
       .all-main {
         padding: 20px;
       }
-      
+
       .filter-container {
         flex-direction: column;
         align-items: stretch;
       }
-      
+
       .filter-form {
         width: 100%;
       }
-      
+
       .add-product-link {
         width: 100%;
       }
-      
+
       .add-product-btn {
         width: 100%;
         justify-content: center;
@@ -478,8 +485,13 @@
 
     /* === Animations === */
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     .all-main {
@@ -508,6 +520,8 @@
         <li><a href="{% url 'customer_list' %}"><i class="fas fa-users"></i> Customers</a></li>
         <li><a href="{% url 'shipment_details' %}"><i class="fas fa-truck"></i> Shipments</a></li>
         <li><a href="{% url 'revenue_report' %}"><i class="fas fa-chart-line"></i> Report</a></li>
+        <li><a href="{% url 'admin_logout' %}"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+
       </ul>
     </nav>
 
@@ -517,21 +531,23 @@
       <!-- Search & Filters -->
       <div class="filter-container">
         <form method="GET" action="{% url 'products' %}" class="filter-form">
-          <input type="text" name="q" id="searchBox" class="search-box" placeholder="Search products..." value="{{ query }}">
+          <input type="text" name="q" id="searchBox" class="search-box" placeholder="Search products..."
+            value="{{ query }}">
 
           <select name="category" id="categoryFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Categories</option>
             {% for category in categories %}
-              <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
-                {{ category.name }}
-              </option>
+            <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
+              {{ category.name }}
+            </option>
             {% endfor %}
           </select>
 
           <select name="stock" id="stockFilter" class="filter-dropdown" onchange="this.form.submit()">
             <option value="">All Stock Status</option>
             <option value="in-stock" {% if selected_stock == "in-stock" %}selected{% endif %}>In Stock</option>
-            <option value="out-of-stock" {% if selected_stock == "out-of-stock" %}selected{% endif %}>Out of Stock</option>
+            <option value="out-of-stock" {% if selected_stock == "out-of-stock" %}selected{% endif %}>Out of Stock
+            </option>
             <option value="low-stock-50" {% if selected_stock == "low-stock-50" %}selected{% endif %}>Stock < 50</option>
             <option value="low-stock-10" {% if selected_stock == "low-stock-10" %}selected{% endif %}>Stock < 10</option>
           </select>
@@ -546,109 +562,111 @@
 
       <!-- Cosmetic Products Table -->
       {% if product_type == "cosmetic" %}
-        <h3 class="section-title">Cosmetic Products</h3>
-        <div class="product-table-container">
-          <table class="product-table">
-            <thead>
-              <tr>
-                <th>S.No.</th>
-                <th>Image</th>
-                <th>Title</th>
-                <th>SKU</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Brand</th>
-                <th>MRP</th>
-                <th>Price</th>
-                <th>Discount</th>
-                <th>Stock</th>
-                <th>Rating</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for product in cosmetic_products %}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td><img src="{{ product.display_image.url }}" class="product-image" alt="{{ product.title }}"></td>
-                  <td>{{ product.title }}</td>
-                  <td>{{ product.sku }}</td>
-                  <td>{{ product.description|truncatewords:10 }}</td>
-                  <td>{{ product.category.name }}</td>
-                  <td>{{ product.brand|default:"N/A" }}</td>
-                  <td>₹ {{ product.mrp }}</td>
-                  <td>₹ {{ product.price }}</td>
-                  <td>{{ product.discount }}%</td>
-                  <td>{{ product.stock }}</td>
-                  <td>{{ product.rating }} ⭐</td>
-                  <td class="action-buttons">
-                    <a href="{% url 'edit_product' product.sku %}" class="edit-btn"><i class="fas fa-edit"></i> Edit</a>
-                    <a href="{% url 'delete_product' product.sku %}" class="delete-btn"><i class="fas fa-trash"></i> Delete</a>
-                  </td>
-                </tr>
-              {% empty %}
-                <tr>
-                  <td colspan="13" class="no-products">No cosmetic products available</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+      <h3 class="section-title">Cosmetic Products</h3>
+      <div class="product-table-container">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>Image</th>
+              <th>Title</th>
+              <th>SKU</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>MRP</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Stock</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in cosmetic_products %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td><img src="{{ product.display_image.url }}" class="product-image" alt="{{ product.title }}"></td>
+              <td>{{ product.title }}</td>
+              <td>{{ product.sku }}</td>
+              <td>{{ product.description|truncatewords:10 }}</td>
+              <td>{{ product.category.name }}</td>
+              <td>{{ product.brand|default:"N/A" }}</td>
+              <td>₹ {{ product.mrp }}</td>
+              <td>₹ {{ product.price }}</td>
+              <td>{{ product.discount }}%</td>
+              <td>{{ product.stock }}</td>
+              <td>{{ product.rating }} ⭐</td>
+              <td class="action-buttons">
+                <a href="{% url 'edit_product' product.sku %}" class="edit-btn"><i class="fas fa-edit"></i> Edit</a>
+                <a href="{% url 'delete_product' product.sku %}" class="delete-btn"><i class="fas fa-trash"></i>
+                  Delete</a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="13" class="no-products">No cosmetic products available</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
       {% endif %}
 
       <!-- Jewellery Products Table -->
       {% if product_type == "jewellery" %}
-        <h3 class="section-title">Jewellery Products</h3>
-        <div class="product-table-container">
-          <table class="product-table">
-            <thead>
-              <tr>
-                <th>S.No.</th>
-                <th>Image</th>
-                <th>Title</th>
-                <th>SKU</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Brand</th>
-                <th>MRP</th>
-                <th>Price</th>
-                <th>Discount</th>
-                <th>Stock</th>
-                <th>Rating</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for product in jewellery_products %}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td><img src="{{ product.display_image.url }}" class="product-image" alt="{{ product.title }}"></td>
-                  <td>{{ product.title }}</td>
-                  <td>{{ product.sku }}</td>
-                  <td>{{ product.description|truncatewords:10 }}</td>
-                  <td>{{ product.category.name }}</td>
-                  <td>{{ product.brand|default:"N/A" }}</td>
-                  <td>₹ {{ product.mrp }}</td>
-                  <td>₹ {{ product.price }}</td>
-                  <td>{{ product.discount }}%</td>
-                  <td>{{ product.stock }}</td>
-                  <td>{{ product.rating }} ⭐</td>
-                  <td class="action-buttons">
-                    <a href="{% url 'edit_product' product.sku %}" class="edit-btn"><i class="fas fa-edit"></i> Edit</a>
-                    <a href="{% url 'delete_product' product.sku %}" class="delete-btn"><i class="fas fa-trash"></i> Delete</a>
-                  </td>
-                </tr>
-              {% empty %}
-                <tr>
-                  <td colspan="13" class="no-products">No jewellery products available</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+      <h3 class="section-title">Jewellery Products</h3>
+      <div class="product-table-container">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>Image</th>
+              <th>Title</th>
+              <th>SKU</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>MRP</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Stock</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in jewellery_products %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td><img src="{{ product.display_image.url }}" class="product-image" alt="{{ product.title }}"></td>
+              <td>{{ product.title }}</td>
+              <td>{{ product.sku }}</td>
+              <td>{{ product.description|truncatewords:10 }}</td>
+              <td>{{ product.category.name }}</td>
+              <td>{{ product.brand|default:"N/A" }}</td>
+              <td>₹ {{ product.mrp }}</td>
+              <td>₹ {{ product.price }}</td>
+              <td>{{ product.discount }}%</td>
+              <td>{{ product.stock }}</td>
+              <td>{{ product.rating }} ⭐</td>
+              <td class="action-buttons">
+                <a href="{% url 'edit_product' product.sku %}" class="edit-btn"><i class="fas fa-edit"></i> Edit</a>
+                <a href="{% url 'delete_product' product.sku %}" class="delete-btn"><i class="fas fa-trash"></i>
+                  Delete</a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="13" class="no-products">No jewellery products available</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
       {% endif %}
     </div>
-    
+
     <footer class="footer">
       <p>&copy; 2025 Cocomatik. All rights reserved.</p>
     </footer>
@@ -658,12 +676,13 @@
   <div class="message-container">
     <div class="icon">🚫</div>
     <h1>Access Restricted</h1>
-    <p>This product management dashboard is only accessible on a desktop. Please visit from a PC for the best experience.</p>
+    <p>This product management dashboard is only accessible on a desktop. Please visit from a PC for the best
+      experience.</p>
   </div>
 
   <script>
     // Add event listener for search box
-    document.getElementById('searchBox').addEventListener('input', function() {
+    document.getElementById('searchBox').addEventListener('input', function () {
       let input = this.value.toLowerCase();
       let table = document.querySelector(".product-table tbody");
       let rows = table.getElementsByTagName("tr");
