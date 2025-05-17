@@ -1,5 +1,4 @@
-
-    /* === Global Box Sizing & Body Reset === */
+ /* === Global Box Sizing & Body Reset === */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -96,8 +95,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .nav-links li:hover .dropdown-menu {
@@ -424,7 +430,7 @@
       .nav-links {
         gap: 5px;
       }
-      
+
       .nav-links li a {
         padding: 8px 12px;
         font-size: 14px;
@@ -435,20 +441,20 @@
       .all-main {
         padding: 20px;
       }
-      
+
       .filter-container {
         flex-direction: column;
         align-items: stretch;
       }
-      
+
       .filter-form {
         width: 100%;
       }
-      
+
       .add-product-link {
         width: 100%;
       }
-      
+
       .add-product-btn {
         width: 100%;
         justify-content: center;
@@ -467,11 +473,15 @@
 
     /* === Animations === */
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     .all-main {
       animation: fadeIn 0.5s ease;
     }
-  
