@@ -43,7 +43,7 @@
             <!-- Customer Info -->
             <div class="customer-info">
                 <h3><i class="fas fa-user-circle"></i> Customer Information</h3>
-                <p><strong>Name:</strong> {{ customer.name|default:"N/A" }}</p>
+                <p><strong>Name:</strong>{{ customer.first_name|default:"N/A" }} {{customer.last_name|default:" "}}</p>
                 <p><strong>Email:</strong> {{ customer.email|default:"N/A" }}</p>
                 <p><strong>Phone:</strong> {{ customer.phone|default:"N/A" }}</p>
                 <p><strong>Address:</strong>

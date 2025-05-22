@@ -58,7 +58,7 @@
                     {% for user in customer_list %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ user.name|default:"N/A" }}</td>
+                        <td>{{ user.first_name|default:"N/A" }} {{user.last_name|default:" "}}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.phone|default:"N/A" }}</td>
                         <td>{{ user.last_login|default:"Never" }}</td>
