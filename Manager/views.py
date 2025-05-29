@@ -303,139 +303,143 @@ def bop(request):
     tp = request.POST.get('type')
     nm = request.POST.get('name')
 
+    try:
+        if nm == "BestOfSkinCare":
+            p_obj, _ = BestOfSkinCare.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POCOS.objects.filter(category='Skincare')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    if  nm == "BestOfSkinCare":
-        p = BestOfSkinCare.objects.get(id=1).objs.all().order_by('title')
-        z = POCOS.objects.filter(category= 'Skincare')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfImportedProducts":
+            p_obj, _ = BestOfImportedProducts.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POCOS.objects.filter(category='Imported Products')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm == "BestOfImportedProducts":
-        p = BestOfImportedProducts.objects.get(id=1).objs.all().order_by('title')
-        z = POCOS.objects.filter(category= 'Imported Products')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfHairCare":
+            p_obj, _ = BestOfHairCare.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POCOS.objects.filter(category='Haircare')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm == "BestOfHairCare":
-        p = BestOfHairCare.objects.get(id=1).objs.all().order_by('title')
-        z = POCOS.objects.filter(category= 'Haircare')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfFragrance":
+            p_obj, _ = BestOfFragrance.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POCOS.objects.filter(category='Fragrances')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm == "BestOfFragrance":
-        p = BestOfFragrance.objects.get(id=1).objs.all().order_by('title')
-        z = POCOS.objects.filter(category= 'Fragrances')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfColorCosmetic":
+            p_obj, _ = BestOfColorCosmetic.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POCOS.objects.filter(category='Color Cosmetics')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm == "BestOfColorCosmetic":
-        p = BestOfColorCosmetic.objects.get(id=1).objs.all().order_by('title')
-        z = POCOS.objects.filter(category= 'Color Cosmetics')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfBodyCare":
+            p_obj, _ = BestOfBodyCare.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POCOS.objects.filter(category='Bodycare')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm == "BestOfBodyCare":
-        p = BestOfBodyCare.objects.get(id=1).objs.all().order_by('title')
-        z = POCOS.objects.filter(category= 'Bodycare')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfWeddingJewellery":
+            p_obj, _ = BestOfWeddingJewellery.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Wedding Jewellery')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        elif nm == "BestOfPendants":
+            p_obj, _ = BestOfPendants.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Pendants')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        elif nm == "BestOfNoseRings":
+            p_obj, _ = BestOfNoseRings.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Nose Rings')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        elif nm == "BestOfNecklace":
+            p_obj, _ = BestOfNecklace.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Necklace')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm=="BestOfWeddingJewellery":
-        p = BestOfWeddingJewellery.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Wedding Jewellery')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfOneGramGoldenJewellery":
+            p_obj, _ = BestOfOneGramGoldenJewellery.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='One Gram Golden Jewellery')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        elif nm == "BestOfImportedJewellery":
+            p_obj, _ = BestOfImportedJewellery.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Imported Jewellery')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm=="BestOfPendants":
-        p = BestOfPendants.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Pendants')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfFingerRings":
+            p_obj, _ = BestOfFingerRings.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Finger Rings')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        elif nm == "BestOfEarRings":
+            p_obj, _ = BestOfEarRings.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Ear Rings')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm=="BestOfNoseRings":
-        p = BestOfNoseRings.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Nose Rings')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfChains":
+            p_obj, _ = BestOfChains.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Chains')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        elif nm == "BestOfBracelets":
+            p_obj, _ = BestOfBracelets.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Bracelets')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm=="BestOfNecklace":
-        p = BestOfNecklace.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Necklace')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif nm == "BestOfBangles":
+            p_obj, _ = BestOfBangles.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.filter(category='Bangles')
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        elif tp == "POCOS" and nm == "BestSellers":
+            p_obj, _ = BSC.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POCOS.objects.all()
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm=="BestOfOneGramGoldenJewellery":
-        p = BestOfOneGramGoldenJewellery.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'One Gram Golden Jewellery')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif tp == "POCOS" and nm == "FeatureProducts":
+            p_obj, _ = FPC.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POCOS.objects.all()
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        elif tp == "POJOS" and nm == "BestSellers":
+            p_obj, _ = BSJ.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.all()
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
-    elif  nm=="BestOfImportedJewellery":
-        p = BestOfImportedJewellery.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Imported Jewellery')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
+        elif tp == "POJOS" and nm == "FeatureProducts":
+            p_obj, _ = FPJ.objects.get_or_create(id=1)
+            p = p_obj.objs.all().order_by('title')
+            z = POJOS.objects.all()
+            q = z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
 
+        context = {
+            "prd": p,
+            "tp": tp,
+            "nm": nm,
+            "qrd": q
+        }
+        return render(request, "Manager/product/best.html", context)
+    except:
+        return render(request, "Manager/product/best.html")
 
-    elif  nm=="BestOfFingerRings":
-        p = BestOfFingerRings.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Finger Rings')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-
-    elif  nm=="BestOfEarRings":
-        p = BestOfEarRings.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Ear Rings')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-
-    elif  nm=="BestOfChains":
-        p = BestOfChains.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Chains')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-
-    elif  nm=="BestOfBracelets":
-        p = BestOfBracelets.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Bracelets')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-
-    elif  nm=="BestOfBangles":
-        p = BestOfBangles.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.filter(category= 'Bangles')
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-
-
-
-    elif tp=="POCOS" and nm=="BestSellers":
-        p = BSC.objects.get(id=1).objs.all().order_by('title')
-        z = POCOS.objects.all()
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-    elif tp=="POCOS" and nm=="FeatureProducts":
-        p = FPC.objects.get(id=1).objs.all().order_by('title')
-        z = POCOS.objects.all()
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-    elif tp=="POJOS" and nm=="BestSellers":
-        p = BSJ.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.all()
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-
-    elif tp=="POJOS" and nm=="FeatureProducts":
-        p = FPJ.objects.get(id=1).objs.all().order_by('title')
-        z = POJOS.objects.all()
-        q=z.exclude(sku__in=p.values_list('sku', flat=True)).order_by('title')
-
-
-
-
-    context = {
-    "prd": p,
-    "tp":tp,
-    "nm":nm,
-    "qrd":q
-    }
-    return render(request, "Manager/product/best.html", context)
 
 
 @session_auth_required
