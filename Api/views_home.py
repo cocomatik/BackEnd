@@ -37,27 +37,18 @@ from POJOS.models import POJOS
 
 @api_view(['GET'])
 def all_products_list(request):
-    pocos = POCOS.objects.all().values('title', 'sku', 'description')
-    pojos = POJOS.objects.all().values('title', 'sku', 'description')
+    pocos = POCOS.objects.all()
+    pojos = POJOS.objects.all()
 
-    results = []
+    pocos_serialized = PojoListSerializer(pocos, many=True).data
+    pojos_serialized = PojoListSerializer(pojos, many=True).data
 
-    for p in pocos:
-        results.append({
-            "type": "poco",
-            "title": p['title'],
-            "sku": p['sku'],
-            "description":p['description']
-        })
-    for p in pojos:
-        results.append({
-            "type": "pojo",
-            "title": p['title'],
-            "sku": p['sku'],
-            "description":p['description']
-        })
-    return Response(results)
+    combined = pocos_serialized + pojos_serialized
 
+    # Shuffle the combined list
+    random.shuffle(combined)
+
+    return Response(combined)
 
 from django.contrib.postgres.search import SearchVector
 from rest_framework.decorators import api_view
