@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'POJOS.apps.PojosConfig',
     'Orders.apps.OrdersConfig',
     'Manager.apps.ManagerConfig',
+    'Adds.apps.AddsConfig',
     'Api.apps.ApiConfig',
     'Delivery.apps.DeliveryConfig',
     'Reports.apps.ReportsConfig',

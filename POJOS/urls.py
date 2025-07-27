@@ -4,6 +4,8 @@ from rest_framework.routers import DefaultRouter
 
 from .xsviews import FeatureProductsViewSet,BestOfWeddingJewelleryViewSet,BestOfBanglesViewSet,BestOfBraceletsViewSet,BestOfChainsViewSet,BestOfEarRingsViewSet,BestOfFingerRingsViewSet,BestOfNecklaceViewSet,BestOfPendantsViewSet,BestOfNoseRingsViewSet,BestOfImportedJewelleryViewSet,BestOfOneGramGoldenJewelleryViewSet
 
+from Adds.views import Jadds
+
 
 router = DefaultRouter()
 router.register(r'feature-products', FeatureProductsViewSet, basename='feature-products')
@@ -23,6 +25,7 @@ router.register(r'best-of-bangles', BestOfBanglesViewSet, basename='best-of-bang
 
 urlpatterns = [
     path('', get_all_pojos, name='all-pojos'),
+    path('adds/', Jadds, name='pojos-adds'),
     path('categories/', get_categories, name='pojos-categories'),
     path('details/<str:sku>/', get_pojo_details, name='pojo-details'),
     path('reviews/<str:sku>/', reviews, name='add-review'),

@@ -9,6 +9,8 @@ from .xsviews import (
     BestOfColorCosmeticViewSet, BestOfBodyCareViewSet
 )
 
+from Adds.views import Cadds
+
 router = DefaultRouter()
 router.register(r'feature-products', FeatureProductsViewSet, basename='feature-products')
 # router.register(r'best-sellers', BestSellersViewSet, basename='best-sellers')
@@ -23,6 +25,7 @@ router.register(r'best-of-bodycare', BestOfBodyCareViewSet, basename='best-of-bo
 
 urlpatterns = [
     path('', get_all_pocos, name='all-pocos'),
+    path('adds/', Cadds, name='pocos-adds'),
     path('categories/', get_categories, name='pocos-categories'),
     path('details/<str:sku>/', get_poco_details, name='poco-details'),
     path('reviews/<str:sku>/', reviews, name='add-review'),
