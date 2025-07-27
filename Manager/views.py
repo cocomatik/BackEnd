@@ -603,3 +603,42 @@ def revenue_report(request):
         'growth_rate': round(growth_rate, 2),
         'top_products': top_products,
     })
+
+
+
+
+from Adds.models import CosmeticAdds, jwelleryAdds
+
+def manage_ads_page(request):
+    cosmetic_adds = CosmeticAdds.objects.all()
+    jwellery_adds = jwelleryAdds.objects.all()
+
+    context = {
+        'cosmetic_adds': cosmetic_adds,
+        'jwellery_adds': jwellery_adds
+    }
+
+    return render(request, 'Manager/Adds/ads.html', context)
+
+from django.shortcuts import render, redirect
+from Adds.models import CosmeticAdds, jwelleryAdds
+
+def upload_cosmetic_ad(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        CosmeticAdds.objects.create(img=request.FILES['image'])
+    return redirect('manage_ads')
+
+def upload_jwellery_ad(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        jwelleryAdds.objects.create(img=request.FILES['image'])
+    return redirect('manage_ads')
+
+def delete_cosmetic_ad(request, ad_id):
+    if request.method == 'POST':
+        CosmeticAdds.objects.filter(id=ad_id).delete()
+    return redirect('manage_ads')
+
+def delete_jwellery_ad(request, ad_id):
+    if request.method == 'POST':
+        jwelleryAdds.objects.filter(id=ad_id).delete()
+    return redirect('manage_ads')

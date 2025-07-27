@@ -5,15 +5,18 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+    <title>Manage Ads</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link rel="stylesheet" href="{% static 'Manager/dashboard/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'Manager/Adds/ads.css' %}">
 
 </head>
 
 <body>
+
     <div class="page-wrapper">
         <div class="main">
+
+
             <nav class="navbar">
                 <a class="logo" href="{% url 'dashboard' %}">
                     <img src="{% static 'Manager/images/logo.png' %}" alt="Admin Logo" />
@@ -40,62 +43,61 @@
                 </ul>
             </nav>
 
-            <!-- Main Content -->
-            <div class="container mt-4">
-                <h2 class="mb-4 text-center"><b>DASHBOARD</b></h2>
+            <!-- COSMETIC ADS -->
+            <h2>Manage Advertisements</h2>
+            <div class="gallery-section">
+                <h2>Cosmetic Ads</h2>
+                <div class="ad-container">
+                    {% for ad in cosmetic_adds %}
+                    <div class="ad-card">
+                        <img src="{{ ad.img.url }}" alt="Cosmetic Ad">
+                        <form method="post" action="{% url 'delete_cosmetic_ad' ad.id %}"
+                            onsubmit="return confirm('Are you sure you want to delete this cosmetic ad?');">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
 
-                <!-- Dashboard Stats -->
-                <div class="stats-container">
-                    <div class="stat-card">
-                        <div class="stat-icon products">
-                            <i class="fas fa-box"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>{{ total_products }}</h3>
-                            <p>Total Products</p>
-                        </div>
                     </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon orders">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>{{ total_orders }}</h3>
-                            <p>Total Orders</p>
-                        </div>
-                        <a href="{% url 'order_list' %}" aria-label="View Orders"></a>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon revenue">
-                            <i class="fa fa-inr"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>₹ {{ value }}</h3>
-                            <p>Total Revenue</p>
-                        </div>
-                        <a href="{% url 'revenue_report' %}" aria-label="View Revenue Report"></a>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon customers">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>{{ total_customers }}</h3>
-                            <p>Total Customers</p>
-                        </div>
-                        <a href="{% url 'customer_list' %}" aria-label="View Customers"></a>
-                    </div>
+                    {% endfor %}
                 </div>
+                <form method="post" action="{% url 'upload_cosmetic_ad' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="image" required>
+                    <button type="submit">Upload Cosmetic Ad</button>
+                </form>
             </div>
 
-            <footer class="footer">
-                <p>&copy; 2025 Cocomatik. All rights reserved.</p>
-            </footer>
+            <!-- JWELLERY ADS -->
+            <div class="gallery-section">
+                <h2>Jwellery Ads</h2>
+                <div class="ad-container">
+                    {% for ad in jwellery_adds %}
+                    <div class="ad-card">
+                        <img src="{{ ad.img.url }}" alt="Jwellery Ad">
+                        <form method="post" action="{% url 'delete_jwellery_ad' ad.id %}"
+                            onsubmit="return confirm('Are you sure you want to delete this jwellery ad?');">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
+
+                    </div>
+                    {% endfor %}
+                </div>
+                <form method="post" action="{% url 'upload_jwellery_ad' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="image" required>
+                    <button type="submit">Upload Jwellery Ad</button>
+                </form>
+            </div>
         </div>
     </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Cocomatik. All rights reserved.</p>
+    </footer>
+    </div>
+    </div>
+
 
     <!-- Mobile Restriction Message -->
     <div class="message-container mt-5">
@@ -105,6 +107,7 @@
             This dashboard is only accessible on a desktop. Please visit from a PC for the best experience.
         </p>
     </div>
+
 </body>
 
 </html>

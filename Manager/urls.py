@@ -1,5 +1,5 @@
 from django.urls import path
-from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,customers,customer_details,shipment_form,shipment_details,revenue_report
+from Manager.views import bop,mbop,landing,dashboard, products, orders,add_product, edit_product,delete_product,best_of_products,order_detail,customers,customer_details,shipment_form,shipment_details,revenue_report, manage_ads_page, upload_cosmetic_ad, upload_jwellery_ad, delete_cosmetic_ad, delete_jwellery_ad
 from Manager.delivery_views import create_shipment,pending_shipments,pending_SDetails,cancel_shipment
 
 urlpatterns = [
@@ -38,7 +38,14 @@ urlpatterns = [
 
 
     path('revenue_report/', revenue_report, name='revenue_report'),
-    
+
+    path('manage-ads/', manage_ads_page, name='manage_ads'),
+    path('upload/cosmetic/', upload_cosmetic_ad, name='upload_cosmetic_ad'),
+    path('upload/jwellery/', upload_jwellery_ad, name='upload_jwellery_ad'),
+    path('delete/cosmetic/<int:ad_id>/', delete_cosmetic_ad, name='delete_cosmetic_ad'),
+    path('delete/jwellery/<int:ad_id>/', delete_jwellery_ad, name='delete_jwellery_ad'),
+
+
 
  
 ]
