@@ -16,7 +16,7 @@ from datetime import timedelta
 import logging
 from decimal import Decimal
 
-
+from Payments.utils import initiate_phonepe_payment 
 # Initialize logger
 logger = logging.getLogger(__name__)
 
@@ -156,17 +156,15 @@ def place_order(request):
     address_id = request.data.get("address_id")
     payment_mode = request.data.get("payment_mode")
     
-    discount=request.data.get('discount',0)
-    tax=request.data.get('tax',0)
-    shipping_charges=request.data.get('shipping_charges',0)
-    packaging_charges=request.data.get('packaging_charges',0)
-    cod_charges=request.data.get('cod_charges',0)
-    handling_charges=request.data.get('handling_charges',0)
+    discount = Decimal(request.data.get('discount', 0))
+    tax = Decimal(request.data.get('tax', 0))
+    shipping_charges = Decimal(request.data.get('shipping_charges', 0))
+    packaging_charges = Decimal(request.data.get('packaging_charges', 0))
+    cod_charges = Decimal(request.data.get('cod_charges', 0))
+    handling_charges = Decimal(request.data.get('handling_charges', 0))
 
     sub_total = cart.value  
     total_price = (sub_total + tax + shipping_charges + packaging_charges + cod_charges + handling_charges) - discount
-
-
 
     if not address_id or not payment_mode:
         return Response({"error": "Address ID and payment mode are required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -181,17 +179,17 @@ def place_order(request):
             order = Order.objects.create(
                 cart=cart,
                 user=user,
-                rcv_address_name =address.address_name,
-                rcv_address_type =address.address_type,
-                rcv_name =address.name,
-                rcv_contact_no =address.contact_no, 
-                rcv_house_no =address.house_no,
-                rcv_street =address.street,
-                rcv_locality =address.locality,
-                rcv_city =address.city,
-                rcv_district =address.district,
-                rcv_state =address.state,
-                rcv_pincode =address.pincode,
+                rcv_address_name=address.address_name,
+                rcv_address_type=address.address_type,
+                rcv_name=address.name,
+                rcv_contact_no=address.contact_no, 
+                rcv_house_no=address.house_no,
+                rcv_street=address.street,
+                rcv_locality=address.locality,
+                rcv_city=address.city,
+                rcv_district=address.district,
+                rcv_state=address.state,
+                rcv_pincode=address.pincode,
                 payment_mode=payment_mode,
                 discount=discount,
                 tax=tax,
@@ -200,29 +198,35 @@ def place_order(request):
                 cod_charges=cod_charges,
                 handling_charges=handling_charges,
                 sub_total=sub_total,
-                total_price=total_price
+                total_price=total_price,
+                status= "ORDERED"
             )
 
+            order.save()
+            cart.status = "ORDERED"
+            cart.save()
 
-        order.save()
+            # Handle PG (PhonePe)
+            if payment_mode == "PG":
+                payment_data = initiate_phonepe_payment(order)
+                return Response({
+                    "message": "Redirect to PhonePe to complete payment.",
+                    "order_id": order.order_number,
+                    "payment_url": payment_data.get("redirect_url")
+                }, status=status.HTTP_202_ACCEPTED)
 
-        cart.status = "ORDERED"
-        cart.save()
+            # COD Success
+            return Response({
+                "message": "Order placed successfully with COD.",
+                "order_id": order.order_number
+            }, status=status.HTTP_201_CREATED)
 
-
-        return Response({
-            "message": "Order placed successfully .",
-            "order_id": order.order_number,
-        }, status=status.HTTP_201_CREATED)
-        
     except Exception as e:
-        logger.error(f"Order  integration failed: {str(e)}")
+        logger.error(f"Order placement failed: {str(e)}")
         return Response({
             "error": "Something went wrong during order placement.",
             "details": str(e)
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 
 
 @api_view(["POST"])
