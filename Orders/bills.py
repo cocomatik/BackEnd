@@ -14,6 +14,7 @@ def generate_invoice(request, order_number):
     except Order.DoesNotExist:
         return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
     # Prepare context for the HTML template
     context = {
         'order': order,
