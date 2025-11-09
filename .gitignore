@@ -1,3 +1,5 @@
+.env.local
+.env.prod
 .env
 /zenv
 .vercel
