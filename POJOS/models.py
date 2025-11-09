@@ -1,5 +1,5 @@
 from django.db import models
-from cloudinary.models import CloudinaryField
+
 import random
 from django.core.validators import MinValueValidator, MaxValueValidator
 import string
@@ -20,7 +20,7 @@ class POJOS(models.Model):
     stock = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='pojos', to_field='name', db_index=True)
     brand = models.CharField(max_length=255, null=True, blank=True)
-    display_image = CloudinaryField('image', folder='pojos/display/')
+    display_image = models.ImageField(upload_to='pojos/display/')
     rating = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     size = models.CharField(max_length=50, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -55,7 +55,7 @@ class POJOS(models.Model):
 
 class PojoImage(models.Model):
     pojo = models.ForeignKey(POJOS, on_delete=models.CASCADE, related_name='extra_images')
-    image = CloudinaryField('image', folder='pojos/extra/')
+    image = models.ImageField(upload_to='pojos/extra/')
 
     def __str__(self):
         return f"{self.poco.title} - Extra Image {self.id}"

@@ -2,83 +2,149 @@
 <html>
 <head>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
         body {
-            background-color: #121212;
-            display: flex;
-            height: 100vh;
-            align-items: center;
-            justify-content: center;
+            background-color: #0b0b0b;
             margin: 0;
             padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-family: 'Poppins', sans-serif;
             color: #fff;
         }
+
         .container {
-            background: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 100%);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            padding: 40px;
+            background: linear-gradient(145deg, #ff758c, #ff7eb3, #ffb199);
+            border-radius: 25px;
+            box-shadow: 0 12px 35px rgba(255, 110, 135, 0.4), 0 0 20px rgba(255, 90, 110, 0.3);
+            padding: 40px 30px;
+            width: 380px;
             text-align: center;
-            width: 350px;
+            animation: float 4s ease-in-out infinite;
         }
-        .otp {
-            background-color: #fff;
-            color: #b96475;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-size: 28px;
-            font-weight: bold;
-            letter-spacing: 4px;
-            display: inline-block;
-            margin: 20px 0;
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
         }
+
+        .greeting {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
         .info {
+            font-size: 15px;
+            line-height: 1.6;
             color: #fff;
-            margin: 15px 0;
-            font-size: 16px;
         }
+
+        .otp {
+            background: #fff;
+            color: #ff5c8d;
+            font-size: 32px;
+            font-weight: 700;
+            padding: 15px 35px;
+            border-radius: 40px;
+            display: inline-block;
+            letter-spacing: 6px;
+            margin: 25px 0;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .timer {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
         .important {
-            background-color: rgb(39, 4, 4);
-            padding: 10px 15px;
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 15px;
             text-align: left;
             margin-top: 20px;
+            color: #f3f3f3;
         }
+
+        .important h4 {
+            margin: 0 0 10px;
+            font-size: 16px;
+            color: #ffccd5;
+        }
+
+        .important ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .important li {
+            font-size: 13.5px;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
         .footer {
             margin-top: 25px;
-            font-size: 12px;
+            font-size: 13px;
             color: #ddd;
         }
-        .footer img {
-            width: 100px;
-            margin-top: 15px;
-        }
-        a {
+
+        .footer a {
             color: #fff;
             text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .logo {
+            width: 110px;
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .highlight {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <p class="info">Hey <b>{{name}}</b>,</p>
-        <p class="info">We received a request to {{status}} your account with <b>COCOMATIK</b>. Use the OTP below to proceed:</p>
+        <p class="greeting">Hey <b>{{name}}</b>, 👋</p>
+        <p class="info">We received a request to <span class="highlight">{{status}}</span> your account with <b>COCOMATIK</b>.</p>
+        <p class="info">Use the OTP below to continue:</p>
+
         <div class="otp">{{otp}}</div>
-        <p class="info">This OTP is valid for <b>2 minutes</b>. Use it soon to avoid delays.</p>
+
+        <p class="timer">⏳ This OTP is valid for <b>2 minutes</b>.</p>
 
         <div class="important">
-            <h4>🔒 Security Tip:</h4>
+            <h4>🔒 Security Tips:</h4>
             <ul>
                 <li>Never share your OTP or password with anyone.</li>
-                <li><b>COCOMATIK</b> will <b>never</b> ask for your password.</li>
-                <li>If you didn’t request this OTP, please ignore this message.</li>
+                <li><b>COCOMATIK</b> will <b>never</b> ask for your credentials.</li>
+                <li>If you didn’t request this OTP, you can safely ignore this email.</li>
             </ul>
         </div>
 
         <div class="footer">
             <p>Best regards,<br><b>COCOMATIK Team</b></p>
-            <a href="https://www.cocomatik.com" target="_blank">www.cocomatik.com</a> | <a href="https://www.support.cocomatik.com" target="_blank">Support</a>
-            <img src="https://drive.google.com/uc?export=view&id=19CLhVafHWuPRVBfl8cvLBxQU-qwUUz8L" alt="COCOMATIK Banner">
+            <a href="https://www.cocomatik.com" target="_blank">www.cocomatik.com</a> |
+            <a href="https://support.cocomatik.com" target="_blank">Support</a>
+            <br>
+            <img class="logo" src="https://drive.google.com/uc?export=view&id=19CLhVafHWuPRVBfl8cvLBxQU-qwUUz8L" alt="COCOMATIK Banner">
         </div>
     </div>
 </body>

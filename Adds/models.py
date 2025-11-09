@@ -1,11 +1,11 @@
 from django.db import models
-from cloudinary.models import CloudinaryField
+
 
 class CosmeticAdds(models.Model):
-    img=CloudinaryField('image', folder='pocos/Adds/')
+    img=models.ImageField(upload_to='pocos/Adds/')
 
 class jwelleryAdds(models.Model):
-    img=CloudinaryField('image', folder='pojos/Adds/')
+    img=models.ImageField(upload_to='pojos/Adds/')
 
 
 from rest_framework import serializers
